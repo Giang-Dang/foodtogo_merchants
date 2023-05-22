@@ -1,30 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:foodtogo_merchants/screens/login_screen.dart';
+import 'package:foodtogo_merchants/screens/tabs_screen.dart';
+import 'package:foodtogo_merchants/settings/kcolors.dart';
+import 'package:foodtogo_merchants/util/material_color_creator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-final kColorScheme = ColorScheme.fromSeed(
-  brightness: Brightness.light,
-  seedColor: const Color(0xfff55951),
-  background: const Color(0xff5e5e5e),
-  onBackground: const Color(0xff2b2b2b),
-  surface: const Color(0xffffffff),
-  onSurface: const Color(0xff5e5e5e),
+final kColorScheme = ColorScheme.fromSwatch(
+  primarySwatch: MaterialColorCreator.createMaterialColor(
+    KColors.kPrimaryColor,
+  ),
 );
 
-final kTheme = ThemeData().copyWith(
-    useMaterial3: true,
-    scaffoldBackgroundColor: kColorScheme.background,
-    colorScheme: kColorScheme,
-    textTheme: GoogleFonts.bitterTextTheme().copyWith(
-      titleSmall: GoogleFonts.dosis(
-        fontWeight: FontWeight.bold,
-      ),
-      titleMedium: GoogleFonts.dosis(
-        fontWeight: FontWeight.bold,
-      ),
-      titleLarge: GoogleFonts.dosis(
-        fontWeight: FontWeight.bold,
-      ),
-    ));
+final kTheme = ThemeData(
+  textTheme: GoogleFonts.bitterTextTheme(),
+  scaffoldBackgroundColor: KColors.kOnBackgroundColor,
+).copyWith(
+  useMaterial3: true,
+  colorScheme: kColorScheme,
+  textTheme: GoogleFonts.bitterTextTheme().copyWith(
+    titleSmall: GoogleFonts.dosis(
+      fontWeight: FontWeight.bold,
+    ),
+    titleMedium: GoogleFonts.dosis(
+      fontWeight: FontWeight.bold,
+    ),
+    titleLarge: GoogleFonts.dosis(
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+  cardTheme: const CardTheme().copyWith(
+    color: KColors.kOnBackgroundColor,
+  ),
+);
 
 void main() {
   runApp(const MyApp());
@@ -36,9 +43,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'FoodToGo - Merchants',
+      title: 'FoodToGo - Customers',
       theme: kTheme,
-      home: Text('Getting location...'),
+      home: Scaffold(
+        body: LoginScreen(),
+      ),
     );
   }
 }
