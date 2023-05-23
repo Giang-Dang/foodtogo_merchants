@@ -45,4 +45,4 @@ app.*.map.json
 
 #Secrets
 /lib/settings/secrets.dart
-android/app/src/main/AndroidManifest.xml
+/android/app/src/main/AndroidManifest.xml
