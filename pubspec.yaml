@@ -48,6 +48,7 @@ dependencies:
   transparent_image: ^2.0.1
   flutter_secure_storage: ^8.0.0
   google_maps_flutter: ^2.2.7
+  geolocator: ^9.0.2
 
 dev_dependencies:
   flutter_test:

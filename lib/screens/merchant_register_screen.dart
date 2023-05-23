@@ -1,12 +1,8 @@
 import 'dart:io';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:foodtogo_merchants/models/place_location.dart';
-import 'package:foodtogo_merchants/screens/login_screen.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
-import 'package:foodtogo_merchants/widgets/image_input.dart';
 import 'package:foodtogo_merchants/widgets/location_input.dart';
 
 class MerchantRegisterScreen extends StatefulWidget {
@@ -117,13 +113,6 @@ class _MerchantRegisterScreenState extends State<MerchantRegisterScreen> {
                     ),
                   ),
                 ],
-              ),
-              const SizedBox(height: 10),
-              const SizedBox(height: 16),
-              ImageInput(
-                onPickImage: (image) {
-                  _selectedImage = image;
-                },
               ),
               const SizedBox(height: 10),
               LocationInput(

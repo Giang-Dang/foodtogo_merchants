@@ -62,7 +62,7 @@ class _ImageInputState extends State<ImageInput> {
         width: 1,
         color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
       )),
-      height: 250,
+      height: 170,
       width: double.infinity,
       alignment: Alignment.center,
       child: content,
