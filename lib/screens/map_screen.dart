@@ -1,13 +1,16 @@
+import 'package:flutter/services.dart';
 import 'package:foodtogo_merchants/models/place_location.dart';
 import 'package:flutter/material.dart';
+import 'package:foodtogo_merchants/services/location_services.dart';
+import 'package:foodtogo_merchants/settings/kcolors.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({
     super.key,
     this.location = const PlaceLocation(
-      latitude: 10.763657726715575,
-      longitude: 106.68419901361023,
+      latitude: 10.762878665281342,
+      longitude: 106.68247767047126,
       address: '',
     ),
     this.isSelecting = true,
@@ -24,6 +27,67 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   LatLng? _pickedLocation;
+  final _searchTextController = TextEditingController();
+  final _locationServices = LocationServices();
+  GoogleMapController? mapController;
+  late bool _isSearching;
+
+  _showAlertDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _onSearchAddressPressed() async {
+    setState(() {
+      _isSearching = true;
+    });
+
+    LatLng? result =
+        await _locationServices.getCoordinates(_searchTextController.text);
+
+    if (result == null) {
+      _showAlertDialog('Address', 'Cannot find the input address.');
+      setState(() {
+        _isSearching = false;
+      });
+      return;
+    } else {
+      mapController?.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(target: result, zoom: 17)));
+      setState(() {
+        _isSearching = false;
+        _pickedLocation = LatLng(result.latitude, result.longitude);
+      });
+      SystemChannels.textInput.invokeMethod('TextInput.hide');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _isSearching = false;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _searchTextController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,18 +109,33 @@ class _MapScreenState extends State<MapScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
             child: TextFormField(
+              controller: _searchTextController,
               decoration: InputDecoration(
                 label: const Text('Enter your address'),
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () {
-                  },
-                ),
+                suffixIcon: _isSearching
+                    ? const SizedBox(
+                        width: 30.0,
+                        height: 30.0,
+                        child: Center(child: CircularProgressIndicator()))
+                    : IconButton(
+                        icon: const Icon(
+                          Icons.search,
+                          color: KColors.kPrimaryColor,
+                        ),
+                        onPressed: () {
+                          _onSearchAddressPressed();
+                        },
+                      ),
               ),
             ),
           ),
           Expanded(
             child: GoogleMap(
+              onMapCreated: (controller) {
+                setState(() {
+                  mapController = controller;
+                });
+              },
               onTap: !widget.isSelecting
                   ? null
                   : (position) {
@@ -69,7 +148,7 @@ class _MapScreenState extends State<MapScreen> {
                   widget.location.latitude,
                   widget.location.longitude,
                 ),
-                zoom: 16,
+                zoom: 17,
               ),
               markers: (_pickedLocation == null && widget.isSelecting)
                   ? {}

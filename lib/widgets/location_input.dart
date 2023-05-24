@@ -1,4 +1,4 @@
-import 'dart:convert';
+
 import 'dart:developer';
 import 'dart:math';
 
@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
 
 class LocationInput extends StatefulWidget {
   const LocationInput({
@@ -81,7 +80,7 @@ class _LocationInputState extends State<LocationInput> {
   void _selectOnMap() async {
     final pickedLocation = await Navigator.of(context).push<LatLng>(
       MaterialPageRoute(
-        builder: (ctx) => MapScreen(),
+        builder: (ctx) => const MapScreen(),
       ),
     );
 

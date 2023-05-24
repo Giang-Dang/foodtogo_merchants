@@ -44,7 +44,7 @@ class LocationServices {
     return resData['results'][0]['formatted_address'];
   }
 
-  Future<LatLng> getCoordinates(String address) async {
+  Future<LatLng?> getCoordinates(String address) async {
     final uri = Uri.https(
       'maps.googleapis.com',
       '/maps/api/geocode/json',
@@ -55,6 +55,9 @@ class LocationServices {
     );
     final response = await http.get(uri);
     final data = jsonDecode(response.body);
+    if (data['results'].length == 0) {
+      return null;
+    }
     final lat = data['results'][0]['geometry']['location']['lat'];
     final lng = data['results'][0]['geometry']['location']['lng'];
     return LatLng(lat, lng);

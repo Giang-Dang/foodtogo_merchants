@@ -15,4 +15,16 @@ class MerchantDTO {
   final String phoneNumber;
   final double geoLatitude;
   final double geoLongitude;
+
+  factory MerchantDTO.fromJson(Map<String, dynamic> json) {
+    return MerchantDTO(
+      merchantId: json['merchantId'],
+      userId: json['userId'],
+      name: json['name'],
+      address: json['address'],
+      phoneNumber: json['phoneNumber'],
+      geoLatitude: json['geoLatitude'],
+      geoLongitude: json['geoLongitude'],
+    );
+  }
 }

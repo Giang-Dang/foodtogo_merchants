@@ -15,14 +15,14 @@ class TabsScreen extends ConsumerStatefulWidget {
 
 class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectedPageIndex = 0;
-  Widget _activePage = Text('activePage');
+  Widget _activePage = const MerchantsList();
 
   void _selectPage(int index) {
     setState(() {
       _selectedPageIndex = index;
       switch (_selectedPageIndex) {
         case 0:
-          _activePage = MerchantsList();
+          _activePage = const MerchantsList();
           break;
         case 1:
           _activePage = Text('Orders Page');
@@ -51,7 +51,14 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('FoodToGo - Merchants'),
+        backgroundColor: KColors.kBackgroundColor,
+        title: Text(
+          'FoodToGo - Merchants',
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: KColors.kPrimaryColor,
+                fontSize: 24,
+              ),
+        ),
       ),
       body: _activePage,
       floatingActionButton: _selectedPageIndex == 0

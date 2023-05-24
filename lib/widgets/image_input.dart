@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:foodtogo_merchants/settings/kcolors.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageInput extends StatefulWidget {
@@ -8,7 +9,6 @@ class ImageInput extends StatefulWidget {
     super.key,
     required this.onPickImage,
   });
-
   final void Function(File image) onPickImage;
 
   @override
@@ -21,9 +21,55 @@ class _ImageInputState extends State<ImageInput> {
   File? _selectedImage;
 
   void _takePicture() async {
+    String imageSoure = '';
+    await showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          decoration: BoxDecoration(
+              color: KColors.kOnBackgroundColor,
+              borderRadius: BorderRadius.circular(16.0)),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  imageSoure = 'Camera';
+                  Navigator.of(context).pop();
+                },
+                label: const Text('Camera'),
+                icon: const Icon(Icons.photo_camera),
+              ),
+              const SizedBox(width: 25),
+              ElevatedButton.icon(
+                onPressed: () {
+                  imageSoure = 'Gallery';
+                  Navigator.of(context).pop();
+                },
+                label: const Text('Gallery'),
+                icon: const Icon(Icons.photo_library),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
     final imagePicker = ImagePicker();
-    final pickedImage =
-        await imagePicker.pickImage(source: ImageSource.camera, maxWidth: 600);
+    var pickedImage;
+    switch (imageSoure) {
+      case 'Camera':
+        pickedImage = await imagePicker.pickImage(
+            source: ImageSource.camera, maxWidth: 600);
+        break;
+      case 'Gallery':
+        pickedImage = await imagePicker.pickImage(
+            source: ImageSource.gallery, maxWidth: 600);
+        break;
+      default:
+    }
 
     if (pickedImage == null) {
       return;

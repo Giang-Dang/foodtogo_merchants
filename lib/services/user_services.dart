@@ -10,7 +10,7 @@ import 'package:foodtogo_merchants/models/dto/login_response_dto.dart';
 import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
 import 'package:foodtogo_merchants/models/dto/register_request_dto.dart';
 import 'package:foodtogo_merchants/models/dto/user_dto.dart';
-import 'package:foodtogo_merchants/providers/merchants_provider.dart';
+import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
 import 'package:foodtogo_merchants/settings/secrets.dart';
 import 'package:http/http.dart' as http;
 import 'package:sqflite/sqflite.dart' as sql;
@@ -110,29 +110,6 @@ class UserServices {
     jwtToken == "";
     strUserId == "";
     return;
-  }
-
-  Future<List<MerchantDTO>?> getMerchantList() async {
-    if (!isAuthorized) {
-      return null;
-    }
-
-    final merchantAPIByUserIdLink = 'api/MerchantAPI/byuser/$strUserId';
-    final url =
-        Uri.http('${Secrets.FoodToGoAPILink}', '$merchantAPIByUserIdLink');
-
-    final responseJson = await http.get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $jwtToken',
-      },
-    );
-
-    if (responseJson.statusCode == HttpStatus.ok) {
-      var responseObj = json.decode(responseJson.body);
-      // inspect(responseObj['result']);
-    }
   }
 
   Future<APIResponseDTO> register(RegisterRequestDTO registerRequestDTO) async {

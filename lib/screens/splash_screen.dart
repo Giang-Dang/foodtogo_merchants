@@ -3,9 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
-import 'package:foodtogo_merchants/providers/merchants_provider.dart';
+import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
 import 'package:foodtogo_merchants/screens/login_screen.dart';
 import 'package:foodtogo_merchants/screens/tabs_screen.dart';
+import 'package:foodtogo_merchants/services/merchant_dto_services.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 
@@ -25,13 +26,15 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
   _login() async {
     //delay for animation
-    await _delay(3);
+    await _delay(1);
     //loading data
     var userServices = UserServices();
+    var merchantServices = MerchantDTOServices();
+
     await userServices.checkLocalLoginAuthorized();
     List<MerchantDTO>? merchantList;
     if (UserServices.isAuthorized) {
-      merchantList = await userServices.getMerchantList();
+      merchantList = await merchantServices.getAll();
       if (context.mounted) {
         Navigator.pushReplacement(
           context,
@@ -51,7 +54,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       }
     }
     if (merchantList != null) {
-      ref.read(merchantProvider.notifier).updateMerchants(merchantList);
+      ref.watch(merchantsListProvider.notifier).updateMerchants(merchantList);
     }
     // inspect(merchantList);
   }
