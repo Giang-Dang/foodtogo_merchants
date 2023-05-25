@@ -2,18 +2,18 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:foodtogo_merchants/models/dto/create_dto/mechant_profile_image_create_dto.dart';
-import 'package:foodtogo_merchants/models/dto/merchant_profile_image_update_dto.dart';
-import 'package:foodtogo_merchants/models/dto/update_dto/merchant_profile_image_update_dto.dart';
+import 'package:foodtogo_merchants/models/dto/create_dto/menu_item_image_create_dto.dart';
+import 'package:foodtogo_merchants/models/dto/menu_item_image_dto.dart';
+import 'package:foodtogo_merchants/models/dto/update_dto/menu_item_image_update_dto.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/secrets.dart';
 import 'package:http/http.dart' as http;
 
-class MerchantProfileImageServices {
-  static const apiUrl = 'api/MerchantProfileImageAPI';
+class MenuItemImageServices {
+  static const apiUrl = 'api/MenuItemImageAPI';
 
-  Future<MerchantProfileImageDTO> getByMerchantId(int merchantId) async {
-    final newApiUrl = '$apiUrl/bymerchant/$merchantId';
+  Future<MenuItemImageDTO> getByMenuItem(int menuItemId) async {
+    final newApiUrl = '$apiUrl/bymenuitem/$menuItemId';
     final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl);
     final jwtToken = UserServices.jwtToken;
 
@@ -26,20 +26,20 @@ class MerchantProfileImageServices {
 
     final responseData = json.decode(responseJson.body);
 
-    return MerchantProfileImageDTO(
+    return MenuItemImageDTO(
       id: responseData['result']['id'],
-      merchantId: responseData['result']['merchantId'],
+      menuItemId: responseData['result']['menuItemId'],
       path: responseData['result']['path'],
     );
   }
 
-  Future<bool> create(MerchantProfileImageCreateDTO createDTO) async {
+  Future<bool> create(MenuItemImageCreateDTO createDTO) async {
     final url = Uri.http(Secrets.FoodToGoAPILink, apiUrl);
     final jwtToken = UserServices.jwtToken;
 
     final jsonData = json.encode({
       "id": createDTO.id,
-      "merchantId": createDTO.merchantId,
+      "menuItemId": createDTO.menuItemId,
       "path": createDTO.path,
     });
 
@@ -59,7 +59,7 @@ class MerchantProfileImageServices {
   }
 
   Future<bool> update(
-    MerchantProfileImageUpdateDTO updateDTO,
+    MenuItemImageUpdateDTO updateDTO,
     int id,
   ) async {
     final url = Uri.http(Secrets.FoodToGoAPILink, '$apiUrl/$id');
@@ -67,7 +67,7 @@ class MerchantProfileImageServices {
 
     final jsonData = json.encode({
       "id": id,
-      "merchantId": updateDTO.merchantId,
+      "menuItemId": updateDTO.menuItemId,
       "path": updateDTO.path,
     });
 

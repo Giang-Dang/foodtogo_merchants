@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 import 'dart:math';
 
@@ -72,7 +71,6 @@ class _LocationInputState extends State<LocationInput> {
 
     final lat = locationData.latitude;
     final lng = locationData.longitude;
-    inspect(locationData);
 
     _savePlace(lat, lng);
   }
@@ -117,7 +115,7 @@ class _LocationInputState extends State<LocationInput> {
         width: double.infinity,
         height: double.infinity,
       );
-      inspect(_pickedLocation);
+
       if (_pickedLocation!.address.isNotEmpty) {
         overlayMapContent = Positioned(
           bottom: 0,

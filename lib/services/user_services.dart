@@ -2,15 +2,13 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:foodtogo_merchants/models/dto/api_response_dto.dart';
 import 'package:foodtogo_merchants/models/dto/login_request_dto.dart';
 import 'package:foodtogo_merchants/models/dto/login_response_dto.dart';
-import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
 import 'package:foodtogo_merchants/models/dto/register_request_dto.dart';
 import 'package:foodtogo_merchants/models/dto/user_dto.dart';
-import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
+import 'package:foodtogo_merchants/models/dto/update_dto/user_update_dto.dart';
 import 'package:foodtogo_merchants/settings/secrets.dart';
 import 'package:http/http.dart' as http;
 import 'package:sqflite/sqflite.dart' as sql;
@@ -26,9 +24,60 @@ class UserServices {
   static String jwtToken = "";
   static String strUserId = "";
 
+  Future<UserDTO?> get(int userId) async {
+    const apiUrl = 'api/UserAPI';
+    final url = Uri.http(Secrets.FoodToGoAPILink, apiUrl, {
+      'id': userId.toString(),
+    });
+
+    final resonseJson = await http.get(url, headers: {
+      'Authorization': 'Bearer $jwtToken',
+    });
+
+    if (resonseJson.statusCode == HttpStatus.ok) {
+      final responseObject = json.decode(resonseJson.body);
+
+      var userDTO = UserDTO(
+        id: responseObject['result']['id'],
+        username: responseObject['result']['username'],
+        role: responseObject['result']['role'],
+        phoneNumber: responseObject['result']['phoneNumber'],
+        email: responseObject['result']['email'],
+      );
+
+      return userDTO;
+    }
+    return null;
+  }
+
+  Future<bool> update(int userId, UserUpdateDTO updateDTO) async {
+    final apiUrl = 'api/UserAPI/${userId.toString()}';
+    final url = Uri.http(Secrets.FoodToGoAPILink, apiUrl);
+
+    final jsonData = json.encode({
+      "id": updateDTO.id,
+      "phoneNumber": updateDTO.phoneNumber,
+      "email": updateDTO.email,
+    });
+
+    final responseJson = await http.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $jwtToken',
+      },
+      body: jsonData,
+    );
+
+    if (responseJson.statusCode == HttpStatus.ok) {
+      return true;
+    }
+    return false;
+  }
+
   Future<LoginResponseDTO> login(LoginRequestDTO loginRequestDTO) async {
     const loginAPISubUrl = 'api/UserAPI/login';
-    final url = Uri.http('${Secrets.FoodToGoAPILink}', '$loginAPISubUrl');
+    final url = Uri.http(Secrets.FoodToGoAPILink, loginAPISubUrl);
 
     final jsonData = json.encode({
       "userName": loginRequestDTO.username,
@@ -98,8 +147,6 @@ class UserServices {
       },
     );
 
-    // inspect(responseJson);
-
     if (responseJson.statusCode == HttpStatus.ok ||
         responseJson.statusCode == HttpStatus.notFound) {
       isAuthorized = true;
@@ -114,7 +161,7 @@ class UserServices {
 
   Future<APIResponseDTO> register(RegisterRequestDTO registerRequestDTO) async {
     const registerAPISubUrl = 'api/UserAPI/register';
-    final url = Uri.http('${Secrets.FoodToGoAPILink}', '$registerAPISubUrl');
+    final url = Uri.http(Secrets.FoodToGoAPILink, registerAPISubUrl);
 
     final jsonData = json.encode({
       "userName": registerRequestDTO.username,
@@ -130,11 +177,10 @@ class UserServices {
     );
 
     final responseObject = json.decode(responseJson.body);
-
     return APIResponseDTO(
       statusCode: responseObject['statusCode'],
       isSuccess: responseObject['isSuccess'],
-      errorMessages: responseObject['errorMessages'],
+      errorMessages: [],
       result: responseObject['result'],
     );
   }
@@ -169,5 +215,41 @@ class UserServices {
   Future<String?> getStoredUserId() async {
     final storage = getSecureStorage();
     return await storage.read(key: kUserIdKeyName);
+  }
+
+  bool isValidUsername(String? username) {
+    RegExp validCharacters = RegExp(r'^[a-zA-Z0-9_]+$');
+    if (username == null) {
+      return false;
+    }
+    return username.length >= 4 &&
+        username.length <= 30 &&
+        validCharacters.hasMatch(username);
+  }
+
+  bool isValidEmail(String? email) {
+    RegExp validRegex = RegExp(
+        r'^[a-zA-Z0-9.a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+');
+    if (email == null) {
+      return false;
+    }
+    return validRegex.hasMatch(email);
+  }
+
+  bool isValidPhoneNumber(String? phoneNumber) {
+    // Regular expression pattern to match valid phone numbers
+    String pattern =
+        r'^(0|\+84)(3[2-9]|5[689]|7[06-9]|8[1-6]|9[0-46-9])[0-9]{7}$|^(0|\+84)(2[0-9]{1}|[3-9]{1})[0-9]{8}$';
+    RegExp regExp = RegExp(pattern);
+
+    if (phoneNumber == null) {
+      return false;
+    }
+    // Check if the phone number matches the pattern
+    if (regExp.hasMatch(phoneNumber)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

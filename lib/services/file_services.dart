@@ -17,8 +17,6 @@ class FileServices {
     request.files.add(await http.MultipartFile.fromPath('file', image.path));
     var response = await request.send();
 
-    inspect(response);
-
     if (response.statusCode == 201) {
       var fileUrl = await response.stream.bytesToString();
       return fileUrl;
@@ -29,7 +27,7 @@ class FileServices {
   }
 
   Future<File> getImage(String filePath) async {
-    final url = Uri.https(Secrets.FoodToGoAPILink, filePath);
+    final url = Uri.http(Secrets.FoodToGoAPILink, filePath);
     final response = await http.get(url, headers: {
       'Authorization': 'Bearer ${UserServices.jwtToken}',
     });

@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:foodtogo_merchants/models/dto/register_request_dto.dart';
 import 'package:foodtogo_merchants/screens/login_screen.dart';
+import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 
 class UserRegisterScreen extends StatefulWidget {
@@ -20,27 +22,63 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
   final _reenterPasswordController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   final _emailController = TextEditingController();
+  final _userServices = UserServices();
 
   late bool _isPasswordObscured;
   late bool _isReEnterPasswordObscured;
 
-  bool _isValidUsername(String? username) {
-    RegExp validCharacters = RegExp(r'^[a-zA-Z0-9_]+$');
-    if (username == null) {
-      return false;
+  _onRegisterPressed() async {
+    if (_formKey.currentState!.validate()) {
+      final requestDTO = RegisterRequestDTO(
+        username: _usernameController.text,
+        password: _passwordController.text,
+        phoneNumber: _phoneNumberController.text,
+        email: _emailController.text,
+      );
+
+      final apiResponse = await _userServices.register(requestDTO);
+
+      if (!apiResponse.isSuccess) {
+        _showAlertDialog(
+          'Sorry',
+          'Unable to create your merchant at the moment. Please try again at a later time.',
+          () {
+            Navigator.of(context).pop();
+          },
+        );
+      }
+
+      _showAlertDialog(
+        'Success',
+        'We have successfully created your merchant.',
+        () {
+          Navigator.pop(context);
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => const LoginScreen(),
+          ));
+        },
+      );
     }
-    return username.length >= 4 &&
-        username.length <= 20 &&
-        validCharacters.hasMatch(username);
   }
 
-  bool _isValidEmail(String? email) {
-    RegExp validRegex = RegExp(
-        r'^[a-zA-Z0-9.a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+');
-    if (email == null) {
-      return false;
-    }
-    return validRegex.hasMatch(email);
+  _showAlertDialog(String title, String message, void Function() onOkPressed) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                onOkPressed();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -93,15 +131,14 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                     child: TextFormField(
                       decoration: const InputDecoration(
                         label: Text('Enter your username'),
+                        errorMaxLines: 4,
                       ),
                       controller: _usernameController,
                       validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            _isValidUsername(value)) {
-                          return 'Invalid username. Usernames must be between 4 and 20 characters long and can only contain letters, numbers, and underscores.';
+                        if (_userServices.isValidUsername(value)) {
+                          return null;
                         }
-                        return null;
+                        return 'Invalid username. Must be 4-30 characters and only contain letters, numbers, and underscores.';
                       },
                     ),
                   ),
@@ -125,10 +162,10 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                       ),
                       controller: _phoneNumberController,
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your phone number.';
+                        if (_userServices.isValidPhoneNumber(value)) {
+                          return null;
                         }
-                        return null;
+                        return 'Please enter a valid phone number.';
                       },
                     ),
                   ),
@@ -152,12 +189,10 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                       ),
                       controller: _emailController,
                       validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            _isValidEmail(value)) {
-                          return 'Please enter a valid email.';
+                        if (_userServices.isValidEmail(value)) {
+                          return null;
                         }
-                        return null;
+                        return 'Please enter a valid email.';
                       },
                     ),
                   ),
@@ -255,7 +290,9 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
               ),
               const SizedBox(height: 10),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  _onRegisterPressed();
+                },
                 child: const Text('Register'),
               ),
               const SizedBox(height: 15),

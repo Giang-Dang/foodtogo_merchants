@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/screens/merchant_register_screen.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
+import 'package:foodtogo_merchants/widgets/me.dart';
 import 'package:foodtogo_merchants/widgets/merchants_list.dart';
+
+enum TabName { Merchant, Order, Me }
 
 class TabsScreen extends ConsumerStatefulWidget {
   const TabsScreen({super.key});
@@ -20,25 +23,20 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   void _selectPage(int index) {
     setState(() {
       _selectedPageIndex = index;
-      switch (_selectedPageIndex) {
-        case 0:
-          _activePage = const MerchantsList();
-          break;
-        case 1:
-          _activePage = Text('Orders Page');
-          break;
-        case 2:
-          _activePage = Text('Me Page');
-          break;
-        default:
-          _activePage = MerchantsList();
-          break;
+      if (_selectedPageIndex == TabName.Merchant.index) {
+        _activePage = const MerchantsList();
+      } else if (_selectedPageIndex == TabName.Order.index) {
+        _activePage = Text('Orders Page');
+      } else if (_selectedPageIndex == TabName.Me.index) {
+        _activePage = const Me();
+      } else {
+        _activePage = const MerchantsList();
       }
     });
   }
 
   _onFloatingActionButtonPressed() {
-    if (_selectedPageIndex == 0) {
+    if (_selectedPageIndex == TabName.Merchant.index) {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => const MerchantRegisterScreen(),
@@ -49,17 +47,22 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: KColors.kBackgroundColor,
-        title: Text(
-          'FoodToGo - Merchants',
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                color: KColors.kPrimaryColor,
-                fontSize: 24,
-              ),
-        ),
+    AppBar? _appBar = AppBar(
+      backgroundColor: KColors.kBackgroundColor,
+      title: Text(
+        'FoodToGo - Merchants',
+        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+              color: KColors.kPrimaryColor,
+              fontSize: 24,
+            ),
       ),
+    );
+
+    if (_selectedPageIndex == TabName.Me.index) {
+      _appBar = null;
+    }
+    return Scaffold(
+      appBar: _appBar,
       body: _activePage,
       floatingActionButton: _selectedPageIndex == 0
           ? SizedBox(

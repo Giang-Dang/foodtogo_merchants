@@ -3,6 +3,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
+import 'package:foodtogo_merchants/providers/menu_item_list_provider.dart';
+import 'package:foodtogo_merchants/screens/merchant_tabs_screen.dart';
+import 'package:foodtogo_merchants/services/menu_item_services.dart';
 import 'package:foodtogo_merchants/services/merchant_profile_image_services.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
@@ -46,6 +49,23 @@ class _MechantListItemState extends ConsumerState<MerchantListItem> {
     });
   }
 
+  _onTapListTile() async {
+    if (_merchant != null) {
+      final MenuItemServices menuItemServices = MenuItemServices();
+      final menuItemsList =
+          await menuItemServices.getAllMenuItems(_merchant!.merchantId);
+      ref
+          .watch(menuItemsListProvider.notifier)
+          .updateMenuItemsList(menuItemsList ?? []);
+
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => MerchantTabsScreen(merchant: _merchant!),
+        ),
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -74,7 +94,9 @@ class _MechantListItemState extends ConsumerState<MerchantListItem> {
         child: Material(
           type: MaterialType.transparency,
           child: ListTile(
-            onTap: () {},
+            onTap: () {
+              _onTapListTile();
+            },
             title: Text(
               _merchant!.name,
               overflow: TextOverflow.ellipsis,
@@ -95,6 +117,7 @@ class _MechantListItemState extends ConsumerState<MerchantListItem> {
               height: 50,
               width: 80,
             ),
+            isThreeLine: false,
           ),
         ),
       );

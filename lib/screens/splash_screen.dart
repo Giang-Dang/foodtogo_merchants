@@ -34,7 +34,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     await userServices.checkLocalLoginAuthorized();
     List<MerchantDTO>? merchantList;
     if (UserServices.isAuthorized) {
-      merchantList = await merchantServices.getAll();
+      merchantList = await merchantServices.getAllMerchantsFromUser();
       if (context.mounted) {
         Navigator.pushReplacement(
           context,
@@ -56,7 +56,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     if (merchantList != null) {
       ref.watch(merchantsListProvider.notifier).updateMerchants(merchantList);
     }
-    // inspect(merchantList);
   }
 
   _delay(int seconds) async {

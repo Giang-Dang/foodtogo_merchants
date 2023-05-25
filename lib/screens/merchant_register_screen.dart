@@ -32,7 +32,6 @@ class _MerchantRegisterScreenState
   PlaceLocation? _selectedLocation;
 
   bool _isCreating = false;
-  bool _isCreateSuccess = false;
 
   _showAlertDialog(String title, String message, void Function() onOkPressed) {
     showDialog(
@@ -54,7 +53,7 @@ class _MerchantRegisterScreenState
     );
   }
 
-  bool _isValidUsername(String? username) {
+  bool _isValidMerchantName(String? username) {
     if (username == null) {
       return false;
     }
@@ -91,14 +90,14 @@ class _MerchantRegisterScreenState
         _isCreating = true;
       });
 
-      _isCreateSuccess =
+      bool isCreateSuccess =
           await merchantServices.create(createDTO, _selectedImage!);
 
       setState(() {
         _isCreating = false;
       });
 
-      if (!_isCreateSuccess) {
+      if (!isCreateSuccess) {
         _showAlertDialog(
           'Sorry',
           'Unable to create your merchant at the moment. Please try again at a later time.',
@@ -113,7 +112,7 @@ class _MerchantRegisterScreenState
         return;
       }
 
-      final merchantsList = await merchantServices.getAll();
+      final merchantsList = await merchantServices.getAllMerchantsFromUser();
 
       ref.watch(merchantsListProvider.notifier).updateMerchants(merchantsList);
 
@@ -178,8 +177,7 @@ class _MerchantRegisterScreenState
                       validator: (value) {
                         if (value == null ||
                             value.isEmpty ||
-                            !_isValidUsername(value)) {
-                          inspect(value);
+                            !_isValidMerchantName(value)) {
                           return 'The merchant name is invalid.';
                         }
                         return null;

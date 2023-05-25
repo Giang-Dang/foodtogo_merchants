@@ -58,7 +58,7 @@ class _ImageInputState extends State<ImageInput> {
     );
 
     final imagePicker = ImagePicker();
-    var pickedImage;
+    dynamic pickedImage;
     switch (imageSoure) {
       case 'Camera':
         pickedImage = await imagePicker.pickImage(
@@ -96,8 +96,6 @@ class _ImageInputState extends State<ImageInput> {
         child: Image.file(
           _selectedImage!,
           fit: BoxFit.cover,
-          width: double.infinity,
-          height: double.infinity,
         ),
       );
     }

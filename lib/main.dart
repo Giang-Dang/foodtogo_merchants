@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/screens/login_screen.dart';
 import 'package:foodtogo_merchants/screens/splash_screen.dart';
 import 'package:foodtogo_merchants/screens/tabs_screen.dart';
+import 'package:foodtogo_merchants/screens/user_register_screen.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 import 'package:foodtogo_merchants/util/material_color_creator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
       title: 'FoodToGo - Customers',
       theme: kTheme,
       home: Scaffold(
+        // body: UserRegisterScreen(),
         body: SplashScreen(),
       ),
     );

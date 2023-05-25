@@ -17,8 +17,10 @@ import 'package:foodtogo_merchants/settings/secrets.dart';
 class MerchantDTOServices {
   static const apiUrl = 'api/MerchantAPI';
 
-  Future<List<MerchantDTO>> getAll() async {
-    final url = Uri.http(Secrets.FoodToGoAPILink, apiUrl);
+  Future<List<MerchantDTO>> getAllMerchantsFromUser() async {
+    final userId = int.parse(UserServices.strUserId);
+    final newApiUrl = '$apiUrl/byuser/$userId';
+    final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl);
     final jwtToken = UserServices.jwtToken;
 
     final responseJson = await http.get(
@@ -28,8 +30,8 @@ class MerchantDTOServices {
       },
     );
 
-    final reponseData = jsonDecode(responseJson.body);
-    final merchants = (reponseData['result'] as List)
+    final responseData = jsonDecode(responseJson.body);
+    final merchants = (responseData['result'] as List)
         .map((merchantJson) => MerchantDTO.fromJson(merchantJson))
         .toList();
     return merchants;
@@ -63,8 +65,6 @@ class MerchantDTOServices {
     int merchantId = 0;
     bool isUploadImageSuccess = false;
 
-    inspect(responseJson);
-    inspect(responseObject);
     if (responseObject['isSuccess'] as bool) {
       merchantId = responseObject['result']['merchantId'];
       isUploadImageSuccess = await uploadProfileImage(image, merchantId);
@@ -101,8 +101,6 @@ class MerchantDTOServices {
       },
       body: jsonData,
     );
-
-    inspect(responseJson);
 
     if (responseJson.statusCode == HttpStatus.ok) {
       return true;
@@ -147,7 +145,6 @@ class MerchantDTOServices {
   }
 
   Future<bool> uploadProfileImage(File image, int merchantId) async {
-    // try {
     final fileServices = FileServices();
     final merchantProfileImageServices = MerchantProfileImageServices();
     //rename image to correct format
@@ -167,9 +164,6 @@ class MerchantDTOServices {
       path: responsePath,
     );
     await merchantProfileImageServices.create(createDTO);
-    // } catch (e) {
-    //   return false;
-    // }
 
     return true;
   }

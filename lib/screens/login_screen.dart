@@ -3,26 +3,30 @@ import 'dart:developer';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/models/dto/login_request_dto.dart';
 import 'package:foodtogo_merchants/models/enum/login_from_app.dart';
+import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
 import 'package:foodtogo_merchants/screens/user_register_screen.dart';
 import 'package:foodtogo_merchants/screens/tabs_screen.dart';
+import 'package:foodtogo_merchants/services/merchant_dto_services.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   final UserServices _userServices = UserServices();
+  final MerchantDTOServices _merchantDTOServices = MerchantDTOServices();
 
   late bool _isPasswordObscured;
   late bool _isLogining;
@@ -40,13 +44,13 @@ class _LoginScreenState extends State<LoginScreen> {
         _isLogining = true;
       });
 
-      var loginResponseDTO = await _userServices.login(loginRequestDTO);
+      final loginResponseDTO = await _userServices.login(loginRequestDTO);
 
+      final merchantList = await _merchantDTOServices.getAllMerchantsFromUser();
+      ref.watch(merchantsListProvider.notifier).updateMerchants(merchantList);
       setState(() {
         _isLogining = false;
       });
-
-      inspect(loginResponseDTO);
 
       if (!loginResponseDTO.isSuccess) {
         setState(() {
@@ -64,8 +68,6 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         }
       }
-      // inspect(loginResponseDTO);
-      inspect(loginResponseDTO.user);
     }
   }
 
