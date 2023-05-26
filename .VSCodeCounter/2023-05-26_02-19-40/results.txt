@@ -1,0 +1,190 @@
+Date : 2023-05-26 02:19:40
+Directory : d:\Temp\Temp_Code\TKPM\foodtogo_merchants
+Total : 102 files,  5903 codes, 298 comments, 777 blanks, all 6978 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| Dart       |         57 |      4,433 |         29 |        503 |      4,965 |
+| C++        |         16 |        540 |        118 |        181 |        839 |
+| XML        |          9 |        438 |         42 |         11 |        491 |
+| JSON       |          4 |        248 |          0 |          4 |        252 |
+| Groovy     |          3 |         90 |          5 |         22 |        117 |
+| Swift      |          6 |         60 |          7 |         20 |         87 |
+| HTML       |          1 |         38 |         16 |          6 |         60 |
+| YAML       |          2 |         35 |         81 |         19 |        135 |
+| Markdown   |          2 |         13 |          0 |          9 |         22 |
+| Properties |          2 |          8 |          0 |          2 |         10 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                       | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                          |        102 |      5,903 |        298 |        777 |      6,978 |
+| . (Files)                                                                                                  |          3 |         45 |         81 |         26 |        152 |
+| android                                                                                                    |         11 |        132 |         45 |         32 |        209 |
+| android (Files)                                                                                            |          3 |         38 |          0 |         10 |         48 |
+| android\app                                                                                                |          7 |         89 |         45 |         21 |        155 |
+| android\app (Files)                                                                                        |          1 |         55 |          5 |         13 |         73 |
+| android\app\src                                                                                            |          6 |         34 |         40 |          8 |         82 |
+| android\app\src\debug                                                                                      |          1 |          3 |          4 |          1 |          8 |
+| android\app\src\main                                                                                       |          4 |         26 |         32 |          6 |         64 |
+| android\app\src\main\res                                                                                   |          4 |         26 |         32 |          6 |         64 |
+| android\app\src\main\res\drawable                                                                          |          1 |          4 |          7 |          2 |         13 |
+| android\app\src\main\res\drawable-v21                                                                      |          1 |          4 |          7 |          2 |         13 |
+| android\app\src\main\res\values                                                                            |          1 |          9 |          9 |          1 |         19 |
+| android\app\src\main\res\values-night                                                                      |          1 |          9 |          9 |          1 |         19 |
+| android\app\src\profile                                                                                    |          1 |          5 |          4 |          1 |         10 |
+| android\gradle                                                                                             |          1 |          5 |          0 |          1 |          6 |
+| android\gradle\wrapper                                                                                     |          1 |          5 |          0 |          1 |          6 |
+| ios                                                                                                        |          8 |        229 |          4 |         13 |        246 |
+| ios\Runner                                                                                                 |          7 |        222 |          2 |          9 |        233 |
+| ios\Runner (Files)                                                                                         |          2 |         13 |          0 |          3 |         16 |
+| ios\RunnerTests                                                                                            |          1 |          7 |          2 |          4 |         13 |
+| ios\Runner\Assets.xcassets                                                                                 |          3 |        148 |          0 |          4 |        152 |
+| ios\Runner\Assets.xcassets\AppIcon.appiconset                                                              |          1 |        122 |          0 |          1 |        123 |
+| ios\Runner\Assets.xcassets\LaunchImage.imageset                                                            |          2 |         26 |          0 |          3 |         29 |
+| ios\Runner\Base.lproj                                                                                      |          2 |         61 |          2 |          2 |         65 |
+| lib                                                                                                        |         56 |      4,419 |         19 |        496 |      4,934 |
+| lib (Files)                                                                                                |          1 |         51 |          1 |          6 |         58 |
+| lib\models                                                                                                 |         25 |        340 |          0 |         33 |        373 |
+| lib\models (Files)                                                                                         |          3 |         60 |          0 |          6 |         66 |
+| lib\models\dto                                                                                             |         21 |        274 |          0 |         26 |        300 |
+| lib\models\dto (Files)                                                                                     |         10 |        140 |          0 |         15 |        155 |
+| lib\models\dto\create_dto                                                                                  |          5 |         62 |          0 |          5 |         67 |
+| lib\models\dto\update_dto                                                                                  |          6 |         72 |          0 |          6 |         78 |
+| lib\models\enum                                                                                            |          1 |          6 |          0 |          1 |          7 |
+| lib\providers                                                                                              |          3 |         43 |          0 |         12 |         55 |
+| lib\screens                                                                                                |         10 |      2,177 |          7 |        165 |      2,349 |
+| lib\services                                                                                               |          8 |        907 |         10 |        173 |      1,090 |
+| lib\settings                                                                                               |          1 |          8 |          0 |          2 |         10 |
+| lib\util                                                                                                   |          1 |         21 |          0 |          4 |         25 |
+| lib\widgets                                                                                                |          7 |        872 |          1 |        101 |        974 |
+| linux                                                                                                      |          5 |         98 |         27 |         38 |        163 |
+| linux (Files)                                                                                              |          3 |         86 |         18 |         27 |        131 |
+| linux\flutter                                                                                              |          2 |         12 |          9 |         11 |         32 |
+| macos                                                                                                      |          6 |        452 |          5 |         16 |        473 |
+| macos\Flutter                                                                                              |          1 |         14 |          3 |          4 |         21 |
+| macos\Runner                                                                                               |          4 |        431 |          0 |          8 |        439 |
+| macos\Runner (Files)                                                                                       |          2 |         20 |          0 |          6 |         26 |
+| macos\RunnerTests                                                                                          |          1 |          7 |          2 |          4 |         13 |
+| macos\Runner\Assets.xcassets                                                                               |          1 |         68 |          0 |          1 |         69 |
+| macos\Runner\Assets.xcassets\AppIcon.appiconset                                                            |          1 |         68 |          0 |          1 |         69 |
+| macos\Runner\Base.lproj                                                                                    |          1 |        343 |          0 |          1 |        344 |
+| test                                                                                                       |          1 |         14 |         10 |          7 |         31 |
+| web                                                                                                        |          2 |         73 |         16 |          7 |         96 |
+| windows                                                                                                    |         10 |        441 |         91 |        142 |        674 |
+| windows\flutter                                                                                            |          2 |         14 |          9 |         11 |         34 |
+| windows\runner                                                                                             |          8 |        427 |         82 |        131 |        640 |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                   | language   | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\README.md                                                        | Markdown   |         10 |          0 |          7 |         17 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\analysis_options.yaml                                            | YAML       |          3 |         23 |          4 |         30 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\android\app\build.gradle                                         | Groovy     |         55 |          5 |         13 |         73 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\android\app\src\debug\AndroidManifest.xml                        | XML        |          3 |          4 |          1 |          8 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\android\app\src\main\res\drawable-v21\launch_background.xml      | XML        |          4 |          7 |          2 |         13 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\android\app\src\main\res\drawable\launch_background.xml          | XML        |          4 |          7 |          2 |         13 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\android\app\src\main\res\values-night\styles.xml                 | XML        |          9 |          9 |          1 |         19 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\android\app\src\main\res\values\styles.xml                       | XML        |          9 |          9 |          1 |         19 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\android\app\src\profile\AndroidManifest.xml                      | XML        |          5 |          4 |          1 |         10 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\android\build.gradle                                             | Groovy     |         27 |          0 |          5 |         32 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\android\gradle.properties                                        | Properties |          3 |          0 |          1 |          4 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\android\gradle\wrapper\gradle-wrapper.properties                 | Properties |          5 |          0 |          1 |          6 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\android\settings.gradle                                          | Groovy     |          8 |          0 |          4 |         12 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\ios\RunnerTests\RunnerTests.swift                                | Swift      |          7 |          2 |          4 |         13 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\ios\Runner\AppDelegate.swift                                     | Swift      |         12 |          0 |          2 |         14 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\ios\Runner\Assets.xcassets\AppIcon.appiconset\Contents.json      | JSON       |        122 |          0 |          1 |        123 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\ios\Runner\Assets.xcassets\LaunchImage.imageset\Contents.json    | JSON       |         23 |          0 |          1 |         24 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\ios\Runner\Assets.xcassets\LaunchImage.imageset\README.md        | Markdown   |          3 |          0 |          2 |          5 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\ios\Runner\Base.lproj\LaunchScreen.storyboard                    | XML        |         36 |          1 |          1 |         38 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\ios\Runner\Base.lproj\Main.storyboard                            | XML        |         25 |          1 |          1 |         27 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\ios\Runner\Runner-Bridging-Header.h                              | C++        |          1 |          0 |          1 |          2 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\main.dart                                                    | Dart       |         51 |          1 |          6 |         58 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\api_response_dto.dart                             | Dart       |         12 |          0 |          1 |         13 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\create_dto\mechant_profile_image_create_dto.dart  | Dart       |         10 |          0 |          1 |         11 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\create_dto\menu_item_create_dto.dart              | Dart       |         16 |          0 |          1 |         17 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\create_dto\menu_item_image_create_dto.dart        | Dart       |         10 |          0 |          1 |         11 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\create_dto\menu_item_type_create_dto.dart         | Dart       |          8 |          0 |          1 |          9 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\create_dto\merchant_create_dto.dart               | Dart       |         18 |          0 |          1 |         19 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\login_request_dto.dart                            | Dart       |         10 |          0 |          2 |         12 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\login_response_dto.dart                           | Dart       |         13 |          0 |          3 |         16 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\menu_item_dto.dart                                | Dart       |         16 |          0 |          1 |         17 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\menu_item_image_dto.dart                          | Dart       |         10 |          0 |          1 |         11 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\menu_item_type_dto.dart                           | Dart       |         14 |          0 |          1 |         15 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\merchant_dto.dart                                 | Dart       |         29 |          0 |          2 |         31 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\merchant_profile_image_update_dto.dart            | Dart       |         10 |          0 |          1 |         11 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\register_request_dto.dart                         | Dart       |         12 |          0 |          1 |         13 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\update_dto\menu_item_image_update_dto.dart        | Dart       |         10 |          0 |          1 |         11 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\update_dto\menu_item_type_update_dto.dart         | Dart       |          8 |          0 |          1 |          9 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\update_dto\menu_item_update_dto.dart              | Dart       |         16 |          0 |          1 |         17 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\update_dto\merchant_profile_image_update_dto.dart | Dart       |         10 |          0 |          1 |         11 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\update_dto\merchant_update_dto.dart               | Dart       |         18 |          0 |          1 |         19 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\update_dto\user_update_dto.dart                   | Dart       |         10 |          0 |          1 |         11 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\dto\user_dto.dart                                     | Dart       |         14 |          0 |          2 |         16 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\enum\login_from_app.dart                              | Dart       |          6 |          0 |          1 |          7 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\menu_item.dart                                        | Dart       |         29 |          0 |          2 |         31 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\merchant.dart                                         | Dart       |         21 |          0 |          2 |         23 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\models\place_location.dart                                   | Dart       |         10 |          0 |          2 |         12 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\providers\login_response_dto_provider.dart                   | Dart       |         18 |          0 |          4 |         22 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\providers\menu_item_list_provider.dart                       | Dart       |         13 |          0 |          4 |         17 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\providers\merchants_list_provider.dart                       | Dart       |         12 |          0 |          4 |         16 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\screens\change_account_info_screen.dart                      | Dart       |        202 |          2 |         16 |        220 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\screens\create_menu_item_screen.dart                         | Dart       |        306 |          0 |         28 |        334 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\screens\edit_menu_item_screen.dart                           | Dart       |        348 |          0 |         30 |        378 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\screens\login_screen.dart                                    | Dart       |        208 |          0 |         15 |        223 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\screens\map_screen.dart                                      | Dart       |        160 |          0 |         12 |        172 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\screens\merchant_register_screen.dart                        | Dart       |        225 |          0 |         20 |        245 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\screens\merchant_tabs_screen.dart                            | Dart       |        134 |          1 |         10 |        145 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\screens\splash_screen.dart                                   | Dart       |        151 |          4 |         12 |        167 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\screens\tabs_screen.dart                                     | Dart       |        122 |          0 |          9 |        131 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\screens\user_register_screen.dart                            | Dart       |        321 |          0 |         13 |        334 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\services\file_services.dart                                  | Dart       |         44 |          2 |          7 |         53 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\services\location_services.dart                              | Dart       |         56 |          0 |         10 |         66 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\services\menu_item_image_services.dart                       | Dart       |         88 |          0 |         18 |        106 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\services\menu_item_services.dart                             | Dart       |        175 |          2 |         34 |        211 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\services\menu_item_type_services.dart                        | Dart       |        100 |          0 |         21 |        121 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\services\merchant_dto_services.dart                          | Dart       |        143 |          1 |         27 |        171 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\services\merchant_profile_image_services.dart                | Dart       |         88 |          0 |         18 |        106 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\services\user_services.dart                                  | Dart       |        213 |          5 |         38 |        256 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\settings\kcolors.dart                                        | Dart       |          8 |          0 |          2 |         10 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\util\material_color_creator.dart                             | Dart       |         21 |          0 |          4 |         25 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\widgets\image_input.dart                                     | Dart       |        103 |          0 |         13 |        116 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\widgets\location_input.dart                                  | Dart       |        175 |          0 |         26 |        201 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\widgets\me.dart                                              | Dart       |        216 |          0 |         14 |        230 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\widgets\menu.dart                                            | Dart       |         78 |          0 |         13 |         91 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\widgets\menu_item_widget.dart                                | Dart       |        126 |          0 |         15 |        141 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\widgets\merchant_list_item.dart                              | Dart       |        116 |          0 |         13 |        129 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\lib\widgets\merchants_list.dart                                  | Dart       |         58 |          1 |          7 |         66 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\linux\flutter\generated_plugin_registrant.cc                     | C++        |          7 |          4 |          5 |         16 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\linux\flutter\generated_plugin_registrant.h                      | C++        |          5 |          5 |          6 |         16 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\linux\main.cc                                                    | C++        |          5 |          0 |          2 |          7 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\linux\my_application.cc                                          | C++        |         74 |         11 |         20 |        105 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\linux\my_application.h                                           | C++        |          7 |          7 |          5 |         19 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\macos\Flutter\GeneratedPluginRegistrant.swift                    | Swift      |         14 |          3 |          4 |         21 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\macos\RunnerTests\RunnerTests.swift                              | Swift      |          7 |          2 |          4 |         13 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\macos\Runner\AppDelegate.swift                                   | Swift      |          8 |          0 |          2 |         10 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\macos\Runner\Assets.xcassets\AppIcon.appiconset\Contents.json    | JSON       |         68 |          0 |          1 |         69 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\macos\Runner\Base.lproj\MainMenu.xib                             | XML        |        343 |          0 |          1 |        344 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\macos\Runner\MainFlutterWindow.swift                             | Swift      |         12 |          0 |          4 |         16 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\pubspec.yaml                                                     | YAML       |         32 |         58 |         15 |        105 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\test\widget_test.dart                                            | Dart       |         14 |         10 |          7 |         31 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\web\index.html                                                   | HTML       |         38 |         16 |          6 |         60 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\web\manifest.json                                                | JSON       |         35 |          0 |          1 |         36 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\windows\flutter\generated_plugin_registrant.cc                   | C++        |          9 |          4 |          5 |         18 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\windows\flutter\generated_plugin_registrant.h                    | C++        |          5 |          5 |          6 |         16 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\windows\runner\flutter_window.cpp                                | C++        |         48 |          4 |         15 |         67 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\windows\runner\flutter_window.h                                  | C++        |         20 |          5 |          9 |         34 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\windows\runner\main.cpp                                          | C++        |         30 |          4 |         10 |         44 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\windows\runner\resource.h                                        | C++        |          9 |          6 |          2 |         17 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\windows\runner\utils.cpp                                         | C++        |         54 |          2 |         10 |         66 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\windows\runner\utils.h                                           | C++        |          8 |          6 |          6 |         20 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\windows\runner\win32_window.cpp                                  | C++        |        210 |         24 |         55 |        289 |
+| d:\Temp\Temp_Code\TKPM\foodtogo_merchants\windows\runner\win32_window.h                                    | C++        |         48 |         31 |         24 |        103 |
+| Total                                                                                                      |            |      5,903 |        298 |        777 |      6,978 |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
