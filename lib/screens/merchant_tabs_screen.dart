@@ -5,11 +5,12 @@ import 'package:foodtogo_merchants/screens/create_menu_item_screen.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:foodtogo_merchants/widgets/menu.dart';
+import 'package:foodtogo_merchants/widgets/merchant_orders_list_widget.dart';
 
 enum MerchantScreenTabName {
   Menu,
   Order,
-  OpenHours,
+  YourMechant,
 }
 
 class MerchantTabsScreen extends ConsumerStatefulWidget {
@@ -31,9 +32,11 @@ class _MerchantTabsScreenState extends ConsumerState<MerchantTabsScreen> {
       if (_selectedPageIndex == MerchantScreenTabName.Menu.index) {
         _activePage = Menu(merchant: merchant);
       } else if (_selectedPageIndex == MerchantScreenTabName.Order.index) {
-        _activePage = Text('Orders Page');
-      } else if (_selectedPageIndex == MerchantScreenTabName.OpenHours.index) {
-        _activePage = Text('Open hours Page');
+        _activePage = MerchantOrdersListWidget(
+          merchantId: merchant.merchantId,
+        );
+      } else if (_selectedPageIndex == MerchantScreenTabName.YourMechant.index) {
+        _activePage = Text('Your Store Page');
         ;
       } else {
         _activePage = Menu(merchant: merchant);
@@ -127,12 +130,12 @@ class _MerchantTabsScreenState extends ConsumerState<MerchantTabsScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.schedule_outlined,
+              Icons.storefront,
               color: KColors.kLightTextColor,
             ),
-            label: 'Open Hours',
+            label: 'Your Mechant',
             activeIcon: Icon(
-              Icons.schedule,
+              Icons.storefront,
               color: KColors.kPrimaryColor,
             ),
             backgroundColor: KColors.kOnBackgroundColor,

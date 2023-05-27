@@ -96,6 +96,8 @@ class _ImageInputState extends State<ImageInput> {
         child: Image.file(
           _selectedImage!,
           fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
         ),
       );
     }

@@ -346,6 +346,8 @@ class _CreateMenuItemScreenState extends ConsumerState<EditMenuItemScreen> {
                           'Authorization': 'Bearer $jwtToken',
                         }),
                         fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: double.infinity,
                       ),
                     ),
                     const SizedBox(height: 10),

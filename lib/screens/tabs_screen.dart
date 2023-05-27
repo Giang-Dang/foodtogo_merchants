@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/screens/merchant_register_screen.dart';
+import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 import 'package:foodtogo_merchants/widgets/me.dart';
 import 'package:foodtogo_merchants/widgets/merchants_list.dart';
+import 'package:foodtogo_merchants/widgets/user_order_list.dart';
 
 enum TabName { Merchant, Order, Me }
 
@@ -26,7 +28,8 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       if (_selectedPageIndex == TabName.Merchant.index) {
         _activePage = const MerchantsList();
       } else if (_selectedPageIndex == TabName.Order.index) {
-        _activePage = Text('Orders Page');
+        _activePage =
+            UserOrdersListWidget(userId: int.parse(UserServices.strUserId));
       } else if (_selectedPageIndex == TabName.Me.index) {
         _activePage = const Me();
       } else {

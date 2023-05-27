@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/models/dto/menu_item_dto.dart';
@@ -24,6 +26,7 @@ class Menu extends ConsumerStatefulWidget {
 class _MenuState extends ConsumerState<Menu> {
   List<MenuItem> _menuItemList = [];
   bool _isLoadingItems = false;
+  Timer? _initTimer;
 
   _loadMenuItemList(int merchantId) async {
     final menuItemServices = MenuItemServices();
@@ -43,7 +46,19 @@ class _MenuState extends ConsumerState<Menu> {
   @override
   void initState() {
     super.initState();
-    _loadMenuItemList(widget.merchant.merchantId);
+    _initTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (timer) {
+        _loadMenuItemList(widget.merchant.merchantId);
+        _initTimer?.cancel();
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _initTimer?.cancel();
+    super.dispose();
   }
 
   @override

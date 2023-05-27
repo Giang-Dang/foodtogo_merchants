@@ -7,7 +7,7 @@ import 'package:foodtogo_merchants/models/dto/create_dto/merchant_create_dto.dar
 import 'package:foodtogo_merchants/models/place_location.dart';
 import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
 import 'package:foodtogo_merchants/screens/tabs_screen.dart';
-import 'package:foodtogo_merchants/services/merchant_dto_services.dart';
+import 'package:foodtogo_merchants/services/merchant_services.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 import 'package:foodtogo_merchants/widgets/image_input.dart';
@@ -74,7 +74,7 @@ class _MerchantRegisterScreenState
       }
 
       final userServices = UserServices();
-      final merchantServices = MerchantDTOServices();
+      final merchantServices = MerchantServices();
       final userId = int.parse((await userServices.getStoredUserId())!);
       final createDTO = MerchantCreateDTO(
         merchantId: 0,
@@ -112,7 +112,7 @@ class _MerchantRegisterScreenState
         return;
       }
 
-      final merchantsList = await merchantServices.getAllMerchantsFromUser();
+      final merchantsList = await merchantServices.getAllMerchantsDTOFromUser();
 
       ref.watch(merchantsListProvider.notifier).updateMerchants(merchantsList);
 

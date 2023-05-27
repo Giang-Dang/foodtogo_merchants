@@ -6,6 +6,7 @@ class MenuItem {
     required this.name,
     required this.description,
     required this.unitPrice,
+    required this.isClosed,
     required this.imagePath,
   });
   final int id;
@@ -14,6 +15,7 @@ class MenuItem {
   final String name;
   final String description;
   final double unitPrice;
+  final bool isClosed;
   final String imagePath;
 
   factory MenuItem.fromJson(Map<String, dynamic> json) {
@@ -24,6 +26,7 @@ class MenuItem {
       name: json['name'],
       description: json['description'],
       unitPrice: json['unitPrice'],
+      isClosed: json['isClosed'],
       imagePath: json['imagePath'],
     );
   }

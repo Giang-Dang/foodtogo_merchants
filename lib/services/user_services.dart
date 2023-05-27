@@ -147,8 +147,7 @@ class UserServices {
       },
     );
 
-    if (responseJson.statusCode == HttpStatus.ok ||
-        responseJson.statusCode == HttpStatus.notFound) {
+    if (responseJson.statusCode == HttpStatus.ok) {
       isAuthorized = true;
       return;
     }

@@ -3,16 +3,17 @@ class OrderCreateDTO {
   final int merchantId;
   final int shipperId;
   final int customerId;
-  final int promotionId;
+  final int? promotionId;
   final DateTime placedTime;
   final DateTime eta;
-  final DateTime deliveryCompletionTime;
+  final DateTime? deliveryCompletionTime;
   final double orderPrice;
   final double shippingFee;
   final double appFee;
   final double promotionDiscount;
   final String status;
-  final String cancellationReason;
+  final String? cancelledBy;
+  final String? cancellationReason;
 
   const OrderCreateDTO(
       {required this.id,
@@ -28,6 +29,7 @@ class OrderCreateDTO {
       required this.appFee,
       required this.promotionDiscount,
       required this.status,
+      this.cancelledBy = '',
       this.cancellationReason = ''});
 
   factory OrderCreateDTO.fromJson(Map<String, dynamic> json) {
@@ -45,6 +47,7 @@ class OrderCreateDTO {
         appFee: json['appFee'].toDouble(),
         promotionDiscount: json['promotionDiscount'].toDouble(),
         status: json['status'],
+        cancelledBy: json['cancelledBy'],
         cancellationReason: json['cancellationReason']);
   }
 }

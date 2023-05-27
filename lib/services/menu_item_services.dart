@@ -16,7 +16,7 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 
 class MenuItemServices {
-  static const apiUrl = 'api/MenuItemAPI';
+  static const _apiUrl = 'api/MenuItemAPI';
 
   Future<List<MenuItem>?> getAllMenuItems(int merchantId) async {
     final menuItemTypeServices = MenuItemTypeServices();
@@ -24,7 +24,7 @@ class MenuItemServices {
 
     final url = Uri.http(
       Secrets.FoodToGoAPILink,
-      apiUrl,
+      _apiUrl,
       {
         'searchMerchanId': '$merchantId',
       },
@@ -55,6 +55,10 @@ class MenuItemServices {
       var menuType = await menuItemTypeServices.get(itemTypeId);
       var menuItemImage = await menuItemImageServices.getByMenuItem(itemId);
 
+      if (menuType == null || menuItemImage == null) {
+        log("(menuType == null || menuItemImage == null) == true");
+        return null;
+      }
       var menuItem = MenuItem(
         id: itemId,
         merchantId: item['merchantId'],
@@ -62,6 +66,7 @@ class MenuItemServices {
         name: item['name'],
         description: item['description'],
         unitPrice: item['unitPrice'],
+        isClosed: item['isClosed'],
         imagePath: menuItemImage.path,
       );
       menuItemList.add(menuItem);
@@ -70,8 +75,57 @@ class MenuItemServices {
     return menuItemList;
   }
 
+  Future<MenuItem?> get(int menuItemId) async {
+    final newApiUrl = '$_apiUrl/$menuItemId';
+    final jwtToken = UserServices.jwtToken;
+
+    final menuItemTypeServices = MenuItemTypeServices();
+    final menuItemImageServices = MenuItemImageServices();
+
+    final url = Uri.http(
+      Secrets.FoodToGoAPILink,
+      newApiUrl,
+    );
+
+    final responseJson = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $jwtToken',
+      },
+    );
+
+    if (responseJson.statusCode == HttpStatus.ok) {
+      final responseData = json.decode(responseJson.body);
+
+      final menuItemId = responseData['result']['id'];
+      final menuItemTypeId = responseData['result']['itemTypeId'];
+
+      final menuItemType = await menuItemTypeServices.get(menuItemTypeId);
+      final menuItemImage =
+          await menuItemImageServices.getByMenuItem(menuItemId);
+
+      if (menuItemImage == null || menuItemType == null) {
+        return null;
+      }
+
+      final MenuItem menuItem = MenuItem(
+        id: responseData['result']['id'],
+        merchantId: responseData['result']['merchantId'],
+        itemType: menuItemType.name,
+        name: responseData['result']['name'],
+        description: responseData['result']['description'],
+        unitPrice: responseData['result']['unitPrice'],
+        isClosed: responseData['result']['isClosed'],
+        imagePath: menuItemImage.path,
+      );
+
+      return menuItem;
+    }
+    return null;
+  }
+
   Future<bool> create(MenuItemCreateDTO createDTO, File image) async {
-    final url = Uri.http(Secrets.FoodToGoAPILink, apiUrl);
+    final url = Uri.http(Secrets.FoodToGoAPILink, _apiUrl);
     final jwtToken = UserServices.jwtToken;
 
     final jsonData = json.encode({
@@ -108,12 +162,11 @@ class MenuItemServices {
     return false;
   }
 
-  Future<bool> update(
+  Future<bool> updateExcludeUploadImage(
     int id,
     MenuItemUpdateDTO updateDTO,
-    File? image,
   ) async {
-    final url = Uri.http(Secrets.FoodToGoAPILink, '$apiUrl/$id');
+    final url = Uri.http(Secrets.FoodToGoAPILink, '$_apiUrl/$id');
     final jwtToken = UserServices.jwtToken;
 
     final jsonData = json.encode({
@@ -123,6 +176,39 @@ class MenuItemServices {
       "name": updateDTO.name,
       "description": updateDTO.description,
       "unitPrice": updateDTO.unitPrice,
+      "isClosed": updateDTO.isClosed,
+    });
+
+    final responseJson = await http.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $jwtToken',
+      },
+      body: jsonData,
+    );
+    if (responseJson.statusCode != HttpStatus.ok) {
+      return false;
+    }
+    return true;
+  }
+
+  Future<bool> update(
+    int id,
+    MenuItemUpdateDTO updateDTO,
+    File? image,
+  ) async {
+    final url = Uri.http(Secrets.FoodToGoAPILink, '$_apiUrl/$id');
+    final jwtToken = UserServices.jwtToken;
+
+    final jsonData = json.encode({
+      "id": id,
+      "merchantId": updateDTO.merchantId,
+      "itemTypeId": updateDTO.itemTypeId,
+      "name": updateDTO.name,
+      "description": updateDTO.description,
+      "unitPrice": updateDTO.unitPrice,
+      "isClosed": updateDTO.isClosed,
     });
 
     final responseJson = await http.put(
@@ -144,6 +230,11 @@ class MenuItemServices {
       if (responseObject['isSuccess'] as bool) {
         final menuItemImageServices = MenuItemImageServices();
         final menuItemImage = await menuItemImageServices.getByMenuItem(id);
+
+        if (menuItemImage == null) {
+          log("MenuServices.update() : menuItemImage == null");
+          return false;
+        }
         isUploadImageSuccess = await uploadMenuItemImage(
           image,
           id,
@@ -156,7 +247,7 @@ class MenuItemServices {
   }
 
   Future<bool> delete(int id) async {
-    final url = Uri.http(Secrets.FoodToGoAPILink, '$apiUrl/$id');
+    final url = Uri.http(Secrets.FoodToGoAPILink, '$_apiUrl/$id');
     final jwtToken = UserServices.jwtToken;
 
     final responseJson = await http.delete(
@@ -166,7 +257,7 @@ class MenuItemServices {
       },
     );
 
-    if (responseJson.statusCode == HttpStatus.noContent) {
+    if (responseJson.statusCode == HttpStatus.ok) {
       return true;
     }
     return false;

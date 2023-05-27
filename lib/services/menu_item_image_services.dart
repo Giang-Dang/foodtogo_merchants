@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 class MenuItemImageServices {
   static const apiUrl = 'api/MenuItemImageAPI';
 
-  Future<MenuItemImageDTO> getByMenuItem(int menuItemId) async {
+  Future<MenuItemImageDTO?> getByMenuItem(int menuItemId) async {
     final newApiUrl = '$apiUrl/bymenuitem/$menuItemId';
     final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl);
     final jwtToken = UserServices.jwtToken;
@@ -24,13 +24,16 @@ class MenuItemImageServices {
       },
     );
 
-    final responseData = json.decode(responseJson.body);
+    if (responseJson.statusCode == HttpStatus.ok) {
+      final responseData = json.decode(responseJson.body);
 
-    return MenuItemImageDTO(
-      id: responseData['result']['id'],
-      menuItemId: responseData['result']['menuItemId'],
-      path: responseData['result']['path'],
-    );
+      return MenuItemImageDTO(
+        id: responseData['result']['id'],
+        menuItemId: responseData['result']['menuItemId'],
+        path: responseData['result']['path'],
+      );
+    }
+    return null;
   }
 
   Future<bool> create(MenuItemImageCreateDTO createDTO) async {

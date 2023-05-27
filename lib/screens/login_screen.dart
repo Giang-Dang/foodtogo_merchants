@@ -9,7 +9,7 @@ import 'package:foodtogo_merchants/models/enum/login_from_app.dart';
 import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
 import 'package:foodtogo_merchants/screens/user_register_screen.dart';
 import 'package:foodtogo_merchants/screens/tabs_screen.dart';
-import 'package:foodtogo_merchants/services/merchant_dto_services.dart';
+import 'package:foodtogo_merchants/services/merchant_services.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 
@@ -26,7 +26,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   final UserServices _userServices = UserServices();
-  final MerchantDTOServices _merchantDTOServices = MerchantDTOServices();
+  final MerchantServices _merchantDTOServices = MerchantServices();
 
   late bool _isPasswordObscured;
   late bool _isLogining;
@@ -46,7 +46,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       final loginResponseDTO = await _userServices.login(loginRequestDTO);
 
-      final merchantList = await _merchantDTOServices.getAllMerchantsFromUser();
+      final merchantList =
+          await _merchantDTOServices.getAllMerchantsDTOFromUser();
       ref.watch(merchantsListProvider.notifier).updateMerchants(merchantList);
       setState(() {
         _isLogining = false;

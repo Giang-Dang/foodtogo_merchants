@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
+import 'package:foodtogo_merchants/models/dto/merchant_profile_image_update_dto.dart';
 import 'package:foodtogo_merchants/models/dto/update_dto/merchant_update_dto.dart';
+import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 
@@ -14,10 +16,54 @@ import 'package:foodtogo_merchants/services/merchant_profile_image_services.dart
 import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/secrets.dart';
 
-class MerchantDTOServices {
+class MerchantServices {
   static const apiUrl = 'api/MerchantAPI';
 
-  Future<List<MerchantDTO>> getAllMerchantsFromUser() async {
+  Future<Merchant?> get(int merchantId) async {
+    final merchantProfileImageServices = MerchantProfileImageServices();
+
+    final merchantDTO = await getDTO(merchantId);
+    final merchantProfileImageDTO =
+        await merchantProfileImageServices.getByMerchantId(merchantId);
+
+    if (merchantDTO == null || merchantProfileImageDTO == null) {
+      return null;
+    }
+
+    final Merchant merchant = Merchant(
+      merchantId: merchantId,
+      userId: merchantDTO.userId,
+      name: merchantDTO.name,
+      address: merchantDTO.address,
+      phoneNumber: merchantDTO.phoneNumber,
+      geoLatitude: merchantDTO.geoLatitude,
+      geoLongitude: merchantDTO.geoLongitude,
+      imagePath: merchantProfileImageDTO.path,
+    );
+
+    return merchant;
+  }
+
+  Future<MerchantDTO?> getDTO(int merchantId) async {
+    final newApiUrl = '$apiUrl/$merchantId';
+    final jwtToken = UserServices.jwtToken;
+
+    final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl);
+
+    final responseJson = await http.get(
+      url,
+      headers: {'Authorization': 'Bearer $jwtToken'},
+    );
+
+    if (responseJson.statusCode == HttpStatus.ok) {
+      final responseData = json.decode(responseJson.body);
+      final merchantDTO = MerchantDTO.fromJson(responseData['result']);
+      return merchantDTO;
+    }
+    return null;
+  }
+
+  Future<List<MerchantDTO>> getAllMerchantsDTOFromUser() async {
     final userId = int.parse(UserServices.strUserId);
     final newApiUrl = '$apiUrl/byuser/$userId';
     final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl);

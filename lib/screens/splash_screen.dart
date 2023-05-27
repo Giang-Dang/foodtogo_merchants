@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -6,7 +7,7 @@ import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
 import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
 import 'package:foodtogo_merchants/screens/login_screen.dart';
 import 'package:foodtogo_merchants/screens/tabs_screen.dart';
-import 'package:foodtogo_merchants/services/merchant_dto_services.dart';
+import 'package:foodtogo_merchants/services/merchant_services.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 
@@ -23,23 +24,24 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _textAnimationController;
   late Animation<double> _textAnimation;
+  Timer? _loginTimer;
 
   _login() async {
     //delay for animation
     await _delay(1);
     //loading data
     var userServices = UserServices();
-    var merchantServices = MerchantDTOServices();
+    var merchantServices = MerchantServices();
 
     await userServices.checkLocalLoginAuthorized();
     List<MerchantDTO>? merchantList;
     if (UserServices.isAuthorized) {
-      merchantList = await merchantServices.getAllMerchantsFromUser();
+      merchantList = await merchantServices.getAllMerchantsDTOFromUser();
       if (context.mounted) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => TabsScreen(),
+            builder: (context) => const TabsScreen(),
           ),
         );
       }
@@ -48,7 +50,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => LoginScreen(),
+            builder: (context) => const LoginScreen(),
           ),
         );
       }
@@ -74,12 +76,29 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
         Tween(begin: 0.0, end: 1.0).animate(_textAnimationController);
 
     //login
-    _login();
+    _loginTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (timer) {
+        _login();
+        _loginTimer?.cancel();
+      },
+    );
+
+    //if exceed a specifice time => loginSceen
+    Future.delayed(const Duration(seconds: 10)).then((_) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginScreen(),
+        ),
+      );
+    });
   }
 
   @override
   void dispose() {
     _textAnimationController.dispose();
+    _loginTimer?.cancel();
     super.dispose();
   }
 

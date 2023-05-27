@@ -8,17 +8,17 @@ class Order {
   final Merchant merchant;
   final Shipper shipper;
   final Customer customer;
-  final Promotion promotion;
+  final Promotion? promotion;
   final DateTime placedTime;
   final DateTime eta;
-  final DateTime deliveryCompletionTime;
+  final DateTime? deliveryCompletionTime;
   final double orderPrice;
   final double shippingFee;
   final double appFee;
   final double promotionDiscount;
   final String status;
-  final String cancelledBy;
-  final String cancellationReason;
+  final String? cancelledBy;
+  final String? cancellationReason;
 
   const Order(
       {required this.id,

@@ -30,7 +30,7 @@ class MenuItemTypeServices {
     return menuItemTypeList;
   }
 
-  Future<MenuItemTypeDTO> get(int menuItemTypeId) async {
+  Future<MenuItemTypeDTO?> get(int menuItemTypeId) async {
     final newApiUrl = '$apiUrl/$menuItemTypeId';
     final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl);
     final jwtToken = UserServices.jwtToken;

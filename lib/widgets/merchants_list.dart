@@ -21,7 +21,6 @@ class _MechantWidgetState extends ConsumerState<MerchantsList> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _merchantsList = ref.read(merchantsListProvider);
   }
 
   @override

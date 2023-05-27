@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foodtogo_merchants/models/current_selection.dart';
 import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:foodtogo_merchants/providers/menu_item_list_provider.dart';
@@ -29,6 +32,7 @@ class MerchantListItem extends ConsumerStatefulWidget {
 class _MechantListItemState extends ConsumerState<MerchantListItem> {
   final jwtToken = UserServices.jwtToken;
   Merchant? _merchant;
+  Timer? _initTimer;
 
   _updateMerchant() async {
     final merchantProfileImageServices = MerchantProfileImageServices();
@@ -44,7 +48,7 @@ class _MechantListItemState extends ConsumerState<MerchantListItem> {
         phoneNumber: widget.merchant.phoneNumber,
         geoLatitude: widget.merchant.geoLatitude,
         geoLongitude: widget.merchant.geoLongitude,
-        imagePath: image.path,
+        imagePath: image!.path,
       );
     });
   }
@@ -58,18 +62,29 @@ class _MechantListItemState extends ConsumerState<MerchantListItem> {
           .watch(menuItemsListProvider.notifier)
           .updateMenuItemsList(menuItemsList ?? []);
 
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => MerchantTabsScreen(merchant: _merchant!),
-        ),
-      );
+      if (context.mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => MerchantTabsScreen(merchant: _merchant!),
+          ),
+        );
+      }
     }
   }
 
   @override
   void initState() {
     super.initState();
-    _updateMerchant();
+    _initTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _updateMerchant();
+      _initTimer?.cancel();
+    });
+  }
+
+  @override
+  void dispose() {
+    _initTimer?.cancel();
+    super.dispose();
   }
 
   @override

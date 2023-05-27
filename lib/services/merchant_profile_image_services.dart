@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 class MerchantProfileImageServices {
   static const apiUrl = 'api/MerchantProfileImageAPI';
 
-  Future<MerchantProfileImageDTO> getByMerchantId(int merchantId) async {
+  Future<MerchantProfileImageDTO?> getByMerchantId(int merchantId) async {
     final newApiUrl = '$apiUrl/bymerchant/$merchantId';
     final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl);
     final jwtToken = UserServices.jwtToken;
@@ -23,6 +23,10 @@ class MerchantProfileImageServices {
         'Authorization': 'Bearer $jwtToken',
       },
     );
+
+    if (responseJson.statusCode != HttpStatus.ok) {
+      return null;
+    }
 
     final responseData = json.decode(responseJson.body);
 
