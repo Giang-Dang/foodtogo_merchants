@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:math';
 
@@ -34,6 +35,7 @@ class _MechantListItemState extends ConsumerState<MenuItemWidget> {
   final jwtToken = UserServices.jwtToken;
   MenuItem? _menuItem;
   bool _isLoading = false;
+  Timer? _switchTimer;
 
   _onTapEditListTile(MenuItem menuItem) {
     if (_menuItem != null) {
@@ -50,9 +52,11 @@ class _MechantListItemState extends ConsumerState<MenuItemWidget> {
       return;
     }
 
-    setState(() {
-      _isLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
 
     final MenuItemServices menuItemServices = MenuItemServices();
     final MenuItemTypeServices menuItemTypeServices = MenuItemTypeServices();
@@ -85,7 +89,7 @@ class _MechantListItemState extends ConsumerState<MenuItemWidget> {
         imagePath: menuItem.imagePath,
         isClosed: !menuItem.isClosed,
       );
-      Future.delayed(const Duration(milliseconds: 200)).then((_) {
+      Future.delayed(const Duration(milliseconds: 500)).then((_) {
         if (mounted) {
           setState(() {
             _menuItem = menuItem;
@@ -100,6 +104,12 @@ class _MechantListItemState extends ConsumerState<MenuItemWidget> {
   void initState() {
     super.initState();
     _menuItem = widget.menuItem;
+  }
+
+  @override
+  void dispose() {
+    _switchTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -179,7 +189,13 @@ class _MechantListItemState extends ConsumerState<MenuItemWidget> {
             ),
             trailing: trailingContent,
             onTap: () {
-              _onTapEditListTile(_menuItem!);
+              _switchTimer = Timer.periodic(
+                const Duration(milliseconds: 200),
+                (timer) {
+                  _onTapEditListTile(_menuItem!);
+                  _switchTimer?.cancel();
+                },
+              );
             },
           ),
         ),

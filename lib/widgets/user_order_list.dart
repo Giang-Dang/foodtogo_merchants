@@ -23,8 +23,7 @@ class UserOrdersListWidget extends ConsumerStatefulWidget {
       _UserOrdersListWidgetState();
 }
 
-class _UserOrdersListWidgetState
-    extends ConsumerState<UserOrdersListWidget> {
+class _UserOrdersListWidgetState extends ConsumerState<UserOrdersListWidget> {
   bool _isLoading = true;
   List<Order> _ordersList = [];
   Timer? _initTimer;

@@ -187,7 +187,7 @@ class _MeState extends ConsumerState<Me> {
                             color: KColors.kOnBackgroundColor,
                             child: ListTile(
                               leading: const Icon(
-                                Icons.phone,
+                                Icons.person,
                                 color: KColors.kPrimaryColor,
                               ),
                               title: const Text('Change your account info'),

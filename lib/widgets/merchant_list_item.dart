@@ -10,6 +10,7 @@ import 'package:foodtogo_merchants/providers/menu_item_list_provider.dart';
 import 'package:foodtogo_merchants/screens/merchant_tabs_screen.dart';
 import 'package:foodtogo_merchants/services/menu_item_services.dart';
 import 'package:foodtogo_merchants/services/merchant_profile_image_services.dart';
+import 'package:foodtogo_merchants/services/user_rating_services.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 import 'package:foodtogo_merchants/settings/secrets.dart';
@@ -36,8 +37,12 @@ class _MechantListItemState extends ConsumerState<MerchantListItem> {
 
   _updateMerchant() async {
     final merchantProfileImageServices = MerchantProfileImageServices();
+    final UserRatingServices userRatingServices = UserRatingServices();
+
     final image = await merchantProfileImageServices
         .getByMerchantId(widget.merchant.merchantId);
+    final rating = await userRatingServices.getAvgRating(
+        widget.merchant.userId, 'Customer') ?? 0.0;
 
     setState(() {
       _merchant = Merchant(
@@ -49,6 +54,7 @@ class _MechantListItemState extends ConsumerState<MerchantListItem> {
         geoLatitude: widget.merchant.geoLatitude,
         geoLongitude: widget.merchant.geoLongitude,
         imagePath: image!.path,
+        rating: rating,
       );
     });
   }

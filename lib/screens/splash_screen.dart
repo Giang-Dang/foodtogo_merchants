@@ -4,10 +4,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
+import 'package:foodtogo_merchants/models/promotion.dart';
 import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
+import 'package:foodtogo_merchants/providers/promotions_list_provider.dart';
 import 'package:foodtogo_merchants/screens/login_screen.dart';
 import 'package:foodtogo_merchants/screens/tabs_screen.dart';
 import 'package:foodtogo_merchants/services/merchant_services.dart';
+import 'package:foodtogo_merchants/services/promotion_services.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 
@@ -30,13 +33,18 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     //delay for animation
     await _delay(1);
     //loading data
-    var userServices = UserServices();
-    var merchantServices = MerchantServices();
+    final userServices = UserServices();
+    final merchantServices = MerchantServices();
+    final promotionServices = PromotionServices();
 
     await userServices.checkLocalLoginAuthorized();
     List<MerchantDTO>? merchantList;
+    List<Promotion>? promotionsList;
     if (UserServices.isAuthorized) {
       merchantList = await merchantServices.getAllMerchantsDTOFromUser();
+      promotionsList =
+          await promotionServices.getAll(int.parse(UserServices.strUserId));
+
       if (context.mounted) {
         Navigator.pushReplacement(
           context,
@@ -57,6 +65,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     }
     if (merchantList != null) {
       ref.watch(merchantsListProvider.notifier).updateMerchants(merchantList);
+    }
+    if (promotionsList != null) {
+      ref.watch(promotionsListProvider.notifier).update(promotionsList);
     }
   }
 
@@ -83,16 +94,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
         _loginTimer?.cancel();
       },
     );
-
-    //if exceed a specifice time => loginSceen
-    Future.delayed(const Duration(seconds: 10)).then((_) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
-        ),
-      );
-    });
   }
 
   @override

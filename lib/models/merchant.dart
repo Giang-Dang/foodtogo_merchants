@@ -10,6 +10,7 @@ class Merchant {
     required this.geoLatitude,
     required this.geoLongitude,
     required this.imagePath,
+    required this.rating,
   });
   final int merchantId;
   final int userId;
@@ -19,4 +20,5 @@ class Merchant {
   final double geoLatitude;
   final double geoLongitude;
   final String imagePath;
+  final double rating;
 }

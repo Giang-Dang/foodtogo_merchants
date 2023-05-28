@@ -7,9 +7,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/models/dto/login_request_dto.dart';
 import 'package:foodtogo_merchants/models/enum/login_from_app.dart';
 import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
+import 'package:foodtogo_merchants/providers/promotions_list_provider.dart';
 import 'package:foodtogo_merchants/screens/user_register_screen.dart';
 import 'package:foodtogo_merchants/screens/tabs_screen.dart';
 import 'package:foodtogo_merchants/services/merchant_services.dart';
+import 'package:foodtogo_merchants/services/promotion_services.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 
@@ -27,6 +29,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   final UserServices _userServices = UserServices();
   final MerchantServices _merchantDTOServices = MerchantServices();
+  final PromotionServices _promotionServices = PromotionServices();
 
   late bool _isPasswordObscured;
   late bool _isLogining;
@@ -48,7 +51,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       final merchantList =
           await _merchantDTOServices.getAllMerchantsDTOFromUser();
-      ref.watch(merchantsListProvider.notifier).updateMerchants(merchantList);
+      ref.watch(merchantsListProvider.notifier).updateMerchants(merchantList ?? []);
+
+      final promotionsList =
+          await _promotionServices.getAll(int.parse(UserServices.strUserId));
+      ref.watch(promotionsListProvider.notifier).update(promotionsList ?? []);
+
       setState(() {
         _isLogining = false;
       });

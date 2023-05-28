@@ -31,16 +31,20 @@ class _MenuState extends ConsumerState<Menu> {
   _loadMenuItemList(int merchantId) async {
     final menuItemServices = MenuItemServices();
 
-    setState(() {
-      _isLoadingItems = true;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoadingItems = true;
+      });
+    }
 
     final menuItemList = await menuItemServices.getAllMenuItems(merchantId);
 
-    setState(() {
-      _menuItemList = menuItemList ?? [];
-      _isLoadingItems = false;
-    });
+    if (mounted) {
+      setState(() {
+        _menuItemList = menuItemList ?? [];
+        _isLoadingItems = false;
+      });
+    }
   }
 
   @override

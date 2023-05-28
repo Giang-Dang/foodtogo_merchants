@@ -157,16 +157,16 @@ class _CreateMenuItemScreenState extends ConsumerState<CreateMenuItemScreen> {
   Widget build(BuildContext context) {
     final _merchant = widget.merchant;
 
-    Widget waitingContain = const Center(
+    Widget waitingContent = const Center(
       child: CircularProgressIndicator(),
     );
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('FoodToGo - Merchants'),
+        title: Text(_merchant.name),
       ),
       body: _typesList == null
-          ? waitingContain
+          ? waitingContent
           : SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(35, 15, 40, 30),
               child: Form(
