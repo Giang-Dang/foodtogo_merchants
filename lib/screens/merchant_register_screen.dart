@@ -112,7 +112,7 @@ class _MerchantRegisterScreenState
         return;
       }
 
-      final merchantsList = await merchantServices.getAllMerchantsDTOFromUser();
+      final merchantsList = await merchantServices.getAllMerchantsFromUser();
 
       ref.watch(merchantsListProvider.notifier).updateMerchants(merchantsList);
 

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/models/current_selection.dart';
 import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
@@ -22,7 +23,7 @@ class MerchantListItem extends ConsumerStatefulWidget {
     required this.merchant,
   });
 
-  final MerchantDTO merchant;
+  final Merchant merchant;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() {
@@ -42,21 +43,24 @@ class _MechantListItemState extends ConsumerState<MerchantListItem> {
     final image = await merchantProfileImageServices
         .getByMerchantId(widget.merchant.merchantId);
     final rating = await userRatingServices.getAvgRating(
-        widget.merchant.userId, 'Customer') ?? 0.0;
-
-    setState(() {
-      _merchant = Merchant(
-        merchantId: widget.merchant.merchantId,
-        userId: widget.merchant.userId,
-        name: widget.merchant.name,
-        address: widget.merchant.address,
-        phoneNumber: widget.merchant.phoneNumber,
-        geoLatitude: widget.merchant.geoLatitude,
-        geoLongitude: widget.merchant.geoLongitude,
-        imagePath: image!.path,
-        rating: rating,
-      );
-    });
+            widget.merchant.userId, 'Customer') ??
+        0.0;
+    if (mounted) {
+      setState(() {
+        _merchant = Merchant(
+          merchantId: widget.merchant.merchantId,
+          userId: widget.merchant.userId,
+          name: widget.merchant.name,
+          address: widget.merchant.address,
+          phoneNumber: widget.merchant.phoneNumber,
+          isDeleted: widget.merchant.isDeleted,
+          geoLatitude: widget.merchant.geoLatitude,
+          geoLongitude: widget.merchant.geoLongitude,
+          imagePath: image!.path,
+          rating: rating,
+        );
+      });
+    }
   }
 
   _onTapListTile() async {
@@ -106,7 +110,7 @@ class _MechantListItemState extends ConsumerState<MerchantListItem> {
       contain = Container(
         margin: const EdgeInsets.symmetric(
           horizontal: 10,
-          vertical: 8,
+          vertical: 10,
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
@@ -122,12 +126,32 @@ class _MechantListItemState extends ConsumerState<MerchantListItem> {
               _merchant!.name,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    color: KColors.kPrimaryColor,
+                    color: _merchant!.isDeleted
+                        ? KColors.kLightTextColor
+                        : KColors.kPrimaryColor,
                   ),
             ),
-            subtitle: Text(
-              _merchant!.address,
-              overflow: TextOverflow.ellipsis,
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RatingBarIndicator(
+                  rating: _merchant!.rating,
+                  itemBuilder: (context, index) => const Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  itemCount: 5,
+                  itemSize: 15.0,
+                  direction: Axis.horizontal,
+                ),
+                Text(
+                  _merchant!.isDeleted
+                      ? '[Merchant Has Been Deleted]'
+                      : _merchant!.address,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
             leading: FadeInImage(
               placeholder: MemoryImage(kTransparentImage),

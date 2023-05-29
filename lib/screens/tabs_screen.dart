@@ -50,7 +50,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AppBar? _appBar = AppBar(
+    AppBar? appBar = AppBar(
       backgroundColor: KColors.kBackgroundColor,
       title: Text(
         'FoodToGo - Merchants',
@@ -62,10 +62,10 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     );
 
     if (_selectedPageIndex == TabName.Me.index) {
-      _appBar = null;
+      appBar = null;
     }
     return Scaffold(
-      appBar: _appBar,
+      appBar: appBar,
       body: _activePage,
       floatingActionButton: _selectedPageIndex == 0
           ? SizedBox(
@@ -95,7 +95,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
               Icons.restaurant,
               color: KColors.kLightTextColor,
             ),
-            label: 'Merchant',
+            label: 'Merchants',
             activeIcon: Icon(
               Icons.restaurant,
               color: KColors.kPrimaryColor,
@@ -107,7 +107,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
               Icons.receipt_long_outlined,
               color: KColors.kLightTextColor,
             ),
-            label: 'Orders',
+            label: 'Waiting Orders',
             activeIcon: Icon(
               Icons.receipt_long_outlined,
               color: KColors.kPrimaryColor,

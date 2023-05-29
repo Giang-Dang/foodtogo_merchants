@@ -13,16 +13,21 @@ import 'package:http/http.dart' as http;
 class ShipperServices {
   static const apiUrl = 'api/ShipperAPI';
   Future<Shipper?> get(int shipperId) async {
+    final UserServices userServices = UserServices();
     final UserRatingServices userRatingServices = UserRatingServices();
     final OrderSuccessRateServices orderSuccessRateServices =
         OrderSuccessRateServices();
 
     final shipperDTO = await getDTO(shipperId);
+    final userDTO = await userServices.get(shipperId);
     final rating = await userRatingServices.getAvgRating(shipperId, "Shipper");
     final OrderSuccessRate? orderSuccessRate =
         await orderSuccessRateServices.getSuccessRate(shipperId, "Shipper");
 
-    if (shipperDTO != null && rating != null && orderSuccessRate != null) {
+    if (shipperDTO != null &&
+        userDTO != null &&
+        rating != null &&
+        orderSuccessRate != null) {
       return Shipper(
         userId: shipperDTO.userId,
         firstName: shipperDTO.firstName,
@@ -30,6 +35,8 @@ class ShipperServices {
         middleName: shipperDTO.middleName,
         vehicleType: shipperDTO.vehicleType,
         vehicleNumberPlate: shipperDTO.vehicleNumberPlate,
+        phoneNumber: userDTO.phoneNumber,
+        email: userDTO.email,
         rating: rating,
         successOrderCount: orderSuccessRate.successOrderCount,
         cancelledOrderCount: orderSuccessRate.cancelledOrderCount,

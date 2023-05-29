@@ -43,6 +43,15 @@ class _UserOrdersListWidgetState extends ConsumerState<UserOrdersListWidget> {
           await orderServices.getAll(merchantId: merchant.merchantId);
       if (tempMerchantsList != null) {
         ordersList!.addAll(tempMerchantsList);
+        ordersList = ordersList
+            .where((e) =>
+                e.status.toLowerCase() ==
+                    OrderStatus.Placed.name.toLowerCase() ||
+                e.status.toLowerCase() ==
+                    OrderStatus.Getting.name.toLowerCase() ||
+                e.status.toLowerCase() ==
+                    OrderStatus.DriverAtMerchant.name.toLowerCase())
+            .toList();
       } else {
         ordersList = null;
         break;
@@ -51,12 +60,9 @@ class _UserOrdersListWidgetState extends ConsumerState<UserOrdersListWidget> {
 
     if (ordersList != null) {
       ordersList.sort((a, b) {
-        if (a.status == OrderStatus.DriverAtMerchant.name &&
-            b.status != OrderStatus.DriverAtMerchant.name) {
-          return -1;
-        } else {
-          return 1;
-        }
+        final result = orderServices.getOrderStatusIndex(b.status) -
+            orderServices.getOrderStatusIndex(a.status);
+        return result;
       });
     }
 

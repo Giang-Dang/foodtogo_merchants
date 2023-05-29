@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/models/enum/promotion_status.dart';
+import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:foodtogo_merchants/models/promotion.dart';
 import 'package:foodtogo_merchants/providers/promotions_list_provider.dart';
 import 'package:foodtogo_merchants/services/promotion_services.dart';
@@ -11,7 +12,12 @@ import 'package:foodtogo_merchants/settings/kcolors.dart';
 import 'package:foodtogo_merchants/widgets/promotion_list_item.dart';
 
 class PromotionList extends ConsumerStatefulWidget {
-  const PromotionList({Key? key}) : super(key: key);
+  const PromotionList({
+    Key? key,
+    required this.merchant,
+  }) : super(key: key);
+
+  final Merchant merchant;
 
   @override
   ConsumerState<PromotionList> createState() => _PromotionListState();
@@ -24,8 +30,12 @@ class _PromotionListState extends ConsumerState<PromotionList> {
   _updatePromotionsList() async {
     final promotionServices = PromotionServices();
     final promotionsList =
-        await promotionServices.getAll(int.parse(UserServices.strUserId));
-    ref.watch(promotionsListProvider.notifier).update(promotionsList ?? []);
+        await promotionServices.getAll(widget.merchant.merchantId);
+    if(mounted)
+    {
+      ref.watch(promotionsListProvider.notifier).update(promotionsList ?? []);
+    }
+    
   }
 
   PromotionStatus _getPromotionStatus(Promotion promotion) {

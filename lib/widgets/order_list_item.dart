@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foodtogo_merchants/models/enum/order_status.dart';
 import 'package:foodtogo_merchants/models/order.dart';
-import 'package:foodtogo_merchants/services/user_services.dart';
+import 'package:foodtogo_merchants/screens/order_details_screen.dart';
+import 'package:foodtogo_merchants/services/order_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
-import 'package:foodtogo_merchants/settings/secrets.dart';
-import 'package:transparent_image/transparent_image.dart';
 import 'package:intl/intl.dart';
 
 final timeFormatter = DateFormat('HH:mm:ss');
@@ -24,12 +22,18 @@ class OrderListItem extends ConsumerStatefulWidget {
 }
 
 class _MerchantOrderListItemState extends ConsumerState<OrderListItem> {
-  _onTapListTile() {}
+  _onTapListTile(Order order) {
+    if (context.mounted) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => OrderDetailsScreen(order: order),
+      ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final order = widget.order;
-    final jwtToken = UserServices.jwtToken;
+    final OrderServices orderServices = OrderServices();
 
     Widget contain = const ListTile(
       leading: CircularProgressIndicator(),
@@ -42,36 +46,39 @@ class _MerchantOrderListItemState extends ConsumerState<OrderListItem> {
         vertical: 8,
       ),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: KColors.kOnBackgroundColor,
-      ),
+          borderRadius: BorderRadius.circular(5),
+          color: orderServices.getOrderColor(order.status).withOpacity(0.08)),
       child: Material(
         type: MaterialType.transparency,
         child: ListTile(
           onTap: () {
-            _onTapListTile();
+            _onTapListTile(order);
           },
           title: Transform.translate(
             offset: const Offset(0, -3),
             child: Row(children: [
-              const Icon(Icons.sports_motorsports, size: 24),
+              const Icon(
+                Icons.sports_motorsports,
+                size: 20,
+                color: KColors.kLightTextColor,
+              ),
               Text(
                 " : ${order.shipper.lastName} ${order.shipper.middleName} ${order.shipper.firstName}    ",
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: order.status == OrderStatus.DriverAtMerchant.name
-                          ? KColors.kSuccessColor
-                          : KColors.kPrimaryColor,
-                      fontSize: 17,
+                      color: orderServices.getOrderColor(order.status),
+                      fontSize: 15,
                     ),
               ),
-              const Icon(Icons.two_wheeler, size: 24),
+              const Icon(
+                Icons.two_wheeler,
+                size: 20,
+                color: KColors.kLightTextColor,
+              ),
               Text(
                 " : ${order.shipper.vehicleNumberPlate}",
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: order.status == OrderStatus.DriverAtMerchant.name
-                          ? KColors.kSuccessColor
-                          : KColors.kPrimaryColor,
-                      fontSize: 17,
+                      color: orderServices.getOrderColor(order.status),
+                      fontSize: 15,
                     ),
               ),
             ]),
@@ -83,28 +90,34 @@ class _MerchantOrderListItemState extends ConsumerState<OrderListItem> {
                 const Icon(
                   Icons.attach_money,
                   size: 17,
+                  color: KColors.kLightTextColor,
                 ),
                 Text(
                   ': ${order.orderPrice.toStringAsFixed(1)};',
                   overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 12),
                 ),
                 const SizedBox(width: 8),
                 const Icon(
                   Icons.calendar_month,
                   size: 17,
+                  color: KColors.kLightTextColor,
                 ),
                 Text(
                   ': ${dateFormatter.format(order.placedTime)} ${timeFormatter.format(order.placedTime)};',
                   overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 12),
                 ),
                 const SizedBox(width: 5),
                 const Icon(
                   Icons.schedule,
                   size: 17,
+                  color: KColors.kLightTextColor,
                 ),
                 Text(
                   ': ${timeFormatter.format(order.eta)};  ',
                   overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 12),
                 ),
               ],
             ),

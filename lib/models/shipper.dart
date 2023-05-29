@@ -5,6 +5,8 @@ class Shipper {
   final String middleName;
   final String vehicleType;
   final String vehicleNumberPlate;
+  final String phoneNumber;
+  final String email;
   final double rating;
   final int successOrderCount;
   final int cancelledOrderCount;
@@ -16,6 +18,8 @@ class Shipper {
     required this.middleName,
     required this.vehicleType,
     required this.vehicleNumberPlate,
+    required this.phoneNumber,
+    required this.email,
     required this.rating,
     this.successOrderCount = 0,
     this.cancelledOrderCount = 0,
@@ -29,6 +33,8 @@ class Shipper {
         middleName: json['middleName'],
         vehicleType: json['vehicleType'],
         vehicleNumberPlate: json['vehicleNumberPlate'],
+        phoneNumber: json['phoneNumber'],
+        email: json['email'],
         rating: json['rating'],
         successOrderCount: json['successOrderCount'],
         cancelledOrderCount: json['cancelledOrderCount']);

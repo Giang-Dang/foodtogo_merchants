@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
+import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:foodtogo_merchants/models/promotion.dart';
 import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
 import 'package:foodtogo_merchants/providers/promotions_list_provider.dart';
@@ -38,10 +39,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     final promotionServices = PromotionServices();
 
     await userServices.checkLocalLoginAuthorized();
-    List<MerchantDTO>? merchantList;
+    List<Merchant>? merchantList;
     List<Promotion>? promotionsList;
     if (UserServices.isAuthorized) {
-      merchantList = await merchantServices.getAllMerchantsDTOFromUser();
+      merchantList = await merchantServices.getAllMerchantsFromUser();
       promotionsList =
           await promotionServices.getAll(int.parse(UserServices.strUserId));
 

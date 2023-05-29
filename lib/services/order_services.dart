@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:foodtogo_merchants/models/customer.dart';
 import 'package:foodtogo_merchants/models/dto/order_dto.dart';
+import 'package:foodtogo_merchants/models/enum/order_status.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:foodtogo_merchants/models/order.dart';
 import 'package:foodtogo_merchants/models/promotion.dart';
@@ -12,6 +15,7 @@ import 'package:foodtogo_merchants/services/merchant_services.dart';
 import 'package:foodtogo_merchants/services/promotion_services.dart';
 import 'package:foodtogo_merchants/services/shipper_services.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
+import 'package:foodtogo_merchants/settings/kcolors.dart';
 import 'package:foodtogo_merchants/settings/secrets.dart';
 import 'package:http/http.dart' as http;
 
@@ -140,4 +144,89 @@ class OrderServices {
 
     return order;
   }
+
+  Color getOrderColor(String orderStatus) {
+    if (orderStatus == OrderStatus.Placed.name.toLowerCase()) {
+      return KColors.kLightTextColor;
+    }
+    if (orderStatus == OrderStatus.Getting.name.toLowerCase()) {
+      return KColors.kBlue;
+    }
+    if (orderStatus == OrderStatus.DriverAtMerchant.name.toLowerCase()) {
+      return KColors.kSuccessColor;
+    }
+    if (orderStatus == OrderStatus.Delivering.name.toLowerCase()) {
+      return KColors.kBlue;
+    }
+    if (orderStatus == OrderStatus.DriverAtDeliveryPoint.name.toLowerCase()) {
+      return KColors.kSuccessColor;
+    }
+    if (orderStatus == OrderStatus.Completed.name.toLowerCase()) {
+      return KColors.kSuccessColor;
+    }
+    if (orderStatus == OrderStatus.Cancelled.name.toLowerCase()) {
+      return KColors.kDanger;
+    }
+    return KColors.kTextColor;
+  }
+
+  String getOrderStatusInfo(String orderStatus) {
+    if (orderStatus == OrderStatus.Placed.name.toLowerCase()) {
+      return 'Order is placed';
+    }
+    if (orderStatus == OrderStatus.Getting.name.toLowerCase()) {
+      return 'shipper is picking up the package.';
+    }
+    if (orderStatus == OrderStatus.DriverAtMerchant.name.toLowerCase()) {
+      return 'Shipper is at the merchant';
+    }
+    if (orderStatus == OrderStatus.Delivering.name.toLowerCase()) {
+      return 'Shipper is delivering the package.';
+    }
+    if (orderStatus == OrderStatus.DriverAtDeliveryPoint.name.toLowerCase()) {
+      return 'Shipper is at the delivery point';
+    }
+    if (orderStatus == OrderStatus.Completed.name.toLowerCase()) {
+      return 'Order has been completed';
+    }
+    if (orderStatus == OrderStatus.Cancelled.name.toLowerCase()) {
+      return 'Order has been cancelled';
+    }
+    return 'NA';
+  }
+
+  int getOrderStatusIndex(String orderStatus) {
+    for (var value in OrderStatus.values) {
+      if (orderStatus == value.name.toLowerCase()) {
+        return value.index;
+      }
+    }
+    log('OrderServices.getOrderStatusIndex() -1');
+    return -1;
+  }
+
+  // Icon getOrderIcon(String orderStatus) {
+  //   if (orderStatus == OrderStatus.Placed.name.toLowerCase()) {
+  //     return Icons.sprint;
+  //   }
+  //   if (orderStatus == OrderStatus.Getting.name.toLowerCase()) {
+  //     return Icons.sprint;
+  //   }
+  //   if (orderStatus == OrderStatus.DriverAtMerchant.name.toLowerCase()) {
+  //     return KColors.kSuccessColor;
+  //   }
+  //   if (orderStatus == OrderStatus.Delivering.name.toLowerCase()) {
+  //     return KColors.kBlue;
+  //   }
+  //   if (orderStatus == OrderStatus.DriverAtDeliveryPoint.name.toLowerCase()) {
+  //     return KColors.kSuccessColor;
+  //   }
+  //   if (orderStatus == OrderStatus.Completed.name.toLowerCase()) {
+  //     return KColors.kSuccessColor;
+  //   }
+  //   if (orderStatus == OrderStatus.Cancelled.name.toLowerCase()) {
+  //     return KColors.kDanger;
+  //   }
+  //   return KColors.kTextColor;
+  // }
 }

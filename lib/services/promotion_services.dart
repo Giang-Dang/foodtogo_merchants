@@ -13,8 +13,8 @@ import 'package:http/http.dart' as http;
 class PromotionServices {
   static const _apiUrl = 'api/PromotionAPI';
 
-  Future<List<Promotion>?> getAll(int discountCreatorId) async {
-    final promotionDTOsList = await getAllDTO(discountCreatorId);
+  Future<List<Promotion>?> getAll(int discountCreatorMerchanId) async {
+    final promotionDTOsList = await getAllDTO(discountCreatorMerchanId);
 
     if (promotionDTOsList == null) {
       return null;
@@ -40,9 +40,11 @@ class PromotionServices {
     return promotionsList;
   }
 
-  Future<List<PromotionDTO>?> getAllDTO(int discountCreatorId) async {
+  Future<List<PromotionDTO>?> getAllDTO(int discountCreatorMerchantId) async {
     final jwtToken = UserServices.jwtToken;
-    final url = Uri.http(Secrets.FoodToGoAPILink, _apiUrl);
+    final url = Uri.http(Secrets.FoodToGoAPILink, _apiUrl, {
+      'searchMerchanId': discountCreatorMerchantId.toString(),
+    });
 
     final responseJson = await http.get(
       url,

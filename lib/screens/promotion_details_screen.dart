@@ -18,7 +18,7 @@ class PromotionDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           promotion.name,
-          style: TextStyle(color: KColors.kPrimaryColor),
+          style: const TextStyle(color: KColors.kPrimaryColor),
         ),
       ),
       body: Container(

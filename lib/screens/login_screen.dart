@@ -49,9 +49,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       final loginResponseDTO = await _userServices.login(loginRequestDTO);
 
-      final merchantList =
-          await _merchantDTOServices.getAllMerchantsDTOFromUser();
-      ref.watch(merchantsListProvider.notifier).updateMerchants(merchantList ?? []);
+      final merchantList = await _merchantDTOServices.getAllMerchantsFromUser();
+      ref.watch(merchantsListProvider.notifier).updateMerchants(merchantList);
 
       final promotionsList =
           await _promotionServices.getAll(int.parse(UserServices.strUserId));

@@ -7,7 +7,9 @@ import 'package:foodtogo_merchants/settings/kcolors.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:foodtogo_merchants/widgets/menu.dart';
 import 'package:foodtogo_merchants/widgets/merchant_orders_list_widget.dart';
+import 'package:foodtogo_merchants/widgets/merchant_tabbar_order.dart';
 import 'package:foodtogo_merchants/widgets/promotion_list.dart';
+import 'package:foodtogo_merchants/widgets/your_merchant_widget.dart';
 
 enum MerchantScreenTabName {
   Menu,
@@ -29,6 +31,7 @@ class MerchantTabsScreen extends ConsumerStatefulWidget {
 class _MerchantTabsScreenState extends ConsumerState<MerchantTabsScreen> {
   int _selectedPageIndex = 0;
   Widget? _activePage;
+  TabBar? _tabBar;
   bool _isShowfloatingButton = true;
 
   void _selectPage(int index, Merchant merchant) {
@@ -38,14 +41,15 @@ class _MerchantTabsScreenState extends ConsumerState<MerchantTabsScreen> {
         _activePage = Menu(merchant: merchant);
         _isShowfloatingButton = true;
       } else if (_selectedPageIndex == MerchantScreenTabName.Order.index) {
-        _activePage = MerchantOrdersListWidget(merchantId: merchant.merchantId);
+        _activePage = MerchantTabbarOrder(merchantId: merchant.merchantId);
+        // _activePage = MerchantOrdersListWidget(merchantId: merchant.merchantId);
         _isShowfloatingButton = false;
       } else if (_selectedPageIndex ==
           MerchantScreenTabName.YourMechant.index) {
-        _activePage = Text('Your Store Page');
+        _activePage = YourMerchantWidget(merchant: merchant);
         _isShowfloatingButton = false;
       } else if (_selectedPageIndex == MerchantScreenTabName.Promotions.index) {
-        _activePage = const PromotionList();
+        _activePage = PromotionList(merchant: merchant);
         _isShowfloatingButton = true;
       } else {
         _activePage = Menu(merchant: merchant);

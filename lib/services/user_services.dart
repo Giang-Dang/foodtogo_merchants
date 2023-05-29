@@ -11,8 +11,6 @@ import 'package:foodtogo_merchants/models/dto/user_dto.dart';
 import 'package:foodtogo_merchants/models/dto/update_dto/user_update_dto.dart';
 import 'package:foodtogo_merchants/settings/secrets.dart';
 import 'package:http/http.dart' as http;
-import 'package:sqflite/sqflite.dart' as sql;
-import 'package:sqflite/sqlite_api.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as syspaths;
 

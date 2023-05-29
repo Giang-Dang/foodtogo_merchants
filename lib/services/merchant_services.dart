@@ -6,6 +6,7 @@ import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
 import 'package:foodtogo_merchants/models/dto/merchant_profile_image_update_dto.dart';
 import 'package:foodtogo_merchants/models/dto/update_dto/merchant_update_dto.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
+import 'package:foodtogo_merchants/services/merchant_rating_services.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 
@@ -21,12 +22,17 @@ class MerchantServices {
 
   Future<Merchant?> get(int merchantId) async {
     final merchantProfileImageServices = MerchantProfileImageServices();
+    final MerchantRatingServices merchantRatingServices =
+        MerchantRatingServices();
 
     final merchantDTO = await getDTO(merchantId);
     final merchantProfileImageDTO =
         await merchantProfileImageServices.getByMerchantId(merchantId);
+    final rating = await merchantRatingServices.getAvgRating(merchantId);
 
-    if (merchantDTO == null || merchantProfileImageDTO == null) {
+    if (merchantDTO == null ||
+        merchantProfileImageDTO == null ||
+        rating == null) {
       return null;
     }
 
@@ -36,9 +42,11 @@ class MerchantServices {
       name: merchantDTO.name,
       address: merchantDTO.address,
       phoneNumber: merchantDTO.phoneNumber,
+      isDeleted: merchantDTO.isDeleted,
       geoLatitude: merchantDTO.geoLatitude,
       geoLongitude: merchantDTO.geoLongitude,
       imagePath: merchantProfileImageDTO.path,
+      rating: rating,
     );
 
     return merchant;
@@ -61,6 +69,45 @@ class MerchantServices {
       return merchantDTO;
     }
     return null;
+  }
+
+  Future<List<Merchant>> getAllMerchantsFromUser() async {
+    final merchantProfileImageServices = MerchantProfileImageServices();
+    final MerchantRatingServices merchantRatingServices =
+        MerchantRatingServices();
+
+    final merchantDTOsList = await getAllMerchantsDTOFromUser();
+
+    List<Merchant> merchantsList = [];
+
+    for (var merchantDTO in merchantDTOsList) {
+      final merchantProfileImageDTO = await merchantProfileImageServices
+          .getByMerchantId(merchantDTO.merchantId);
+      final rating =
+          await merchantRatingServices.getAvgRating(merchantDTO.merchantId);
+
+      if (merchantProfileImageDTO == null || rating == null) {
+        log("getAllMerchantsFromUser : merchantProfileImageDTO == null || rating == null");
+        continue;
+      }
+
+      final Merchant merchant = Merchant(
+        merchantId: merchantDTO.merchantId,
+        userId: merchantDTO.userId,
+        name: merchantDTO.name,
+        address: merchantDTO.address,
+        phoneNumber: merchantDTO.phoneNumber,
+        isDeleted: merchantDTO.isDeleted,
+        geoLatitude: merchantDTO.geoLatitude,
+        geoLongitude: merchantDTO.geoLongitude,
+        imagePath: merchantProfileImageDTO.path,
+        rating: rating,
+      );
+
+      merchantsList.add(merchant);
+    }
+
+    return merchantsList;
   }
 
   Future<List<MerchantDTO>> getAllMerchantsDTOFromUser() async {

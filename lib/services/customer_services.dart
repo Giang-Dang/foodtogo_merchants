@@ -16,19 +16,26 @@ class CustomerServices {
     final UserRatingServices userRatingServices = UserRatingServices();
     final OrderSuccessRateServices orderSuccessRateServices =
         OrderSuccessRateServices();
+    final UserServices userServices = UserServices();
 
     final customerDTO = await getDTO(customerId);
+    final userDTO = await userServices.get(customerId);
     final rating =
         await userRatingServices.getAvgRating(customerId, "Customer");
     final OrderSuccessRate? orderSuccessRate =
         await orderSuccessRateServices.getSuccessRate(customerId, "Customer");
-    if (customerDTO != null && rating != null && orderSuccessRate != null) {
+    if (customerDTO != null &&
+        userDTO != null &&
+        rating != null &&
+        orderSuccessRate != null) {
       return Customer(
         customerId: customerDTO.customerId,
         firstName: customerDTO.firstName,
         lastName: customerDTO.lastName,
         middleName: customerDTO.middleName,
         address: customerDTO.address,
+        phoneNumber: userDTO.phoneNumber,
+        email: userDTO.email,
         rating: rating,
         successOrderCount: orderSuccessRate.successOrderCount,
         cancelledOrderCount: orderSuccessRate.cancelledOrderCount,

@@ -9,6 +9,7 @@ class Merchant {
     required this.phoneNumber,
     required this.geoLatitude,
     required this.geoLongitude,
+    required this.isDeleted,
     required this.imagePath,
     required this.rating,
   });
@@ -19,6 +20,7 @@ class Merchant {
   final String phoneNumber;
   final double geoLatitude;
   final double geoLongitude;
+  final bool isDeleted;
   final String imagePath;
   final double rating;
 }
