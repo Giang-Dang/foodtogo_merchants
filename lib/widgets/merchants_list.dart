@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
@@ -27,6 +26,7 @@ class _MechantWidgetState extends ConsumerState<MerchantsList> {
   @override
   Widget build(BuildContext context) {
     _merchantsList = ref.watch(merchantsListProvider);
+
     Widget content = Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

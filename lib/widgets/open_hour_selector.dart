@@ -11,12 +11,14 @@ class OpenHourSelector extends StatefulWidget {
       required this.openingTime,
       required this.closingTime,
       required this.dayOfWeek,
+      required this.isOpen,
       required this.getOpenHoursData})
       : super(key: key);
 
   final TimeOfDay openingTime;
   final TimeOfDay closingTime;
   final DaysOfWeek dayOfWeek;
+  final bool isOpen;
   final Function({
     required DaysOfWeek dayOfWeek,
     required bool isOpen,
@@ -34,9 +36,16 @@ class _OpenHourSelectorState extends State<OpenHourSelector> {
   bool _switchValue = false;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     openingTime ??= widget.openingTime;
     closingTime ??= widget.closingTime;
+    _switchValue = widget.isOpen;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final dayOfWeek = widget.dayOfWeek;
 
     return Container(
@@ -128,7 +137,7 @@ class _OpenHourSelectorState extends State<OpenHourSelector> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
+                        children: [
                           Text(openingTime!.format(context)),
                           Icon(Icons.arrow_drop_down,
                               color: Theme.of(context).brightness ==
@@ -179,7 +188,7 @@ class _OpenHourSelectorState extends State<OpenHourSelector> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
+                        children: [
                           Text(closingTime!.format(context)),
                           Icon(Icons.arrow_drop_down,
                               color: Theme.of(context).brightness ==

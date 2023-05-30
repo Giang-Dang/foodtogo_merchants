@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -8,6 +9,7 @@ import 'package:foodtogo_merchants/models/current_selection.dart';
 import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:foodtogo_merchants/providers/menu_item_list_provider.dart';
+import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
 import 'package:foodtogo_merchants/screens/merchant_tabs_screen.dart';
 import 'package:foodtogo_merchants/services/menu_item_services.dart';
 import 'package:foodtogo_merchants/services/merchant_profile_image_services.dart';
@@ -36,26 +38,26 @@ class _MechantListItemState extends ConsumerState<MerchantListItem> {
   Merchant? _merchant;
   Timer? _initTimer;
 
-  _updateMerchant() async {
+  _updateMerchant(Merchant merchant) async {
     final merchantProfileImageServices = MerchantProfileImageServices();
     final UserRatingServices userRatingServices = UserRatingServices();
 
-    final image = await merchantProfileImageServices
-        .getByMerchantId(widget.merchant.merchantId);
-    final rating = await userRatingServices.getAvgRating(
-            widget.merchant.userId, 'Customer') ??
-        0.0;
+    final image =
+        await merchantProfileImageServices.getByMerchantId(merchant.merchantId);
+    final rating =
+        await userRatingServices.getAvgRating(merchant.userId, 'Customer') ??
+            0.0;
     if (mounted) {
       setState(() {
         _merchant = Merchant(
-          merchantId: widget.merchant.merchantId,
-          userId: widget.merchant.userId,
-          name: widget.merchant.name,
-          address: widget.merchant.address,
-          phoneNumber: widget.merchant.phoneNumber,
-          isDeleted: widget.merchant.isDeleted,
-          geoLatitude: widget.merchant.geoLatitude,
-          geoLongitude: widget.merchant.geoLongitude,
+          merchantId: merchant.merchantId,
+          userId: merchant.userId,
+          name: merchant.name,
+          address: merchant.address,
+          phoneNumber: merchant.phoneNumber,
+          isDeleted: merchant.isDeleted,
+          geoLatitude: merchant.geoLatitude,
+          geoLongitude: merchant.geoLongitude,
           imagePath: image!.path,
           rating: rating,
         );
@@ -86,7 +88,7 @@ class _MechantListItemState extends ConsumerState<MerchantListItem> {
   void initState() {
     super.initState();
     _initTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      _updateMerchant();
+      _updateMerchant(widget.merchant);
       _initTimer?.cancel();
     });
   }
@@ -105,6 +107,15 @@ class _MechantListItemState extends ConsumerState<MerchantListItem> {
     );
 
     if (_merchant != null) {
+      final isDeleted = widget.merchant.isDeleted;
+
+      final merchantFromProvider = ref
+          .watch(merchantsListProvider)
+          .firstWhere((e) => e.merchantId == _merchant!.merchantId);
+      if (merchantFromProvider != _merchant) {
+        _updateMerchant(merchantFromProvider);
+      }
+
       final imageUrl =
           Uri.http(Secrets.FoodToGoAPILink, _merchant!.imagePath).toString();
       contain = Container(
@@ -126,7 +137,7 @@ class _MechantListItemState extends ConsumerState<MerchantListItem> {
               _merchant!.name,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    color: _merchant!.isDeleted
+                    color: isDeleted
                         ? KColors.kLightTextColor
                         : KColors.kPrimaryColor,
                   ),
@@ -145,7 +156,7 @@ class _MechantListItemState extends ConsumerState<MerchantListItem> {
                   direction: Axis.horizontal,
                 ),
                 Text(
-                  _merchant!.isDeleted
+                  isDeleted
                       ? '[Merchant Has Been Deleted]'
                       : _merchant!.address,
                   maxLines: 2,

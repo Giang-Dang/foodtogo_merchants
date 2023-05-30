@@ -66,20 +66,21 @@ class _UserOrdersListWidgetState extends ConsumerState<UserOrdersListWidget> {
       });
     }
 
-    ref.watch(ordersListProvider.notifier).updateOrdersList(ordersList ?? []);
-
-    setState(() {
-      _isLoading = false;
-      if (ordersList != null) {
-        _ordersList = ordersList;
-      }
-    });
+    if (mounted) {
+      ref.watch(ordersListProvider.notifier).updateOrdersList(ordersList ?? []);
+      setState(() {
+        _isLoading = false;
+        if (ordersList != null) {
+          _ordersList = ordersList;
+        }
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    _initTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _initTimer = Timer.periodic(const Duration(milliseconds: 300), (timer) {
       _getUserOrdersListFromServer(widget.userId);
       _initTimer?.cancel();
     });

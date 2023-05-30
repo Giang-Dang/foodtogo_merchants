@@ -2,17 +2,25 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foodtogo_merchants/models/dto/update_dto/order_update_dto.dart';
+import 'package:foodtogo_merchants/models/enum/order_status.dart';
+import 'package:foodtogo_merchants/models/enum/user_type.dart';
 import 'package:foodtogo_merchants/models/order.dart';
 import 'package:foodtogo_merchants/models/order_detail.dart';
+import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
+import 'package:foodtogo_merchants/providers/orders_list_provider.dart';
+import 'package:foodtogo_merchants/screens/rating_user_screen.dart';
 import 'package:foodtogo_merchants/services/order_detail_services.dart';
 import 'package:foodtogo_merchants/services/order_services.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
+import 'package:foodtogo_merchants/widgets/rating_button.dart';
 import 'package:intl/intl.dart';
 
 final dateFormatter = DateFormat.yMMMMd();
 
-class OrderDetailsScreen extends StatefulWidget {
+class OrderDetailsScreen extends ConsumerStatefulWidget {
   const OrderDetailsScreen({
     Key? key,
     required this.order,
@@ -21,17 +29,24 @@ class OrderDetailsScreen extends StatefulWidget {
   final Order order;
 
   @override
-  State<OrderDetailsScreen> createState() => _OrderDetailsScreenState();
+  ConsumerState<OrderDetailsScreen> createState() => _OrderDetailsScreenState();
 }
 
-class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
+class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen>
+    with SingleTickerProviderStateMixin {
+  final OrderDetailServices _orderDetailServices = OrderDetailServices();
+  final OrderServices _orderServices = OrderServices();
+
   List<OrderDetail>? _orderDetailsList;
   Timer? _initTimer;
 
+  late final AnimationController _controller;
+  late final Animation<double> _animation;
+  late final Animation<Color?> _colorAnimation;
+
   _getOrderDetailsList() async {
-    final OrderDetailServices orderDetailServices = OrderDetailServices();
     final orderDetailsList =
-        await orderDetailServices.getAll(searchOrderId: widget.order.id);
+        await _orderDetailServices.getAll(searchOrderId: widget.order.id);
 
     if (orderDetailsList != null) {
       if (mounted) {
@@ -42,10 +57,185 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     }
   }
 
+  _showAlertDialog(String title, String message, void Function() onOkPressed) {
+    if (context.mounted) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(title),
+            content: Text(message),
+            actions: [
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  onOkPressed();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  _navigateToRatingScreen(
+      {required UserType fromUserType,
+      required UserType toUserType,
+      required Order order}) {
+    if (context.mounted) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => RatingUserScreen(
+              order: order, fromUserType: fromUserType, toUserType: toUserType),
+        ),
+      );
+    }
+  }
+
+  _isAbleToCancel(Order order) {
+    if (order.status == OrderStatus.Placed.name.toLowerCase()) {
+      return true;
+    }
+    if (order.status == OrderStatus.Getting.name.toLowerCase()) {
+      return true;
+    }
+    if (order.status == OrderStatus.DriverAtMerchant.name.toLowerCase()) {
+      return true;
+    }
+    return false;
+  }
+
+  _showCancellationBottomSheet(
+    BuildContext context,
+    Order order,
+  ) async {
+    final TextEditingController controller = TextEditingController();
+    return showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      useRootNavigator: true,
+      builder: (context) => FractionallySizedBox(
+        heightFactor: 1.0,
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(20, 60, 20, 30),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Please enter a cancellation reason:',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(color: KColors.kPrimaryColor),
+                ),
+                const SizedBox(height: 10),
+                TextField(
+                  controller: controller,
+                  minLines: 2,
+                  maxLines: 5,
+                  decoration:
+                      const InputDecoration(hintText: 'Cancellation reason'),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (controller.text == '') {
+                      _showAlertDialog('Invalid Reason',
+                          'The reason field cannot be left empty!', () {
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                        }
+                      });
+                      return;
+                    }
+                    // Return the cancellation reason
+                    String? reason = controller.text;
+
+                    await _onCancelPress(order, reason);
+                  },
+                  child: const Text('Cancel Order'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  _onCancelPress(Order order, String reason) async {
+    final updateDTO = OrderUpdateDTO(
+      id: order.id,
+      merchantId: order.merchant.merchantId,
+      shipperId: order.shipper.userId,
+      customerId: order.customer.customerId,
+      promotionId: order.promotion == null ? null : order.promotion!.id,
+      placedTime: order.placedTime,
+      eta: order.eta,
+      deliveryCompletionTime: order.deliveryCompletionTime,
+      orderPrice: order.orderPrice,
+      shippingFee: order.shippingFee,
+      appFee: order.appFee,
+      promotionDiscount: order.promotionDiscount,
+      status: OrderStatus.Cancelled.name.toLowerCase(),
+      cancelledBy: UserType.Merchant.name.toLowerCase(),
+      cancellationReason: reason,
+    );
+
+    bool isSuccess = await _orderServices.update(order.id, updateDTO);
+
+    final orderList =
+        await _orderServices.getAll(merchantId: order.merchant.merchantId);
+
+    isSuccess &= (orderList != null);
+
+    if (isSuccess) {
+      _showAlertDialog('Cancelled', 'The order has been cancelled', () {
+        final orderListFromProvider = ref.read(ordersListProvider);
+        if (orderList != orderListFromProvider) {
+          ref.watch(ordersListProvider.notifier).updateOrdersList(orderList!);
+        }
+        if (context.mounted) {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        }
+      });
+    } else {
+      _showAlertDialog('Cancellation failed',
+          'Unable to cancel this order at the moment. Please try again later.',
+          () {
+        if (context.mounted) {
+          Navigator.of(context).pop();
+        }
+      });
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    //animation for rating button
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    )..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _controller.reverse();
+        } else if (status == AnimationStatus.dismissed) {
+          _controller.forward();
+        }
+      });
+    _colorAnimation =
+        ColorTween(begin: Colors.green, end: Colors.red).animate(_controller);
+    _controller.forward();
+    //get order details
     _initTimer = Timer.periodic(const Duration(milliseconds: 300), (timer) {
       _getOrderDetailsList();
       _initTimer?.cancel();
@@ -56,6 +246,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   void dispose() {
     // TODO: implement dispose
     _initTimer?.cancel();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -69,6 +260,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         widget.order.appFee +
         widget.order.shippingFee -
         widget.order.promotionDiscount;
+
+    final isCancelled =
+        widget.order.status == OrderStatus.Cancelled.name.toLowerCase();
+
+    final isAbleToCancel = _isAbleToCancel(widget.order);
 
     Widget orderDetailsContent = const SizedBox(
         height: 30,
@@ -138,6 +334,17 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           fontWeight: FontWeight.bold),
                     ),
                   ),
+                  if (isCancelled)
+                    ListTile(
+                      title: const Text('Cancelled By:'),
+                      subtitle: Text(widget.order.cancelledBy.toString()),
+                    ),
+                  if (isCancelled)
+                    ListTile(
+                      title: const Text('Reason:'),
+                      subtitle:
+                          Text(widget.order.cancellationReason ?? 'Unknown'),
+                    ),
                 ],
               ),
             ),
@@ -166,7 +373,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       children: [
                         Text(
                           '${widget.order.customer.lastName} ${widget.order.customer.middleName} ${widget.order.customer.firstName}',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         RatingBarIndicator(
                           rating: widget.order.customer.rating,
@@ -179,6 +388,17 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           direction: Axis.horizontal,
                         ),
                       ],
+                    ),
+                    trailing: Transform.translate(
+                      offset: const Offset(10, 2),
+                      child: RatingButton(
+                        onButtonPressed: () {
+                          _navigateToRatingScreen(
+                              fromUserType: UserType.Merchant,
+                              toUserType: UserType.Customer,
+                              order: widget.order);
+                        },
+                      ),
                     ),
                   ),
                   ListTile(
@@ -235,6 +455,17 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           direction: Axis.horizontal,
                         ),
                       ],
+                    ),
+                    trailing: Transform.translate(
+                      offset: const Offset(10, 2),
+                      child: RatingButton(
+                        onButtonPressed: () {
+                          _navigateToRatingScreen(
+                              fromUserType: UserType.Merchant,
+                              toUserType: UserType.Shipper,
+                              order: widget.order);
+                        },
+                      ),
                     ),
                   ),
                   ListTile(
@@ -300,30 +531,66 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               child: Column(
                 children: [
                   ListTile(
-                    title: const Text('Order Price:'),
-                    subtitle: Text(widget.order.orderPrice.toStringAsFixed(1)),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Order Price:'),
+                        Text(widget.order.orderPrice.toStringAsFixed(1)),
+                      ],
+                    ),
                   ),
                   ListTile(
-                    title: const Text('App Fee:'),
-                    subtitle: Text(widget.order.appFee.toStringAsFixed(1)),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('App Fee:'),
+                        Text(widget.order.appFee.toStringAsFixed(1)),
+                      ],
+                    ),
                   ),
                   ListTile(
-                    title: const Text('Promotion Discount:'),
-                    subtitle: Text(
-                        '-${widget.order.promotionDiscount.toStringAsFixed(1)}'),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Shipping Fee:'),
+                        Text(widget.order.shippingFee.toStringAsFixed(1)),
+                      ],
+                    ),
                   ),
                   ListTile(
-                    title: const Text('Shipping Fee:'),
-                    subtitle: Text(widget.order.shippingFee.toStringAsFixed(1)),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Promotion Discount:'),
+                        Text(
+                            '-${widget.order.promotionDiscount.toStringAsFixed(1)}'),
+                      ],
+                    ),
                   ),
                   const Divider(thickness: 1.0, color: KColors.kTextColor),
                   ListTile(
-                    title: const Text('Total Price:'),
-                    subtitle: Text(totalPrice.toStringAsFixed(1)),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Total Price:'),
+                        Text(totalPrice.toStringAsFixed(1)),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
+
+            if (isAbleToCancel) const SizedBox(height: 10),
+            if (isAbleToCancel) const SizedBox(height: 20),
+            if (isAbleToCancel)
+              ElevatedButton(
+                  onPressed: () {
+                    _showCancellationBottomSheet(context, widget.order);
+                  },
+                  child: const Text('Cancel Order')),
+
+            const SizedBox(height: 30),
           ],
         ),
       ),

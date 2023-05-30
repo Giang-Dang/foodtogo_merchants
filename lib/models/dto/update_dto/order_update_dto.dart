@@ -29,8 +29,8 @@ class OrderUpdateDTO {
       required this.appFee,
       required this.promotionDiscount,
       required this.status,
-      this.cancelledBy = '',
-      this.cancellationReason = ''});
+      required this.cancelledBy,
+      required this.cancellationReason});
 
   factory OrderUpdateDTO.fromJson(Map<String, dynamic> json) {
     return OrderUpdateDTO(
@@ -50,4 +50,24 @@ class OrderUpdateDTO {
         cancelledBy: json['cancelledBy'],
         cancellationReason: json['cancellationReason']);
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'merchantId': merchantId,
+        'shipperId': shipperId,
+        'customerId': customerId,
+        if (promotionId != null) 'promotionId': promotionId,
+        'placedTime': placedTime.toIso8601String(),
+        'eta': eta.toIso8601String(),
+        if (deliveryCompletionTime != null)
+          'deliveryCompletionTime': deliveryCompletionTime!.toIso8601String(),
+        'orderPrice': orderPrice,
+        'shippingFee': shippingFee,
+        'appFee': appFee,
+        'promotionDiscount': promotionDiscount,
+        'status': status,
+        if (cancelledBy != null) 'cancelledBy': cancelledBy,
+        if (cancellationReason != null)
+          'cancellationReason': cancellationReason,
+      };
 }

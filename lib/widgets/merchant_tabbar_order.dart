@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/models/enum/order_status.dart';
@@ -40,8 +40,12 @@ class _MerchantTabbarOrderState extends ConsumerState<MerchantTabbarOrder>
 
     final ordersList = await orderServices.getAll(merchantId: merchantId);
 
+    if (ordersList == null) {
+      log('_getMerchantOrdersListFromServer() ordersList == null');
+      return;
+    }
     if (mounted) {
-      ref.watch(ordersListProvider.notifier).updateOrdersList(_ordersList);
+      ref.watch(ordersListProvider.notifier).updateOrdersList(ordersList);
     }
 
     if (mounted) {
@@ -130,6 +134,15 @@ class _MerchantTabbarOrderState extends ConsumerState<MerchantTabbarOrder>
 
   @override
   Widget build(BuildContext context) {
+    if (_initTimer != null) {
+      if (!_initTimer!.isActive) {
+        final orderListFromProvider = ref.watch(ordersListProvider);
+        if (_ordersList != orderListFromProvider &&
+            orderListFromProvider.isNotEmpty) {
+          _ordersList = orderListFromProvider;
+        }
+      }
+    }
     Widget content = const Center(
       child: CircularProgressIndicator(
         color: KColors.kPrimaryColor,
@@ -184,13 +197,21 @@ class _MerchantTabbarOrderState extends ConsumerState<MerchantTabbarOrder>
                   controller: _tabController,
                   children: [
                     MerchantOrdersListWidget(
-                        ordersList: _getWaitingOrdersList(_ordersList)),
+                      ordersList: _getWaitingOrdersList(_ordersList),
+                      orderListName: 'waiting order',
+                    ),
                     MerchantOrdersListWidget(
-                        ordersList: _getDeliveringOrdersList(_ordersList)),
+                      ordersList: _getDeliveringOrdersList(_ordersList),
+                      orderListName: 'delivering order',
+                    ),
                     MerchantOrdersListWidget(
-                        ordersList: _getCompletedOrdersList(_ordersList)),
+                      ordersList: _getCompletedOrdersList(_ordersList),
+                      orderListName: 'completed order',
+                    ),
                     MerchantOrdersListWidget(
-                        ordersList: _getCancelledOrdersList(_ordersList)),
+                      ordersList: _getCancelledOrdersList(_ordersList),
+                      orderListName: 'cancelled order',
+                    ),
                   ],
                 ),
               ),

@@ -26,7 +26,7 @@ class MenuItemServices {
       Secrets.FoodToGoAPILink,
       _apiUrl,
       {
-        'searchMerchanId': '$merchantId',
+        'searchMerchantId': '$merchantId',
       },
     );
 

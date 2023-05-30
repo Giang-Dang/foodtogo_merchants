@@ -13,8 +13,8 @@ import 'package:http/http.dart' as http;
 class PromotionServices {
   static const _apiUrl = 'api/PromotionAPI';
 
-  Future<List<Promotion>?> getAll(int discountCreatorMerchanId) async {
-    final promotionDTOsList = await getAllDTO(discountCreatorMerchanId);
+  Future<List<Promotion>?> getAll(int discountCreatorMerchantId) async {
+    final promotionDTOsList = await getAllDTO(discountCreatorMerchantId);
 
     if (promotionDTOsList == null) {
       return null;
@@ -25,7 +25,7 @@ class PromotionServices {
     for (var promotionDTO in promotionDTOsList) {
       Promotion promotion = Promotion(
           id: promotionDTO.id,
-          discountCreatorMerchanId: promotionDTO.discountCreatorMerchanId,
+          discountCreatorMerchantId: promotionDTO.discountCreatorMerchantId,
           name: promotionDTO.name,
           description: promotionDTO.description,
           discountPercentage: promotionDTO.discountPercentage,
@@ -43,7 +43,7 @@ class PromotionServices {
   Future<List<PromotionDTO>?> getAllDTO(int discountCreatorMerchantId) async {
     final jwtToken = UserServices.jwtToken;
     final url = Uri.http(Secrets.FoodToGoAPILink, _apiUrl, {
-      'searchMerchanId': discountCreatorMerchantId.toString(),
+      'searchMerchantId': discountCreatorMerchantId.toString(),
     });
 
     final responseJson = await http.get(
@@ -75,7 +75,7 @@ class PromotionServices {
 
     final promotion = Promotion(
       id: promotionId,
-      discountCreatorMerchanId: promotionDTO.discountCreatorMerchanId,
+      discountCreatorMerchantId: promotionDTO.discountCreatorMerchantId,
       name: promotionDTO.name,
       discountPercentage: promotionDTO.discountPercentage,
       discountAmount: promotionDTO.discountAmount,
@@ -117,7 +117,7 @@ class PromotionServices {
 
     final createJson = json.encode({
       "id": 0,
-      "discountCreatorMerchanId": createDTO.discountCreatorMerchanId,
+      "discountCreatorMerchantId": createDTO.discountCreatorMerchantId,
       "name": createDTO.name,
       "description": createDTO.description,
       "discountPercentage": createDTO.discountPercentage,
@@ -154,7 +154,7 @@ class PromotionServices {
 
     final updateJson = json.encode({
       "id": 0,
-      "discountCreatorMerchanId": updateDTO.discountCreatorMerchanId,
+      "discountCreatorMerchantId": updateDTO.discountCreatorMerchantId,
       "name": updateDTO.name,
       "description": updateDTO.description,
       "discountPercentage": updateDTO.discountPercentage,

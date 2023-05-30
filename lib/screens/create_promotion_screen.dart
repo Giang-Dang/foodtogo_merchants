@@ -68,7 +68,7 @@ class _CreatePromotionScreenState extends ConsumerState<CreatePromotionScreen> {
 
       final createDTO = PromotionCreateDTO(
         id: 0,
-        discountCreatorMerchanId: merchantId,
+        discountCreatorMerchantId: merchantId,
         name: _nameController.text,
         description: _descriptionController.text,
         discountPercentage: int.parse(_discountPercentageController.text),
@@ -99,7 +99,7 @@ class _CreatePromotionScreenState extends ConsumerState<CreatePromotionScreen> {
       }
 
       final promotionsList =
-          await promotionServices.getAll(createDTO.discountCreatorMerchanId);
+          await promotionServices.getAll(createDTO.discountCreatorMerchantId);
       ref.watch(promotionsListProvider.notifier).update(promotionsList!);
 
       _showAlertDialog(

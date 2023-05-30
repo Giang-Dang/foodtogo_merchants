@@ -31,11 +31,9 @@ class _PromotionListState extends ConsumerState<PromotionList> {
     final promotionServices = PromotionServices();
     final promotionsList =
         await promotionServices.getAll(widget.merchant.merchantId);
-    if(mounted)
-    {
+    if (mounted) {
       ref.watch(promotionsListProvider.notifier).update(promotionsList ?? []);
     }
-    
   }
 
   PromotionStatus _getPromotionStatus(Promotion promotion) {
@@ -75,6 +73,22 @@ class _PromotionListState extends ConsumerState<PromotionList> {
     _promotionsList.sort((a, b) {
       return _getPromotionStatus(a).index - _getPromotionStatus(b).index;
     });
+
+    if (widget.merchant.isDeleted) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'This merchant has been deleted.',
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    fontSize: 18,
+                  ),
+            ),
+          ],
+        ),
+      );
+    }
 
     Widget content = Center(
       child: Column(

@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
-import 'package:foodtogo_merchants/models/dto/merchant_profile_image_update_dto.dart';
+import 'package:foodtogo_merchants/models/dto/merchant_profile_image_dto.dart';
 import 'package:foodtogo_merchants/models/dto/update_dto/merchant_update_dto.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:foodtogo_merchants/services/merchant_rating_services.dart';
@@ -184,6 +184,7 @@ class MerchantServices {
       "phoneNumber": updateDTO.phoneNumber,
       "geoLatitude": updateDTO.geoLatitude,
       "geoLongitude": updateDTO.geoLongitude,
+      "isDeleted": updateDTO.isDeleted,
     });
 
     final responseJson = await http.put(

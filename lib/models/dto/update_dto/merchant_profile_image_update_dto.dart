@@ -1,6 +1,6 @@
 class MerchantProfileImageUpdateDTO {
   const MerchantProfileImageUpdateDTO({
-    this.id = 0,
+    required this.id,
     required this.merchantId,
     required this.path,
   });

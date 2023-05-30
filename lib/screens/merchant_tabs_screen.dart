@@ -32,14 +32,14 @@ class _MerchantTabsScreenState extends ConsumerState<MerchantTabsScreen> {
   int _selectedPageIndex = 0;
   Widget? _activePage;
   TabBar? _tabBar;
-  bool _isShowfloatingButton = true;
+  late bool _isShowfloatingButton;
 
   void _selectPage(int index, Merchant merchant) {
     setState(() {
       _selectedPageIndex = index;
       if (_selectedPageIndex == MerchantScreenTabName.Menu.index) {
         _activePage = Menu(merchant: merchant);
-        _isShowfloatingButton = true;
+        _isShowfloatingButton = !merchant.isDeleted;
       } else if (_selectedPageIndex == MerchantScreenTabName.Order.index) {
         _activePage = MerchantTabbarOrder(merchantId: merchant.merchantId);
         // _activePage = MerchantOrdersListWidget(merchantId: merchant.merchantId);
@@ -50,7 +50,7 @@ class _MerchantTabsScreenState extends ConsumerState<MerchantTabsScreen> {
         _isShowfloatingButton = false;
       } else if (_selectedPageIndex == MerchantScreenTabName.Promotions.index) {
         _activePage = PromotionList(merchant: merchant);
-        _isShowfloatingButton = true;
+        _isShowfloatingButton = !merchant.isDeleted;
       } else {
         _activePage = Menu(merchant: merchant);
       }
@@ -87,6 +87,7 @@ class _MerchantTabsScreenState extends ConsumerState<MerchantTabsScreen> {
     // TODO: implement initState
     super.initState();
     _activePage = Menu(merchant: widget.merchant);
+    _isShowfloatingButton = !widget.merchant.isDeleted;
   }
 
   @override

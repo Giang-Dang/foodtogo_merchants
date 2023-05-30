@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:foodtogo_merchants/models/customer.dart';
 import 'package:foodtogo_merchants/models/dto/order_dto.dart';
+import 'package:foodtogo_merchants/models/dto/update_dto/order_update_dto.dart';
 import 'package:foodtogo_merchants/models/enum/order_status.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:foodtogo_merchants/models/order.dart';
@@ -140,9 +141,35 @@ class OrderServices {
       promotionDiscount: orderDTO.promotionDiscount,
       status: orderDTO.status,
       cancelledBy: orderDTO.cancelledBy,
+      cancellationReason: orderDTO.cancellationReason,
     );
 
     return order;
+  }
+
+  Future<bool> update(int id, OrderUpdateDTO updateDTO) async {
+    final newApiUrl = '$_apiUrl/$id';
+    final jwtToken = UserServices.jwtToken;
+
+    final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl);
+
+    final requestJson = json.encode(updateDTO.toJson());
+
+    final responseJson = await http.put(url,
+        headers: {
+          'Authorization': 'Bearer $jwtToken',
+          'Content-Type': 'application/json',
+        },
+        body: requestJson);
+
+    if (responseJson.statusCode != HttpStatus.ok) {
+      log('OrderServices.update() responseJson.statusCode != HttpStatus.ok');
+      inspect(responseJson);
+
+      return false;
+    }
+
+    return true;
   }
 
   Color getOrderColor(String orderStatus) {

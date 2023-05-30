@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foodtogo_merchants/models/merchant.dart';
+import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
 import 'package:foodtogo_merchants/screens/merchant_register_screen.dart';
+import 'package:foodtogo_merchants/services/merchant_services.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 import 'package:foodtogo_merchants/widgets/me.dart';
@@ -22,20 +25,28 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectedPageIndex = 0;
   Widget _activePage = const MerchantsList();
 
-  void _selectPage(int index) {
-    setState(() {
-      _selectedPageIndex = index;
+  void _selectPage(int index) async {
+    if (mounted) {
       if (_selectedPageIndex == TabName.Merchant.index) {
-        _activePage = const MerchantsList();
-      } else if (_selectedPageIndex == TabName.Order.index) {
-        _activePage =
-            UserOrdersListWidget(userId: int.parse(UserServices.strUserId));
-      } else if (_selectedPageIndex == TabName.Me.index) {
-        _activePage = const Me();
-      } else {
-        _activePage = const MerchantsList();
+        final MerchantServices merchantServices = MerchantServices();
+        final merchantList = await merchantServices.getAllMerchantsFromUser();
+        ref.watch(merchantsListProvider.notifier).updateMerchants(merchantList);
       }
-    });
+
+      setState(() {
+        _selectedPageIndex = index;
+        if (_selectedPageIndex == TabName.Merchant.index) {
+          _activePage = const MerchantsList();
+        } else if (_selectedPageIndex == TabName.Order.index) {
+          _activePage =
+              UserOrdersListWidget(userId: int.parse(UserServices.strUserId));
+        } else if (_selectedPageIndex == TabName.Me.index) {
+          _activePage = const Me();
+        } else {
+          _activePage = const MerchantsList();
+        }
+      });
+    }
   }
 
   _onFloatingActionButtonPressed() {

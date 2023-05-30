@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:foodtogo_merchants/models/dto/create_dto/mechant_profile_image_create_dto.dart';
-import 'package:foodtogo_merchants/models/dto/merchant_profile_image_update_dto.dart';
+import 'package:foodtogo_merchants/models/dto/merchant_profile_image_dto.dart';
 import 'package:foodtogo_merchants/models/dto/update_dto/merchant_profile_image_update_dto.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/secrets.dart';

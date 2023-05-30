@@ -4,6 +4,7 @@ class UserRatingDTO {
   final String fromUserType;
   final int toUserId;
   final String toUserType;
+  final int orderId;
   final double rating;
 
   UserRatingDTO({
@@ -12,17 +13,19 @@ class UserRatingDTO {
     required this.fromUserType,
     required this.toUserId,
     required this.toUserType,
+    required this.orderId,
     required this.rating,
   });
 
   factory UserRatingDTO.fromJson(Map<String, dynamic> json) {
     return UserRatingDTO(
-      id: json['Id'],
-      fromUserId: json['FromUserId'],
-      fromUserType: json['FromUserType'],
-      toUserId: json['ToUserId'],
-      toUserType: json['ToUserType'],
-      rating: json['Rating'],
+      id: json['id'],
+      fromUserId: json['fromUserId'],
+      fromUserType: json['fromUserType'],
+      toUserId: json['toUserId'],
+      toUserType: json['toUserType'],
+      orderId: json['orderId'],
+      rating: json['rating'],
     );
   }
 }

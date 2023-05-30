@@ -1,6 +1,6 @@
 class PromotionCreateDTO {
   final int id;
-  final int discountCreatorMerchanId;
+  final int discountCreatorMerchantId;
   final String name;
   final String description;
   final int discountPercentage;
@@ -12,7 +12,7 @@ class PromotionCreateDTO {
 
   const PromotionCreateDTO({
     required this.id,
-    required this.discountCreatorMerchanId,
+    required this.discountCreatorMerchantId,
     required this.name,
     this.description = '',
     required this.discountPercentage,
@@ -26,7 +26,7 @@ class PromotionCreateDTO {
   factory PromotionCreateDTO.fromJson(Map<String, dynamic> json) {
     return PromotionCreateDTO(
       id: json['id'],
-      discountCreatorMerchanId: json['discountCreatorMerchanId'],
+      discountCreatorMerchantId: json['discountCreatorMerchantId'],
       name: json['name'],
       description: json['description'],
       discountPercentage: json['discountPercentage'],

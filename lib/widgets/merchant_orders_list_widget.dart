@@ -13,9 +13,11 @@ class MerchantOrdersListWidget extends ConsumerStatefulWidget {
   const MerchantOrdersListWidget({
     Key? key,
     required this.ordersList,
+    required this.orderListName,
   }) : super(key: key);
 
   final List<Order> ordersList;
+  final String orderListName;
 
   @override
   ConsumerState<MerchantOrdersListWidget> createState() =>
@@ -39,6 +41,7 @@ class _MerchantOrdersListWidgetState
   @override
   Widget build(BuildContext context) {
     _ordersList = widget.ordersList;
+
     Widget content = const Center(
       child: CircularProgressIndicator(
         color: KColors.kPrimaryColor,
@@ -48,7 +51,7 @@ class _MerchantOrdersListWidgetState
     if (_ordersList.isEmpty) {
       content = Center(
         child: Text(
-          'You do not have any order yet.',
+          'You do not have any ${widget.orderListName} yet.',
           style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 fontSize: 18,
               ),

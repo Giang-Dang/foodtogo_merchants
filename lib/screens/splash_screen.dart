@@ -89,7 +89,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
     //login
     _loginTimer = Timer.periodic(
-      const Duration(seconds: 1),
+      const Duration(milliseconds: 500),
       (timer) {
         _login();
         _loginTimer?.cancel();

@@ -76,7 +76,8 @@ class _MenuState extends ConsumerState<Menu> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'You don’t have any items in your store yet.',
+            'You don’t have any items in your merchant yet.',
+            textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontSize: 18,
                 ),
@@ -86,6 +87,7 @@ class _MenuState extends ConsumerState<Menu> {
           ),
           Text(
             "Start creating by pressing the '+' button.",
+            textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontSize: 14,
                 ),
@@ -101,6 +103,22 @@ class _MenuState extends ConsumerState<Menu> {
           itemCount: _menuItemList.length,
           itemBuilder: (context, index) =>
               MenuItemWidget(menuItem: _menuItemList[index]),
+        ),
+      );
+    }
+
+    if (widget.merchant.isDeleted) {
+      content = Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'This merchant has been deleted.',
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    fontSize: 18,
+                  ),
+            ),
+          ],
         ),
       );
     }

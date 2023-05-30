@@ -34,6 +34,6 @@ class Order {
       required this.appFee,
       required this.promotionDiscount,
       required this.status,
-      required this.cancelledBy,
-      this.cancellationReason = ''});
+      this.cancelledBy,
+      this.cancellationReason});
 }

@@ -1,4 +1,4 @@
-class UserRatingUpdateDTO {
+class UserRating {
   final int id;
   final int fromUserId;
   final String fromUserType;
@@ -7,7 +7,7 @@ class UserRatingUpdateDTO {
   final int orderId;
   final double rating;
 
-  UserRatingUpdateDTO({
+  UserRating({
     required this.id,
     required this.fromUserId,
     required this.fromUserType,
@@ -17,8 +17,8 @@ class UserRatingUpdateDTO {
     required this.rating,
   });
 
-  factory UserRatingUpdateDTO.fromJson(Map<String, dynamic> json) {
-    return UserRatingUpdateDTO(
+  factory UserRating.fromJson(Map<String, dynamic> json) {
+    return UserRating(
       id: json['id'],
       fromUserId: json['fromUserId'],
       fromUserType: json['fromUserType'],
@@ -28,13 +28,4 @@ class UserRatingUpdateDTO {
       rating: json['rating'],
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'fromUserId': fromUserId,
-        'fromUserType': fromUserType,
-        'toUserId': toUserId,
-        'toUserType': toUserType,
-        'rating': rating,
-      };
 }

@@ -326,7 +326,7 @@ class _CreateMenuItemScreenState extends ConsumerState<EditMenuItemScreen> {
                     const SizedBox(height: 20),
                     const SizedBox(
                         width: double.infinity,
-                        child: Text('Current dish picture:')),
+                        child: Text('Current Dish Picture:')),
                     const SizedBox(height: 5),
                     Container(
                       decoration: BoxDecoration(
@@ -353,7 +353,7 @@ class _CreateMenuItemScreenState extends ConsumerState<EditMenuItemScreen> {
                     const SizedBox(height: 10),
                     const SizedBox(
                         width: double.infinity,
-                        child: Text('New dish picture:')),
+                        child: Text('New Dish Picture:')),
                     const SizedBox(height: 5),
                     ImageInput(
                       onPickImage: (image) {

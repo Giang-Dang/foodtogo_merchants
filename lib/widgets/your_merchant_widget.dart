@@ -1,10 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foodtogo_merchants/models/dto/update_dto/merchant_update_dto.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
+import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
+import 'package:foodtogo_merchants/screens/edit_merchant_screen.dart';
 import 'package:foodtogo_merchants/screens/open_hours_screen.dart';
+import 'package:foodtogo_merchants/services/merchant_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 
-class YourMerchantWidget extends StatefulWidget {
+class YourMerchantWidget extends ConsumerStatefulWidget {
   const YourMerchantWidget({
     Key? key,
     required this.merchant,
@@ -13,10 +20,50 @@ class YourMerchantWidget extends StatefulWidget {
   final Merchant merchant;
 
   @override
-  State<YourMerchantWidget> createState() => _YourMerchantWidgetState();
+  ConsumerState<YourMerchantWidget> createState() => _YourMerchantWidgetState();
 }
 
-class _YourMerchantWidgetState extends State<YourMerchantWidget> {
+class _YourMerchantWidgetState extends ConsumerState<YourMerchantWidget> {
+  bool _isDeleted = false;
+
+  _deleteMerchant(Merchant merchant) async {
+    final MerchantServices merchantServices = MerchantServices();
+
+    final updateDTO = MerchantUpdateDTO(
+        merchantId: merchant.merchantId,
+        userId: merchant.userId,
+        name: merchant.name,
+        address: merchant.address,
+        phoneNumber: merchant.phoneNumber,
+        geoLatitude: merchant.geoLatitude,
+        geoLongitude: merchant.geoLongitude,
+        isDeleted: true);
+
+    final isSuccess =
+        await merchantServices.update(updateDTO, merchant.merchantId);
+
+    if (!isSuccess) {
+      log('_YourMerchantWidgetState._deleteMerchant() isSuccess == false');
+      return;
+    }
+
+    final merchantList = await merchantServices.getAllMerchantsFromUser();
+
+    if (mounted) {
+      ref.watch(merchantsListProvider.notifier).updateMerchants(merchantList);
+      setState(() {
+        _isDeleted = true;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _isDeleted = widget.merchant.isDeleted;
+  }
+
   @override
   Widget build(BuildContext context) {
     final merchant = widget.merchant;
@@ -49,8 +96,10 @@ class _YourMerchantWidgetState extends State<YourMerchantWidget> {
                 ListTile(
                   leading: const Icon(Icons.storefront),
                   title: Text(
-                    merchant.name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    (_isDeleted ? '[Deleted] ' : '') + merchant.name,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: KColors.kPrimaryColor),
                   ),
                   subtitle: RatingBarIndicator(
                     rating: merchant.rating,
@@ -140,26 +189,11 @@ class _YourMerchantWidgetState extends State<YourMerchantWidget> {
                       color: KColors.kPrimaryColor,
                     ),
                     title: const Text("Edit your merchant's profile"),
-                    onTap: () {},
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Material(
-                  elevation: 3,
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: KColors.kOnBackgroundColor,
-                  child: ListTile(
-                    leading: const Icon(
-                      Icons.schedule,
-                      color: KColors.kPrimaryColor,
-                    ),
-                    title: const Text('Set up the opening hours'),
                     onTap: () {
                       if (context.mounted) {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => OpenHoursScreen(
-                            merchant: merchant,
-                          ),
+                          builder: (context) =>
+                              EditMerchantScreen(merchant: merchant),
                         ));
                       }
                     },
@@ -172,13 +206,36 @@ class _YourMerchantWidgetState extends State<YourMerchantWidget> {
                   color: KColors.kOnBackgroundColor,
                   child: ListTile(
                     leading: const Icon(
-                      Icons.date_range,
+                      Icons.schedule,
                       color: KColors.kPrimaryColor,
                     ),
-                    title: const Text('Set up the override opening hours'),
-                    onTap: () {},
+                    title: const Text('Set up the opening times'),
+                    onTap: () {
+                      if (context.mounted) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => OpenHoursScreen(
+                            merchant: merchant,
+                          ),
+                        ));
+                      }
+                    },
                   ),
                 ),
+                // //Set up the override opening times
+                // const SizedBox(height: 10),
+                // Material(
+                //   elevation: 3,
+                //   borderRadius: BorderRadius.circular(10.0),
+                //   color: KColors.kOnBackgroundColor,
+                //   child: ListTile(
+                //     leading: const Icon(
+                //       Icons.date_range,
+                //       color: KColors.kPrimaryColor,
+                //     ),
+                //     title: const Text('Set up the override opening times'),
+                //     onTap: () {},
+                //   ),
+                // ),
                 const SizedBox(height: 10),
                 const Divider(thickness: 1, color: KColors.kOnBackgroundColor),
                 const SizedBox(height: 10),
@@ -186,15 +243,21 @@ class _YourMerchantWidgetState extends State<YourMerchantWidget> {
                   elevation: 3,
                   borderRadius: BorderRadius.circular(10.0),
                   child: ListTile(
-                    leading: const Icon(
-                      Icons.logout,
-                      color: KColors.kPrimaryColor,
+                    leading: Icon(
+                      Icons.delete,
+                      color: _isDeleted ? Colors.grey : KColors.kPrimaryColor,
                     ),
-                    title: const Text(
+                    title: Text(
                       'Delete Merchant',
-                      style: TextStyle(color: KColors.kPrimaryColor),
+                      style: TextStyle(
+                          color:
+                              _isDeleted ? Colors.grey : KColors.kPrimaryColor),
                     ),
-                    onTap: () {},
+                    onTap: _isDeleted
+                        ? null
+                        : () {
+                            _deleteMerchant(merchant);
+                          },
                   ),
                 ),
                 const SizedBox(height: 20)
