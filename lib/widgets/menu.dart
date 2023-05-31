@@ -23,43 +23,45 @@ class Menu extends ConsumerStatefulWidget {
 
 class _MenuState extends ConsumerState<Menu> {
   List<MenuItem> _menuItemList = [];
-  Timer? _initTimer;
+  // Timer? _initTimer;
 
-  _loadMenuItemList(int merchantId) async {
-    final menuItemServices = MenuItemServices();
+  // _loadMenuItemList(int merchantId) async {
+  //   final menuItemServices = MenuItemServices();
 
-    final menuItemList = await menuItemServices.getAllMenuItems(merchantId);
+  //   final menuItemList = await menuItemServices.getAllMenuItems(merchantId);
 
-    if (mounted) {
-      setState(() {
-        _menuItemList = menuItemList ?? [];
-      });
-    }
-  }
+  //   if (mounted) {
+  //     setState(() {
+  //       _menuItemList = menuItemList ?? [];
+  //     });
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
-    _initTimer = Timer.periodic(
-      const Duration(seconds: 1),
-      (timer) {
-        _loadMenuItemList(widget.merchant.merchantId);
-        _initTimer?.cancel();
-      },
-    );
+    // _initTimer = Timer.periodic(
+    //   const Duration(seconds: 1),
+    //   (timer) {
+    //     _loadMenuItemList(widget.merchant.merchantId);
+    //     _initTimer?.cancel();
+    //   },
+    // );
   }
 
   @override
   void dispose() {
-    _initTimer?.cancel();
+    // _initTimer?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_menuItemList.length < ref.watch(menuItemsListProvider).length) {
-      _menuItemList = ref.watch(menuItemsListProvider);
-    }
+    // if (_menuItemList.length < ref.watch(menuItemsListProvider).length) {
+    //   _menuItemList = ref.watch(menuItemsListProvider);
+    // }
+
+    _menuItemList = ref.watch(menuItemsListProvider);
 
     Widget content = Center(
       child: Column(
