@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
-import 'package:foodtogo_merchants/models/dto/merchant_profile_image_dto.dart';
 import 'package:foodtogo_merchants/models/dto/update_dto/merchant_update_dto.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:foodtogo_merchants/services/merchant_rating_services.dart';
@@ -56,7 +55,7 @@ class MerchantServices {
     final newApiUrl = '$apiUrl/$merchantId';
     final jwtToken = UserServices.jwtToken;
 
-    final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, newApiUrl);
 
     final responseJson = await http.get(
       url,
@@ -113,7 +112,7 @@ class MerchantServices {
   Future<List<MerchantDTO>> getAllMerchantsDTOFromUser() async {
     final userId = int.parse(UserServices.strUserId);
     final newApiUrl = '$apiUrl/byuser/$userId';
-    final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, newApiUrl);
     final jwtToken = UserServices.jwtToken;
 
     final responseJson = await http.get(
@@ -131,7 +130,7 @@ class MerchantServices {
   }
 
   Future<bool> create(MerchantCreateDTO createDTO, File image) async {
-    final url = Uri.http(Secrets.FoodToGoAPILink, apiUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, apiUrl);
     final jwtToken = UserServices.jwtToken;
 
     final jsonData = json.encode({
@@ -173,7 +172,7 @@ class MerchantServices {
     MerchantUpdateDTO updateDTO,
     int id,
   ) async {
-    final url = Uri.http(Secrets.FoodToGoAPILink, '$apiUrl/$id');
+    final url = Uri.http(Secrets.kFoodToGoAPILink, '$apiUrl/$id');
     final jwtToken = UserServices.jwtToken;
 
     final jsonData = json.encode({
@@ -203,7 +202,7 @@ class MerchantServices {
   }
 
   Future<bool> delete(int id) async {
-    final url = Uri.http(Secrets.FoodToGoAPILink, '$apiUrl/$id');
+    final url = Uri.http(Secrets.kFoodToGoAPILink, '$apiUrl/$id');
     final jwtToken = UserServices.jwtToken;
 
     final responseJson = await http.delete(
@@ -220,7 +219,7 @@ class MerchantServices {
   }
 
   Future<int> getMerchantId(String name) async {
-    final url = Uri.http(Secrets.FoodToGoAPILink, '$apiUrl/idbyname/$name');
+    final url = Uri.http(Secrets.kFoodToGoAPILink, '$apiUrl/idbyname/$name');
     final jwtToken = UserServices.jwtToken;
 
     final responseJson = await http.get(

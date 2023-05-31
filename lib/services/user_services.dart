@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -11,8 +10,6 @@ import 'package:foodtogo_merchants/models/dto/user_dto.dart';
 import 'package:foodtogo_merchants/models/dto/update_dto/user_update_dto.dart';
 import 'package:foodtogo_merchants/settings/secrets.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart' as syspaths;
 
 const kTokenKeyName = 'loginToken';
 const kUserIdKeyName = 'userId';
@@ -24,7 +21,7 @@ class UserServices {
 
   Future<UserDTO?> get(int userId) async {
     const apiUrl = 'api/UserAPI';
-    final url = Uri.http(Secrets.FoodToGoAPILink, apiUrl, {
+    final url = Uri.http(Secrets.kFoodToGoAPILink, apiUrl, {
       'id': userId.toString(),
     });
 
@@ -50,7 +47,7 @@ class UserServices {
 
   Future<bool> update(int userId, UserUpdateDTO updateDTO) async {
     final apiUrl = 'api/UserAPI/${userId.toString()}';
-    final url = Uri.http(Secrets.FoodToGoAPILink, apiUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, apiUrl);
 
     final jsonData = json.encode({
       "id": updateDTO.id,
@@ -75,7 +72,7 @@ class UserServices {
 
   Future<LoginResponseDTO> login(LoginRequestDTO loginRequestDTO) async {
     const loginAPISubUrl = 'api/UserAPI/login';
-    final url = Uri.http(Secrets.FoodToGoAPILink, loginAPISubUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, loginAPISubUrl);
 
     final jsonData = json.encode({
       "userName": loginRequestDTO.username,
@@ -135,7 +132,7 @@ class UserServices {
 
     final merchantAPIByUserIdLink = 'api/MerchantAPI/byuser/$strUserId';
     final url =
-        Uri.http('${Secrets.FoodToGoAPILink}', '$merchantAPIByUserIdLink');
+        Uri.http(Secrets.kFoodToGoAPILink, merchantAPIByUserIdLink);
 
     final responseJson = await http.get(
       url,
@@ -158,7 +155,7 @@ class UserServices {
 
   Future<APIResponseDTO> register(RegisterRequestDTO registerRequestDTO) async {
     const registerAPISubUrl = 'api/UserAPI/register';
-    final url = Uri.http(Secrets.FoodToGoAPILink, registerAPISubUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, registerAPISubUrl);
 
     final jsonData = json.encode({
       "userName": registerRequestDTO.username,

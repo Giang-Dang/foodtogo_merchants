@@ -8,12 +8,10 @@ import 'package:foodtogo_merchants/models/enum/order_status.dart';
 import 'package:foodtogo_merchants/models/enum/user_type.dart';
 import 'package:foodtogo_merchants/models/order.dart';
 import 'package:foodtogo_merchants/models/order_detail.dart';
-import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
 import 'package:foodtogo_merchants/providers/orders_list_provider.dart';
 import 'package:foodtogo_merchants/screens/rating_user_screen.dart';
 import 'package:foodtogo_merchants/services/order_detail_services.dart';
 import 'package:foodtogo_merchants/services/order_services.dart';
-import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 import 'package:foodtogo_merchants/widgets/rating_button.dart';
 import 'package:intl/intl.dart';
@@ -32,17 +30,12 @@ class OrderDetailsScreen extends ConsumerStatefulWidget {
   ConsumerState<OrderDetailsScreen> createState() => _OrderDetailsScreenState();
 }
 
-class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen>
-    with SingleTickerProviderStateMixin {
+class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
   final OrderDetailServices _orderDetailServices = OrderDetailServices();
   final OrderServices _orderServices = OrderServices();
 
   List<OrderDetail>? _orderDetailsList;
   Timer? _initTimer;
-
-  late final AnimationController _controller;
-  late final Animation<double> _animation;
-  late final Animation<Color?> _colorAnimation;
 
   _getOrderDetailsList() async {
     final orderDetailsList =
@@ -218,23 +211,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    //animation for rating button
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1000),
-    );
-    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    )..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          _controller.reverse();
-        } else if (status == AnimationStatus.dismissed) {
-          _controller.forward();
-        }
-      });
-    _colorAnimation =
-        ColorTween(begin: Colors.green, end: Colors.red).animate(_controller);
-    _controller.forward();
+
     //get order details
     _initTimer = Timer.periodic(const Duration(milliseconds: 300), (timer) {
       _getOrderDetailsList();
@@ -246,7 +223,6 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen>
   void dispose() {
     // TODO: implement dispose
     _initTimer?.cancel();
-    _controller.dispose();
     super.dispose();
   }
 

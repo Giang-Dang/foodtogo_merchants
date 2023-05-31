@@ -1,12 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foodtogo_merchants/models/current_selection.dart';
-import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:foodtogo_merchants/providers/menu_item_list_provider.dart';
 import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
@@ -117,7 +113,7 @@ class _MechantListItemState extends ConsumerState<MerchantListItem> {
       }
 
       final imageUrl =
-          Uri.http(Secrets.FoodToGoAPILink, _merchant!.imagePath).toString();
+          Uri.http(Secrets.kFoodToGoAPILink, _merchant!.imagePath).toString();
       contain = Container(
         margin: const EdgeInsets.symmetric(
           horizontal: 10,

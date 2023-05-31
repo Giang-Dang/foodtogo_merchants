@@ -51,7 +51,7 @@ class _MerchantTabbarOrderState extends ConsumerState<MerchantTabbarOrder>
     if (mounted) {
       setState(() {
         _isLoading = false;
-        _ordersList = ordersList ?? [];
+        _ordersList = ordersList;
       });
     }
   }

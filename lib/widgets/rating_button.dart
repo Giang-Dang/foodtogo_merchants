@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:foodtogo_merchants/models/enum/user_type.dart';
-import 'package:foodtogo_merchants/models/order.dart';
 
 class RatingButton extends StatefulWidget {
   const RatingButton({

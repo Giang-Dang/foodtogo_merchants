@@ -23,7 +23,7 @@ class MenuItemServices {
     final menuItemImageServices = MenuItemImageServices();
 
     final url = Uri.http(
-      Secrets.FoodToGoAPILink,
+      Secrets.kFoodToGoAPILink,
       _apiUrl,
       {
         'searchMerchantId': '$merchantId',
@@ -83,7 +83,7 @@ class MenuItemServices {
     final menuItemImageServices = MenuItemImageServices();
 
     final url = Uri.http(
-      Secrets.FoodToGoAPILink,
+      Secrets.kFoodToGoAPILink,
       newApiUrl,
     );
 
@@ -125,7 +125,7 @@ class MenuItemServices {
   }
 
   Future<bool> create(MenuItemCreateDTO createDTO, File image) async {
-    final url = Uri.http(Secrets.FoodToGoAPILink, _apiUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, _apiUrl);
     final jwtToken = UserServices.jwtToken;
 
     final jsonData = json.encode({
@@ -166,7 +166,7 @@ class MenuItemServices {
     int id,
     MenuItemUpdateDTO updateDTO,
   ) async {
-    final url = Uri.http(Secrets.FoodToGoAPILink, '$_apiUrl/$id');
+    final url = Uri.http(Secrets.kFoodToGoAPILink, '$_apiUrl/$id');
     final jwtToken = UserServices.jwtToken;
 
     final jsonData = json.encode({
@@ -198,7 +198,7 @@ class MenuItemServices {
     MenuItemUpdateDTO updateDTO,
     File? image,
   ) async {
-    final url = Uri.http(Secrets.FoodToGoAPILink, '$_apiUrl/$id');
+    final url = Uri.http(Secrets.kFoodToGoAPILink, '$_apiUrl/$id');
     final jwtToken = UserServices.jwtToken;
 
     final jsonData = json.encode({
@@ -247,7 +247,7 @@ class MenuItemServices {
   }
 
   Future<bool> delete(int id) async {
-    final url = Uri.http(Secrets.FoodToGoAPILink, '$_apiUrl/$id');
+    final url = Uri.http(Secrets.kFoodToGoAPILink, '$_apiUrl/$id');
     final jwtToken = UserServices.jwtToken;
 
     final responseJson = await http.delete(

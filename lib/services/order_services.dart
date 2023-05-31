@@ -89,7 +89,7 @@ class OrderServices {
       queryParams['searchPlacedDate'] = searchPlacedDate.toString();
     }
 
-    final url = Uri.http(Secrets.FoodToGoAPILink, _apiUrl, queryParams);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, _apiUrl, queryParams);
 
     final responseJson = await http.get(url, headers: {
       'Authorization': 'Bearer $jwtToken',
@@ -151,7 +151,7 @@ class OrderServices {
     final newApiUrl = '$_apiUrl/$id';
     final jwtToken = UserServices.jwtToken;
 
-    final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, newApiUrl);
 
     final requestJson = json.encode(updateDTO.toJson());
 

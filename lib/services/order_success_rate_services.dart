@@ -11,7 +11,7 @@ class OrderSuccessRateServices {
   Future<OrderSuccessRate?> getSuccessRate(int userId, String asType) async {
     final jwtToken = UserServices.jwtToken;
 
-    final url = Uri.http(Secrets.FoodToGoAPILink, _apiUrl,
+    final url = Uri.http(Secrets.kFoodToGoAPILink, _apiUrl,
         {'userId': userId.toString(), 'asType': asType});
 
     final responseJson = await http.get(url, headers: {

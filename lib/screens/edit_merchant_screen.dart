@@ -199,7 +199,8 @@ class _EditMerchantScreenState extends ConsumerState<EditMerchantScreen> {
   Widget build(BuildContext context) {
     final jwtToken = UserServices.jwtToken;
     final imageUrl =
-        Uri.http(Secrets.FoodToGoAPILink, widget.merchant.imagePath).toString();
+        Uri.http(Secrets.kFoodToGoAPILink, widget.merchant.imagePath)
+            .toString();
 
     return Scaffold(
       appBar: AppBar(

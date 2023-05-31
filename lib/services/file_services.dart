@@ -1,9 +1,7 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/secrets.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FileServices {
@@ -11,7 +9,7 @@ class FileServices {
     final token = UserServices.jwtToken;
     const fileAPISubUrl = 'api/FileAPI';
 
-    var uri = Uri.http(Secrets.FoodToGoAPILink, fileAPISubUrl);
+    var uri = Uri.http(Secrets.kFoodToGoAPILink, fileAPISubUrl);
     var request = http.MultipartRequest('POST', uri)
       ..headers['Authorization'] = 'Bearer $token';
     request.files.add(await http.MultipartFile.fromPath('file', image.path));
@@ -27,7 +25,7 @@ class FileServices {
   }
 
   Future<File> getImage(String filePath) async {
-    final url = Uri.http(Secrets.FoodToGoAPILink, filePath);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, filePath);
     final response = await http.get(url, headers: {
       'Authorization': 'Bearer ${UserServices.jwtToken}',
     });

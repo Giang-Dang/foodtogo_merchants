@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:foodtogo_merchants/models/dto/create_dto/user_rating_create_dto.dart';
 import 'package:foodtogo_merchants/models/dto/update_dto/user_rating_update_dto.dart';
 import 'package:foodtogo_merchants/models/dto/user_rating_dto.dart';
-import 'package:foodtogo_merchants/models/order_success_rate.dart';
 import 'package:foodtogo_merchants/models/user_rating.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/secrets.dart';
@@ -16,7 +15,7 @@ class UserRatingServices {
   Future<double?> getAvgRating(int userId, String asType) async {
     const newApiUrl = '$_apiUrl/avgrating';
     final jwtToken = UserServices.jwtToken;
-    final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl, {
+    final url = Uri.http(Secrets.kFoodToGoAPILink, newApiUrl, {
       'toUserId': userId.toString(),
       'asType': asType,
     });
@@ -113,7 +112,7 @@ class UserRatingServices {
       queryParams['rating'] = rating.toString();
     }
 
-    final url = Uri.http(Secrets.FoodToGoAPILink, _apiUrl, queryParams);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, _apiUrl, queryParams);
 
     final responseJson = await http.get(url, headers: {
       'Authorization': 'Bearer $jwtToken',
@@ -137,7 +136,7 @@ class UserRatingServices {
 
   Future<UserRatingDTO?> create(UserRatingCreateDTO createDTO) async {
     final jwtToken = UserServices.jwtToken;
-    final url = Uri.http(Secrets.FoodToGoAPILink, _apiUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, _apiUrl);
 
     final requestJson = json.encode(createDTO.toJson());
 
@@ -165,7 +164,7 @@ class UserRatingServices {
   Future<bool> update(int id, UserRatingUpdateDTO updateDTO) async {
     final newApiUrl = '$_apiUrl/$id';
     final jwtToken = UserServices.jwtToken;
-    final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, newApiUrl);
 
     final requestJson = json.encode(updateDTO.toJson());
 

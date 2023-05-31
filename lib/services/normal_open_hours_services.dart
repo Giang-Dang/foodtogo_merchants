@@ -100,7 +100,7 @@ class NormalOpenHoursServices {
       queryParams['searchOpenTime'] = searchCloseDateTime.toString();
     }
 
-    final url = Uri.http(Secrets.FoodToGoAPILink, _apiUrl, queryParams);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, _apiUrl, queryParams);
 
     final responseJson = await http.get(url, headers: {
       'Authorization': 'Bearer $jwtToken',
@@ -125,7 +125,7 @@ class NormalOpenHoursServices {
   Future<NormalOpenHours?> create(NormalOpenHoursCreateDTO createDTO) async {
     final jwtToken = UserServices.jwtToken;
 
-    final url = Uri.http(Secrets.FoodToGoAPILink, _apiUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, _apiUrl);
 
     final requestJson = json.encode(createDTO.toJson());
 
@@ -157,7 +157,7 @@ class NormalOpenHoursServices {
 
     final requestJson = updateDTO.toJson();
 
-    final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, newApiUrl);
 
     final responseJson = await http.put(url,
         headers: {

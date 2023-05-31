@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
 import 'package:foodtogo_merchants/models/menu_item.dart';
 
 class MenuItemsListNotifier extends StateNotifier<List<MenuItem>> {

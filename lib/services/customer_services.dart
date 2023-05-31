@@ -48,7 +48,7 @@ class CustomerServices {
     final newApiUrl = '$apiUrl/$customerId';
     final jwtToken = UserServices.jwtToken;
 
-    final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, newApiUrl);
 
     final resonseJson = await http.get(url, headers: {
       'Authorization': 'Bearer $jwtToken',

@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:foodtogo_merchants/models/enum/days_of_week.dart';

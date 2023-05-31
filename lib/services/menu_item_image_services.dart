@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:foodtogo_merchants/models/dto/create_dto/menu_item_image_create_dto.dart';
@@ -14,7 +13,7 @@ class MenuItemImageServices {
 
   Future<MenuItemImageDTO?> getByMenuItem(int menuItemId) async {
     final newApiUrl = '$apiUrl/bymenuitem/$menuItemId';
-    final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, newApiUrl);
     final jwtToken = UserServices.jwtToken;
 
     final responseJson = await http.get(
@@ -37,7 +36,7 @@ class MenuItemImageServices {
   }
 
   Future<bool> create(MenuItemImageCreateDTO createDTO) async {
-    final url = Uri.http(Secrets.FoodToGoAPILink, apiUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, apiUrl);
     final jwtToken = UserServices.jwtToken;
 
     final jsonData = json.encode({
@@ -65,7 +64,7 @@ class MenuItemImageServices {
     MenuItemImageUpdateDTO updateDTO,
     int id,
   ) async {
-    final url = Uri.http(Secrets.FoodToGoAPILink, '$apiUrl/$id');
+    final url = Uri.http(Secrets.kFoodToGoAPILink, '$apiUrl/$id');
     final jwtToken = UserServices.jwtToken;
 
     final jsonData = json.encode({
@@ -90,7 +89,7 @@ class MenuItemImageServices {
   }
 
   Future<bool> delete(int id) async {
-    final url = Uri.http(Secrets.FoodToGoAPILink, '$apiUrl/$id');
+    final url = Uri.http(Secrets.kFoodToGoAPILink, '$apiUrl/$id');
     final jwtToken = UserServices.jwtToken;
 
     final responseJson = await http.delete(

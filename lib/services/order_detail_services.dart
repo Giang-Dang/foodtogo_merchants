@@ -52,6 +52,7 @@ class OrderDetailServices {
     }
 
     log('OrderDetailServices.getAll() orderDetailDTOsList == null');
+    return null;
   }
 
   Future<List<OrderDetailDTO>?> getAllDTOs({
@@ -74,7 +75,7 @@ class OrderDetailServices {
       queryParams['searchItemId'] = searchItemId.toString();
     }
 
-    final url = Uri.http(Secrets.FoodToGoAPILink, _apiUrl, queryParams);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, _apiUrl, queryParams);
 
     final responseJson = await http.get(
       url,

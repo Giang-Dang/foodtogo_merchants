@@ -1,13 +1,10 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foodtogo_merchants/models/dto/create_dto/menu_item_create_dto.dart';
 import 'package:foodtogo_merchants/models/dto/menu_item_type_dto.dart';
 import 'package:foodtogo_merchants/models/dto/update_dto/menu_item_update_dto.dart';
 import 'package:foodtogo_merchants/models/menu_item.dart';
-import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:foodtogo_merchants/providers/menu_item_list_provider.dart';
 import 'package:foodtogo_merchants/services/file_services.dart';
 import 'package:foodtogo_merchants/services/menu_item_services.dart';
@@ -172,7 +169,7 @@ class _CreateMenuItemScreenState extends ConsumerState<EditMenuItemScreen> {
     final menuItem = widget.menuItem;
     final jwtToken = UserServices.jwtToken;
     final imageUrl =
-        Uri.http(Secrets.FoodToGoAPILink, menuItem.imagePath).toString();
+        Uri.http(Secrets.kFoodToGoAPILink, menuItem.imagePath).toString();
 
     Widget waitingContain = const Center(
       child: CircularProgressIndicator(),

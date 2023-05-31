@@ -32,12 +32,12 @@ class LocationServices {
   }
 
   String getlocationImageUrl(double lat, double lng) {
-    return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng&zoom=13&size=600x300&maptype=roadmap&markers=color:red%7Clabel:S%7C$lat,$lng&key=${Secrets.MapsAPIKey}';
+    return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng&zoom=13&size=600x300&maptype=roadmap&markers=color:red%7Clabel:S%7C$lat,$lng&key=${Secrets.kMapsAPIKey}';
   }
 
   Future<String> getAddress(double lat, double lng) async {
     final url = Uri.parse(
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=${Secrets.MapsAPIKey}');
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=${Secrets.kMapsAPIKey}');
 
     final response = await http.get(url);
     final resData = json.decode(response.body);
@@ -50,7 +50,7 @@ class LocationServices {
       '/maps/api/geocode/json',
       {
         'address': address,
-        'key': Secrets.MapsAPIKey,
+        'key': Secrets.kMapsAPIKey,
       },
     );
     final response = await http.get(uri);

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
 import 'package:foodtogo_merchants/screens/create_menu_item_screen.dart';
 import 'package:foodtogo_merchants/screens/create_promotion_screen.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:foodtogo_merchants/widgets/menu.dart';
-import 'package:foodtogo_merchants/widgets/merchant_orders_list_widget.dart';
 import 'package:foodtogo_merchants/widgets/merchant_tabbar_order.dart';
 import 'package:foodtogo_merchants/widgets/promotion_list.dart';
 import 'package:foodtogo_merchants/widgets/your_merchant_widget.dart';
@@ -31,7 +29,6 @@ class MerchantTabsScreen extends ConsumerStatefulWidget {
 class _MerchantTabsScreenState extends ConsumerState<MerchantTabsScreen> {
   int _selectedPageIndex = 0;
   Widget? _activePage;
-  TabBar? _tabBar;
   late bool _isShowfloatingButton;
 
   void _selectPage(int index, Merchant merchant) {

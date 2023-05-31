@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foodtogo_merchants/models/dto/menu_item_dto.dart';
-import 'package:foodtogo_merchants/models/dto/merchant_dto.dart';
 import 'package:foodtogo_merchants/models/menu_item.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:foodtogo_merchants/providers/menu_item_list_provider.dart';
@@ -25,24 +23,16 @@ class Menu extends ConsumerStatefulWidget {
 
 class _MenuState extends ConsumerState<Menu> {
   List<MenuItem> _menuItemList = [];
-  bool _isLoadingItems = false;
   Timer? _initTimer;
 
   _loadMenuItemList(int merchantId) async {
     final menuItemServices = MenuItemServices();
-
-    if (mounted) {
-      setState(() {
-        _isLoadingItems = true;
-      });
-    }
 
     final menuItemList = await menuItemServices.getAllMenuItems(merchantId);
 
     if (mounted) {
       setState(() {
         _menuItemList = menuItemList ?? [];
-        _isLoadingItems = false;
       });
     }
   }

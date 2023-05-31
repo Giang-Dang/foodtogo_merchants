@@ -10,7 +10,7 @@ class MerchantRatingServices {
   Future<double?> getAvgRating(int merchantId) async {
     const newApiUrl = '$_apiUrl/avgrating';
     final jwtToken = UserServices.jwtToken;
-    final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl, {
+    final url = Uri.http(Secrets.kFoodToGoAPILink, newApiUrl, {
       'toMerchantId': merchantId.toString(),
     });
 

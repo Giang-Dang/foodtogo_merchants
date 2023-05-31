@@ -1,15 +1,10 @@
 import 'dart:async';
-import 'dart:developer';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/models/dto/update_dto/menu_item_update_dto.dart';
 import 'package:foodtogo_merchants/models/menu_item.dart';
-import 'package:foodtogo_merchants/providers/menu_item_list_provider.dart';
 import 'package:foodtogo_merchants/screens/edit_menu_item_screen.dart';
-import 'package:foodtogo_merchants/services/file_services.dart';
-import 'package:foodtogo_merchants/services/menu_item_image_services.dart';
 import 'package:foodtogo_merchants/services/menu_item_services.dart';
 import 'package:foodtogo_merchants/services/menu_item_type_services.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
@@ -121,7 +116,7 @@ class _MechantListItemState extends ConsumerState<MenuItemWidget> {
 
     if (_menuItem != null) {
       final imageUrl =
-          Uri.http(Secrets.FoodToGoAPILink, _menuItem!.imagePath).toString();
+          Uri.http(Secrets.kFoodToGoAPILink, _menuItem!.imagePath).toString();
 
       Widget trailingContent = const SizedBox(
         width: 30,

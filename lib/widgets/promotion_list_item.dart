@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:foodtogo_merchants/models/enum/promotion_status.dart';
 import 'package:foodtogo_merchants/models/promotion.dart';
 import 'package:foodtogo_merchants/screens/promotion_details_screen.dart';

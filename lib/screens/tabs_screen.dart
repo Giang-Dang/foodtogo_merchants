@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
 import 'package:foodtogo_merchants/screens/merchant_register_screen.dart';
 import 'package:foodtogo_merchants/services/merchant_services.dart';

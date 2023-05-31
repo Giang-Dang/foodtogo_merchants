@@ -42,7 +42,7 @@ class PromotionServices {
 
   Future<List<PromotionDTO>?> getAllDTO(int discountCreatorMerchantId) async {
     final jwtToken = UserServices.jwtToken;
-    final url = Uri.http(Secrets.FoodToGoAPILink, _apiUrl, {
+    final url = Uri.http(Secrets.kFoodToGoAPILink, _apiUrl, {
       'searchMerchantId': discountCreatorMerchantId.toString(),
     });
 
@@ -91,7 +91,7 @@ class PromotionServices {
   Future<PromotionDTO?> getDTO(int promotionId) async {
     final jwtToken = UserServices.jwtToken;
     final newApiUrl = '$_apiUrl/$promotionId';
-    final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, newApiUrl);
 
     final responseJson = await http.get(
       url,
@@ -113,7 +113,7 @@ class PromotionServices {
 
   Future<bool> create(PromotionCreateDTO createDTO) async {
     final jwtToken = UserServices.jwtToken;
-    final url = Uri.http(Secrets.FoodToGoAPILink, _apiUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, _apiUrl);
 
     final createJson = json.encode({
       "id": 0,
@@ -150,7 +150,7 @@ class PromotionServices {
   Future<bool> update(int promotionId, PromotionUpdateDTO updateDTO) async {
     final newApiUrl = '$_apiUrl/$promotionId';
     final jwtToken = UserServices.jwtToken;
-    final url = Uri.http(Secrets.FoodToGoAPILink, newApiUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, newApiUrl);
 
     final updateJson = json.encode({
       "id": 0,

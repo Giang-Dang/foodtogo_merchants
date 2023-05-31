@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/models/dto/create_dto/promotion_create_dto.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
-import 'package:foodtogo_merchants/models/promotion.dart';
 import 'package:foodtogo_merchants/providers/promotions_list_provider.dart';
 import 'package:foodtogo_merchants/services/promotion_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
