@@ -1,4 +1,3 @@
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -47,13 +46,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       final loginResponseDTO = await _userServices.login(loginRequestDTO);
 
-      final merchantList = await _merchantDTOServices.getAllMerchantsFromUser();
-      ref.watch(merchantsListProvider.notifier).updateMerchants(merchantList);
-
-      final promotionsList =
-          await _promotionServices.getAll(int.parse(UserServices.strUserId));
-      ref.watch(promotionsListProvider.notifier).update(promotionsList ?? []);
-
       setState(() {
         _isLogining = false;
       });
@@ -66,6 +58,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         setState(() {
           _isLoginFailed = false;
         });
+
+        final merchantList =
+            await _merchantDTOServices.getAllMerchantsFromUser();
+        ref.watch(merchantsListProvider.notifier).updateMerchants(merchantList);
+
+        final promotionsList =
+            await _promotionServices.getAll(int.parse(UserServices.strUserId));
+        ref.watch(promotionsListProvider.notifier).update(promotionsList ?? []);
+
         if (context.mounted) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
