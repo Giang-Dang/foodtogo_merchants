@@ -114,6 +114,7 @@ class _MechantListItemState extends ConsumerState<MerchantListItem> {
 
       final imageUrl =
           Uri.http(Secrets.kFoodToGoAPILink, _merchant!.imagePath).toString();
+
       contain = Container(
         margin: const EdgeInsets.symmetric(
           horizontal: 10,

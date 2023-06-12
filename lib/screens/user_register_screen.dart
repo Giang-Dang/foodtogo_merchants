@@ -27,8 +27,16 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
   late bool _isPasswordObscured;
   late bool _isReEnterPasswordObscured;
 
+  bool _isRegistering = false;
+
   _onRegisterPressed() async {
     if (_formKey.currentState!.validate()) {
+      if (mounted) {
+        setState(() {
+          _isRegistering = true;
+        });
+      }
+
       final requestDTO = RegisterRequestDTO(
         username: _usernameController.text,
         password: _passwordController.text,
@@ -38,10 +46,16 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
 
       final apiResponse = await _userServices.register(requestDTO);
 
+      if (mounted) {
+        setState(() {
+          _isRegistering = false;
+        });
+      }
+
       if (!apiResponse.isSuccess) {
         _showAlertDialog(
           'Sorry',
-          'Unable to create your merchant at the moment. Please try again at a later time.',
+          'Unable to create your account at the moment. Please try again at a later time.',
           () {
             Navigator.of(context).pop();
           },
@@ -50,7 +64,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
 
       _showAlertDialog(
         'Success',
-        'We have successfully created your merchant.',
+        'We have successfully created your account.',
         () {
           Navigator.pop(context);
           Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -293,7 +307,9 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                 onPressed: () {
                   _onRegisterPressed();
                 },
-                child: const Text('Register'),
+                child: _isRegistering
+                    ? const CircularProgressIndicator()
+                    : const Text('Register'),
               ),
               const SizedBox(height: 15),
               RichText(
