@@ -164,7 +164,6 @@ class _MerchantTabbarOrderState extends ConsumerState<MerchantTabbarOrder>
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              // give the tab bar a height [can change hheight to preferred height]
               Container(
                 height: 35,
                 decoration: BoxDecoration(
