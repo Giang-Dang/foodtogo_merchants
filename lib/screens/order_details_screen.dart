@@ -510,7 +510,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Order Price:'),
+                        const Text('Subtotal Price:'),
                         Text(widget.order.orderPrice.toStringAsFixed(1)),
                       ],
                     ),

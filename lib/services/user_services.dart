@@ -125,14 +125,13 @@ class UserServices {
     // print('strUserId $strUserId');
     if (jwtToken == "" || strUserId == "") {
       isAuthorized = false;
-      jwtToken == "";
-      strUserId == "";
+      jwtToken = "";
+      strUserId = "";
       return;
     }
 
     final merchantAPIByUserIdLink = 'api/MerchantAPI/byuser/$strUserId';
-    final url =
-        Uri.http(Secrets.kFoodToGoAPILink, merchantAPIByUserIdLink);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, merchantAPIByUserIdLink);
 
     final responseJson = await http.get(
       url,
@@ -148,8 +147,8 @@ class UserServices {
     }
 
     isAuthorized = false;
-    jwtToken == "";
-    strUserId == "";
+    jwtToken = "";
+    strUserId = "";
     return;
   }
 
