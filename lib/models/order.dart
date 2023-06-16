@@ -6,7 +6,7 @@ import 'package:foodtogo_merchants/models/shipper.dart';
 class Order {
   final int id;
   final Merchant merchant;
-  final Shipper shipper;
+  final Shipper? shipper;
   final Customer customer;
   final Promotion? promotion;
   final DateTime placedTime;
@@ -23,12 +23,12 @@ class Order {
   const Order(
       {required this.id,
       required this.merchant,
-      required this.shipper,
+      this.shipper,
       required this.customer,
-      required this.promotion,
+      this.promotion,
       required this.placedTime,
       required this.eta,
-      required this.deliveryCompletionTime,
+      this.deliveryCompletionTime,
       required this.orderPrice,
       required this.shippingFee,
       required this.appFee,

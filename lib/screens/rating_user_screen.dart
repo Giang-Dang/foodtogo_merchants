@@ -125,7 +125,11 @@ class _RatingUserScreenState extends State<RatingUserScreen> {
       return order.customer.customerId;
     }
     if (userType == UserType.Shipper) {
-      return order.shipper.userId;
+      if (order.shipper == null) {
+        log('_getId order.shipper == null');
+        return 0;
+      }
+      return order.shipper!.userId;
     }
     if (userType == UserType.Merchant) {
       return order.merchant.userId; //must be a user Id for UserRating Table
@@ -138,7 +142,11 @@ class _RatingUserScreenState extends State<RatingUserScreen> {
       return '${order.customer.lastName} ${order.customer.middleName} ${order.customer.firstName}';
     }
     if (userType == UserType.Shipper) {
-      return '${order.shipper.lastName} ${order.shipper.middleName} ${order.shipper.firstName}';
+      if (order.shipper == null) {
+        log('_getName order.shipper == null');
+        return '';
+      }
+      return '${order.shipper!.lastName} ${order.shipper!.middleName} ${order.shipper!.firstName}';
     }
     if (userType == UserType.Merchant) {
       return order.merchant.name;

@@ -1,7 +1,7 @@
 class OrderDTO {
   final int id;
   final int merchantId;
-  final int shipperId;
+  final int? shipperId;
   final int customerId;
   final int? promotionId;
   final DateTime placedTime;
@@ -18,12 +18,12 @@ class OrderDTO {
   const OrderDTO(
       {required this.id,
       required this.merchantId,
-      required this.shipperId,
+      this.shipperId,
       required this.customerId,
-      required this.promotionId,
+      this.promotionId,
       required this.placedTime,
       required this.eta,
-      required this.deliveryCompletionTime,
+      this.deliveryCompletionTime,
       required this.orderPrice,
       required this.shippingFee,
       required this.appFee,

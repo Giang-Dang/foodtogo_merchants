@@ -59,12 +59,20 @@ class _MerchantTabbarOrderState extends ConsumerState<MerchantTabbarOrder>
   List<Order> _getWaitingOrdersList(List<Order> ordersList) {
     final resultsList = ordersList
         .where((order) =>
+            order.status == OrderStatus.Placed.name.toLowerCase() ||
             order.status == OrderStatus.Getting.name.toLowerCase() ||
             order.status == OrderStatus.DriverAtMerchant.name.toLowerCase())
         .toList();
 
     if (resultsList.isNotEmpty) {
       resultsList.sort((a, b) {
+        if (a.status == OrderStatus.Placed.name.toLowerCase() &&
+            b.status != OrderStatus.Placed.name.toLowerCase()) {
+          return -1;
+        } else if (b.status == OrderStatus.Placed.name.toLowerCase() &&
+            a.status != OrderStatus.Placed.name.toLowerCase()) {
+          return 1;
+        }
         if (a.status == OrderStatus.DriverAtMerchant.name.toLowerCase() &&
             b.status != OrderStatus.DriverAtMerchant.name.toLowerCase()) {
           return -1;

@@ -24,16 +24,16 @@ class OrderServices {
   static const _apiUrl = 'api/OrderAPI';
 
   Future<List<Order>?> getAll({
-    int merchantId = 0,
-    int customerId = 0,
-    int shipperId = 0,
-    int promotionId = 0,
+    int? merchantId,
+    int? customerId,
+    int? shipperId,
+    int? promotionId,
     String? searchStatus,
     DateTime? searchPlacedDate,
-    int pageSize = 0,
-    int pageNumber = 1,
+    int? pageSize,
+    int? pageNumber,
   }) async {
-    final orderDTOList = await getAllDTO(
+    final orderDTOList = await getAllDTOs(
       merchantId: merchantId,
       customerId: customerId,
       shipperId: shipperId,
@@ -51,7 +51,7 @@ class OrderServices {
     List<Order> ordersList = [];
 
     for (var orderDTO in orderDTOList) {
-      var order = await getFromDTO(orderDTO);
+      var order = await get(orderDTO);
       if (order == null) {
         return null;
       }
@@ -61,32 +61,40 @@ class OrderServices {
     return ordersList;
   }
 
-  Future<List<OrderDTO>?> getAllDTO({
-    int merchantId = 0,
-    int customerId = 0,
-    int shipperId = 0,
-    int promotionId = 0,
+  Future<List<OrderDTO>?> getAllDTOs({
+    int? merchantId,
+    int? customerId,
+    int? shipperId,
+    int? promotionId,
     String? searchStatus,
     DateTime? searchPlacedDate,
-    int pageSize = 0,
-    int pageNumber = 1,
+    int? pageSize,
+    int? pageNumber,
   }) async {
     final jwtToken = UserServices.jwtToken;
 
     final queryParams = <String, String>{};
-    queryParams.addAll({
-      'searchCustomerId': customerId.toString(),
-      'searchMerchantId': merchantId.toString(),
-      'searchShipperId': shipperId.toString(),
-      'searchPromotionId': promotionId.toString(),
-      'pageSize': pageSize.toString(),
-      'pageNumber': pageNumber.toString(),
-    });
+    if (merchantId != null) {
+      queryParams['searchMerchantId'] = merchantId.toString();
+    }
+    if (customerId != null) {
+      queryParams['searchCustomerId'] = customerId.toString();
+    }
+    if (shipperId != null) {
+      queryParams['searchShipperId'] = shipperId.toString();
+    }
+    if (promotionId != null) {
+      queryParams['searchPromotionId'] = promotionId.toString();
+    }
     if (searchStatus != null) {
       queryParams['searchStatus'] = searchStatus;
     }
     if (searchPlacedDate != null) {
       queryParams['searchPlacedDate'] = searchPlacedDate.toString();
+    }
+    if (pageSize != null && pageNumber != null) {
+      queryParams['pageSize'] = pageSize.toString();
+      queryParams['pageNumber'] = pageNumber.toString();
     }
 
     final url = Uri.http(Secrets.kFoodToGoAPILink, _apiUrl, queryParams);
@@ -108,7 +116,7 @@ class OrderServices {
     return null;
   }
 
-  Future<Order?> getFromDTO(OrderDTO orderDTO) async {
+  Future<Order?> get(OrderDTO orderDTO) async {
     final MerchantServices merchantServices = MerchantServices();
     final CustomerServices customerServices = CustomerServices();
     final ShipperServices shipperServices = ShipperServices();
@@ -116,13 +124,17 @@ class OrderServices {
 
     final Merchant? merchant = await merchantServices.get(orderDTO.merchantId);
     final Customer? customer = await customerServices.get(orderDTO.customerId);
-    final Shipper? shipper = await shipperServices.get(orderDTO.shipperId);
+    Shipper? shipper;
+    if (orderDTO.shipperId != null) {
+      shipper = await shipperServices.get(orderDTO.shipperId!);
+    }
+
     Promotion? promotion;
     if (orderDTO.promotionId != null) {
       promotion = await promotionServices.get(orderDTO.promotionId!);
     }
 
-    if (merchant == null || customer == null || shipper == null) {
+    if (merchant == null || customer == null) {
       return null;
     }
 
@@ -199,10 +211,10 @@ class OrderServices {
 
   String getOrderStatusInfo(String orderStatus) {
     if (orderStatus == OrderStatus.Placed.name.toLowerCase()) {
-      return 'Order is placed';
+      return 'The order has been placed.';
     }
     if (orderStatus == OrderStatus.Getting.name.toLowerCase()) {
-      return 'shipper is picking up the package.';
+      return 'Shipper is picking up the package.';
     }
     if (orderStatus == OrderStatus.DriverAtMerchant.name.toLowerCase()) {
       return 'Shipper is at the merchant';

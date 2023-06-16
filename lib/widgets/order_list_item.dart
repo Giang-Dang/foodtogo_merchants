@@ -4,12 +4,13 @@ import 'package:foodtogo_merchants/models/order.dart';
 import 'package:foodtogo_merchants/screens/order_details_screen.dart';
 import 'package:foodtogo_merchants/services/order_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
+import 'package:foodtogo_merchants/widgets/order_list_item_shipper_widget.dart';
 import 'package:intl/intl.dart';
 
 final timeFormatter = DateFormat('HH:mm:ss');
 final dateFormatter = DateFormat.MMMd();
 
-class OrderListItem extends ConsumerStatefulWidget {
+class OrderListItem extends StatelessWidget {
   const OrderListItem({
     Key? key,
     required this.order,
@@ -17,12 +18,7 @@ class OrderListItem extends ConsumerStatefulWidget {
 
   final Order order;
 
-  @override
-  ConsumerState<OrderListItem> createState() => _MerchantOrderListItemState();
-}
-
-class _MerchantOrderListItemState extends ConsumerState<OrderListItem> {
-  _onTapListTile(Order order) {
+  _onTapListTile(BuildContext context, Order order) {
     if (context.mounted) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => OrderDetailsScreen(order: order),
@@ -32,7 +28,6 @@ class _MerchantOrderListItemState extends ConsumerState<OrderListItem> {
 
   @override
   Widget build(BuildContext context) {
-    final order = widget.order;
     final OrderServices orderServices = OrderServices();
 
     Widget contain = const ListTile(
@@ -52,37 +47,9 @@ class _MerchantOrderListItemState extends ConsumerState<OrderListItem> {
         type: MaterialType.transparency,
         child: ListTile(
           onTap: () {
-            _onTapListTile(order);
+            _onTapListTile(context, order);
           },
-          title: Transform.translate(
-            offset: const Offset(0, -3),
-            child: Row(children: [
-              const Icon(
-                Icons.sports_motorsports,
-                size: 20,
-                color: KColors.kLightTextColor,
-              ),
-              Text(
-                " : ${order.shipper.lastName} ${order.shipper.middleName} ${order.shipper.firstName}    ",
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: orderServices.getOrderColor(order.status),
-                      fontSize: 15,
-                    ),
-              ),
-              const Icon(
-                Icons.two_wheeler,
-                size: 20,
-                color: KColors.kLightTextColor,
-              ),
-              Text(
-                " : ${order.shipper.vehicleNumberPlate}",
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: orderServices.getOrderColor(order.status),
-                      fontSize: 15,
-                    ),
-              ),
-            ]),
-          ),
+          title: OrderListItemShipperWidget(order: order),
           subtitle: Transform.translate(
             offset: const Offset(0, 5),
             child: Row(

@@ -39,10 +39,10 @@ class _UserOrdersListWidgetState extends ConsumerState<UserOrdersListWidget> {
 
     List<Order>? ordersList = [];
     for (var merchant in merchantsList) {
-      var tempMerchantsList =
+      var tempOrderList =
           await orderServices.getAll(merchantId: merchant.merchantId);
-      if (tempMerchantsList != null) {
-        ordersList!.addAll(tempMerchantsList);
+      if (tempOrderList != null) {
+        ordersList!.addAll(tempOrderList);
         ordersList = ordersList
             .where((e) =>
                 e.status.toLowerCase() ==
@@ -56,6 +56,7 @@ class _UserOrdersListWidgetState extends ConsumerState<UserOrdersListWidget> {
         ordersList = null;
         break;
       }
+      
     }
 
     if (ordersList != null) {
