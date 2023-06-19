@@ -53,26 +53,34 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _onSearchAddressPressed() async {
-    setState(() {
-      _isSearching = true;
-    });
+    if (mounted) {
+      setState(() {
+        _isSearching = true;
+      });
+    }
 
     LatLng? result =
         await _locationServices.getCoordinates(_searchTextController.text);
 
     if (result == null) {
       _showAlertDialog('Address', 'Cannot find the input address.');
-      setState(() {
-        _isSearching = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isSearching = false;
+        });
+      }
       return;
     } else {
       mapController?.animateCamera(CameraUpdate.newCameraPosition(
           CameraPosition(target: result, zoom: 17)));
-      setState(() {
-        _isSearching = false;
-        _pickedLocation = LatLng(result.latitude, result.longitude);
-      });
+
+      if (mounted) {
+        setState(() {
+          _isSearching = false;
+          _pickedLocation = LatLng(result.latitude, result.longitude);
+        });
+      }
+
       SystemChannels.textInput.invokeMethod('TextInput.hide');
     }
   }
@@ -132,16 +140,20 @@ class _MapScreenState extends State<MapScreen> {
           Expanded(
             child: GoogleMap(
               onMapCreated: (controller) {
-                setState(() {
-                  mapController = controller;
-                });
+                if (mounted) {
+                  setState(() {
+                    mapController = controller;
+                  });
+                }
               },
               onTap: !widget.isSelecting
                   ? null
                   : (position) {
-                      setState(() {
-                        _pickedLocation = position;
-                      });
+                      if (mounted) {
+                        setState(() {
+                          _pickedLocation = position;
+                        });
+                      }
                     },
               initialCameraPosition: CameraPosition(
                 target: LatLng(
