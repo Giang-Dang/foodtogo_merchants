@@ -103,20 +103,20 @@ class _OpenHoursScreenState extends State<OpenHoursScreen> {
     final List<int> indexList = List.filled(7, 0);
 
     for (var i = 0; i < isExistList.length; i++) {
-      var response = await normalOpenHoursServices.getAll(
+      var queryResults = await normalOpenHoursServices.getAll(
         searchMerchantId: widget.merchant.merchantId,
         searchDayOfWeek: i,
       ); //always return 1 instance
 
-      if (response == null) {
+      if (queryResults == null) {
         log('_saveOpenHours() getAll = null');
-        inspect(response);
+        inspect(queryResults);
         return false;
       }
 
-      isExistList[i] = response.isNotEmpty;
-      if (response.isNotEmpty) {
-        indexList[i] = response.first.id;
+      isExistList[i] = queryResults.isNotEmpty;
+      if (queryResults.isNotEmpty) {
+        indexList[i] = queryResults.first.id;
       }
     }
 
@@ -256,6 +256,7 @@ class _OpenHoursScreenState extends State<OpenHoursScreen> {
               const SizedBox(height: 10),
               for (var value in DaysOfWeek.values)
                 OpenHourSelector(
+                  merchant: merchant,
                   openingTime: _openingTime[value.index],
                   closingTime: _closingTime[value.index],
                   dayOfWeek: value,

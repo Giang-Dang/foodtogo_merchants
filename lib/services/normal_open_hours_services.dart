@@ -122,6 +122,23 @@ class NormalOpenHoursServices {
     return resultList;
   }
 
+  Future<bool> delete(int id) async {
+    final newAPIUrl = '$_apiUrl/$id';
+    final jwtToken = UserServices.jwtToken;
+
+    final url = Uri.http(Secrets.kFoodToGoAPILink, newAPIUrl);
+
+    final responseJson = await http.delete(url, headers: {
+      'Authorization': 'Bearer $jwtToken',
+    });
+
+    if (responseJson.statusCode != HttpStatus.noContent) {
+      return false;
+    }
+
+    return true;
+  }
+
   Future<NormalOpenHours?> create(NormalOpenHoursCreateDTO createDTO) async {
     final jwtToken = UserServices.jwtToken;
 
@@ -155,7 +172,7 @@ class NormalOpenHoursServices {
 
     final newApiUrl = '$_apiUrl/$id';
 
-    final requestJson = updateDTO.toJson();
+    final requestJson = json.encode(updateDTO.toJson());
 
     final url = Uri.http(Secrets.kFoodToGoAPILink, newApiUrl);
 

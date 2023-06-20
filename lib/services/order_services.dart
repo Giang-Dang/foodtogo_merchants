@@ -154,6 +154,9 @@ class OrderServices {
       status: orderDTO.status,
       cancelledBy: orderDTO.cancelledBy,
       cancellationReason: orderDTO.cancellationReason,
+      deliveryAddress: orderDTO.deliveryAddress,
+      deliveryLatitude: orderDTO.deliveryLatitude,
+      deliveryLongitude: orderDTO.deliveryLongitude,
     );
 
     return order;

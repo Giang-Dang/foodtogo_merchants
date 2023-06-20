@@ -30,14 +30,16 @@ class _YourMerchantWidgetState extends ConsumerState<YourMerchantWidget> {
     final MerchantServices merchantServices = MerchantServices();
 
     final updateDTO = MerchantUpdateDTO(
-        merchantId: merchant.merchantId,
-        userId: merchant.userId,
-        name: merchant.name,
-        address: merchant.address,
-        phoneNumber: merchant.phoneNumber,
-        geoLatitude: merchant.geoLatitude,
-        geoLongitude: merchant.geoLongitude,
-        isDeleted: true);
+      merchantId: merchant.merchantId,
+      userId: merchant.userId,
+      name: merchant.name,
+      address: merchant.address,
+      phoneNumber: merchant.phoneNumber,
+      geoLatitude: merchant.geoLatitude,
+      geoLongitude: merchant.geoLongitude,
+      isDeleted: true,
+      rating: merchant.rating,
+    );
 
     final isSuccess =
         await merchantServices.update(updateDTO, merchant.merchantId);

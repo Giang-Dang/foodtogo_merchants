@@ -6,7 +6,9 @@ import 'package:foodtogo_merchants/models/enum/order_status.dart';
 import 'package:foodtogo_merchants/models/order.dart';
 import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
 import 'package:foodtogo_merchants/providers/orders_list_provider.dart';
+import 'package:foodtogo_merchants/services/merchant_services.dart';
 import 'package:foodtogo_merchants/services/order_services.dart';
+import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 import 'package:foodtogo_merchants/widgets/order_list_item.dart';
 
@@ -35,10 +37,13 @@ class _UserOrdersListWidgetState extends ConsumerState<UserOrdersListWidget> {
       _isLoading = true;
     });
 
-    final merchantsList = ref.read(merchantsListProvider);
+    final merchantServices = MerchantServices();
+
+    final merchantList = await merchantServices.getAllDTOs(
+        searchUserId: int.tryParse(UserServices.strUserId));
 
     List<Order>? ordersList = [];
-    for (var merchant in merchantsList) {
+    for (var merchant in merchantList) {
       var tempOrderList =
           await orderServices.getAll(merchantId: merchant.merchantId);
       if (tempOrderList != null) {
@@ -56,7 +61,6 @@ class _UserOrdersListWidgetState extends ConsumerState<UserOrdersListWidget> {
         ordersList = null;
         break;
       }
-      
     }
 
     if (ordersList != null) {
@@ -68,7 +72,6 @@ class _UserOrdersListWidgetState extends ConsumerState<UserOrdersListWidget> {
     }
 
     if (mounted) {
-      ref.watch(ordersListProvider.notifier).updateOrdersList(ordersList ?? []);
       setState(() {
         _isLoading = false;
         if (ordersList != null) {

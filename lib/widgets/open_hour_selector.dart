@@ -1,12 +1,15 @@
-
 import 'package:flutter/material.dart';
 import 'package:foodtogo_merchants/models/enum/days_of_week.dart';
+import 'package:foodtogo_merchants/models/merchant.dart';
+import 'package:foodtogo_merchants/models/normal_open_hours.dart';
+import 'package:foodtogo_merchants/services/normal_open_hours_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 import 'package:foodtogo_merchants/util/material_color_creator.dart';
 
 class OpenHourSelector extends StatefulWidget {
   const OpenHourSelector(
       {Key? key,
+      required this.merchant,
       required this.openingTime,
       required this.closingTime,
       required this.dayOfWeek,
@@ -14,6 +17,7 @@ class OpenHourSelector extends StatefulWidget {
       required this.getOpenHoursData})
       : super(key: key);
 
+  final Merchant merchant;
   final TimeOfDay openingTime;
   final TimeOfDay closingTime;
   final DaysOfWeek dayOfWeek;
@@ -72,10 +76,22 @@ class _OpenHourSelectorState extends State<OpenHourSelector> {
                 scale: 0.8,
                 child: Switch(
                   value: _switchValue,
-                  onChanged: (value) {
+                  onChanged: (isOpen) async {
+                    if (!isOpen) {
+                      final normalOpenHoursServices = NormalOpenHoursServices();
+                      final queryList = await normalOpenHoursServices.getAll(
+                        searchMerchantId: widget.merchant.merchantId,
+                        searchDayOfWeek: widget.dayOfWeek.index,
+                      );
+                      if (queryList != null) {
+                        for (var query in queryList) {
+                          normalOpenHoursServices.delete(query.id);
+                        }
+                      }
+                    }
                     if (mounted) {
                       setState(() {
-                        _switchValue = value;
+                        _switchValue = isOpen;
                       });
                     }
 

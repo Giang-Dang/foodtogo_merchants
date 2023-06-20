@@ -20,7 +20,7 @@ class UserServices {
   static String strUserId = "";
 
   Future<UserDTO?> get(int userId) async {
-    const apiUrl = 'api/UserAPI';
+    final apiUrl = 'api/UserAPI/$userId';
     final url = Uri.http(Secrets.kFoodToGoAPILink, apiUrl, {
       'id': userId.toString(),
     });

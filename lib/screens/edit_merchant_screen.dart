@@ -108,6 +108,7 @@ class _EditMerchantScreenState extends ConsumerState<EditMerchantScreen> {
         geoLatitude: _selectedLocation!.latitude,
         geoLongitude: _selectedLocation!.longitude,
         isDeleted: false,
+        rating: widget.merchant.rating,
       );
 
       if (mounted) {

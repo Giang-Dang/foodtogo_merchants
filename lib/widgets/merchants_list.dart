@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
+import 'package:foodtogo_merchants/services/merchant_services.dart';
+import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 import 'package:foodtogo_merchants/widgets/merchant_list_item.dart';
 
@@ -15,18 +19,43 @@ class MerchantsList extends ConsumerStatefulWidget {
 }
 
 class _MechantWidgetState extends ConsumerState<MerchantsList> {
-  late List<Merchant> _merchantsList;
+  List<Merchant> _merchantList = [];
+
+  Timer? _initTimer;
+
+  _getMerchantList() async {
+    final merchantServices = MerchantServices();
+
+    final merchantList = await merchantServices.getAll(
+        searchUserId: int.tryParse(UserServices.strUserId));
+
+    if (mounted) {
+      setState(() {
+        _merchantList = merchantList;
+      });
+    }
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    _initTimer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      _getMerchantList();
+      _initTimer?.cancel();
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _initTimer?.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _merchantsList = ref.watch(merchantsListProvider);
-
     Widget content = Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -50,13 +79,13 @@ class _MechantWidgetState extends ConsumerState<MerchantsList> {
       ),
     );
 
-    if (_merchantsList.isNotEmpty) {
+    if (_merchantList.isNotEmpty) {
       content = Container(
         color: KColors.kBackgroundColor,
         child: ListView.builder(
-          itemCount: _merchantsList.length,
+          itemCount: _merchantList.length,
           itemBuilder: (context, index) =>
-              MerchantListItem(merchant: _merchantsList[index]),
+              MerchantListItem(merchant: _merchantList[index]),
         ),
       );
     }

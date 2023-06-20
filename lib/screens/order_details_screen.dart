@@ -139,6 +139,9 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
       status: OrderStatus.Cancelled.name.toLowerCase(),
       cancelledBy: UserType.Merchant.name.toLowerCase(),
       cancellationReason: reason,
+      deliveryAddress: order.deliveryAddress,
+      deliveryLatitude: order.deliveryLatitude,
+      deliveryLongitude: order.deliveryLongitude,
     );
     final OrderServices orderServices = OrderServices();
 

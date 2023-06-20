@@ -17,7 +17,7 @@ import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/secrets.dart';
 
 class MerchantServices {
-  static const apiUrl = 'api/MerchantAPI';
+  static const _apiUrl = 'api/MerchantAPI';
 
   Future<Merchant?> get(int merchantId) async {
     final merchantProfileImageServices = MerchantProfileImageServices();
@@ -52,7 +52,7 @@ class MerchantServices {
   }
 
   Future<MerchantDTO?> getDTO(int merchantId) async {
-    final newApiUrl = '$apiUrl/$merchantId';
+    final newApiUrl = '$_apiUrl/$merchantId';
     final jwtToken = UserServices.jwtToken;
 
     final url = Uri.http(Secrets.kFoodToGoAPILink, newApiUrl);
@@ -68,6 +68,113 @@ class MerchantServices {
       return merchantDTO;
     }
     return null;
+  }
+
+  Future<List<Merchant>> getAll({
+    DateTime? openHoursCheckTime,
+    int? searchUserId,
+    String? searchName,
+    double? startLatitude,
+    double? startLongitude,
+    double? searchDistanceInKm,
+    bool? isDeleted,
+    int? pageSize,
+    int? pageNumber,
+  }) async {
+    final merchantProfileImageServices = MerchantProfileImageServices();
+    final merchantRatingServices = MerchantRatingServices();
+    final merchantDTOsList = await getAllDTOs(
+        openHoursCheckTime: openHoursCheckTime,
+        searchUserId: searchUserId,
+        searchName: searchName,
+        startLatitude: startLatitude,
+        startLongitude: startLongitude,
+        searchDistanceInKm: searchDistanceInKm,
+        isDeleted: isDeleted,
+        pageSize: pageSize,
+        pageNumber: pageNumber);
+
+    List<Merchant> merchantsList = [];
+
+    for (var merchantDTO in merchantDTOsList) {
+      final merchantProfileImageDTO = await merchantProfileImageServices
+          .getByMerchantId(merchantDTO.merchantId);
+
+      if (merchantProfileImageDTO == null) {
+        log("getAllMerchants : merchantProfileImageDTO == null");
+        continue;
+      }
+
+      final Merchant merchant = Merchant(
+        merchantId: merchantDTO.merchantId,
+        userId: merchantDTO.userId,
+        name: merchantDTO.name,
+        address: merchantDTO.address,
+        phoneNumber: merchantDTO.phoneNumber,
+        isDeleted: merchantDTO.isDeleted,
+        geoLatitude: merchantDTO.geoLatitude,
+        geoLongitude: merchantDTO.geoLongitude,
+        imagePath: merchantProfileImageDTO.path,
+        rating: merchantDTO.rating,
+      );
+
+      merchantsList.add(merchant);
+    }
+
+    return merchantsList;
+  }
+
+  Future<List<MerchantDTO>> getAllDTOs({
+    DateTime? openHoursCheckTime,
+    int? searchUserId,
+    String? searchName,
+    double? startLatitude,
+    double? startLongitude,
+    double? searchDistanceInKm,
+    bool? isDeleted,
+    int? pageSize,
+    int? pageNumber,
+  }) async {
+    final queryParams = <String, String>{};
+    if (openHoursCheckTime != null) {
+      queryParams['openHoursCheckTime'] = openHoursCheckTime.toIso8601String();
+    }
+    if (searchUserId != null) {
+      queryParams['searchUserId'] = searchUserId.toString();
+    }
+    if (searchName != null) {
+      queryParams['searchName'] = searchName;
+    }
+    if (startLatitude != null &&
+        startLongitude != null &&
+        searchDistanceInKm != null) {
+      queryParams['startLatitude'] = startLatitude.toString();
+      queryParams['startLongitude'] = startLongitude.toString();
+      queryParams['searchDistanceInKm'] = searchDistanceInKm.toString();
+    }
+    if (isDeleted != null) {
+      queryParams['isDeleted'] = isDeleted.toString();
+    }
+    if (pageSize != null && pageNumber != null) {
+      queryParams['pageSize'] = pageSize.toString();
+      queryParams['pageNumber'] = pageNumber.toString();
+    }
+
+    final url = Uri.http(Secrets.kFoodToGoAPILink, _apiUrl, queryParams);
+    final jwtToken = UserServices.jwtToken;
+
+    final responseJson = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $jwtToken',
+      },
+    );
+
+    final responseData = jsonDecode(responseJson.body);
+    final merchants = (responseData['result'] as List)
+        .map((merchantJson) => MerchantDTO.fromJson(merchantJson))
+        .toList();
+    return merchants;
   }
 
   Future<List<Merchant>> getAllMerchantsFromUser() async {
@@ -111,7 +218,7 @@ class MerchantServices {
 
   Future<List<MerchantDTO>> getAllMerchantsDTOFromUser() async {
     final userId = int.parse(UserServices.strUserId);
-    final newApiUrl = '$apiUrl/byuser/$userId';
+    final newApiUrl = '$_apiUrl/byuser/$userId';
     final url = Uri.http(Secrets.kFoodToGoAPILink, newApiUrl);
     final jwtToken = UserServices.jwtToken;
 
@@ -130,7 +237,7 @@ class MerchantServices {
   }
 
   Future<bool> create(MerchantCreateDTO createDTO, File image) async {
-    final url = Uri.http(Secrets.kFoodToGoAPILink, apiUrl);
+    final url = Uri.http(Secrets.kFoodToGoAPILink, _apiUrl);
     final jwtToken = UserServices.jwtToken;
 
     final jsonData = json.encode({
@@ -172,7 +279,7 @@ class MerchantServices {
     MerchantUpdateDTO updateDTO,
     int id,
   ) async {
-    final url = Uri.http(Secrets.kFoodToGoAPILink, '$apiUrl/$id');
+    final url = Uri.http(Secrets.kFoodToGoAPILink, '$_apiUrl/$id');
     final jwtToken = UserServices.jwtToken;
 
     final jsonData = json.encode({
@@ -202,7 +309,7 @@ class MerchantServices {
   }
 
   Future<bool> delete(int id) async {
-    final url = Uri.http(Secrets.kFoodToGoAPILink, '$apiUrl/$id');
+    final url = Uri.http(Secrets.kFoodToGoAPILink, '$_apiUrl/$id');
     final jwtToken = UserServices.jwtToken;
 
     final responseJson = await http.delete(
@@ -219,7 +326,7 @@ class MerchantServices {
   }
 
   Future<int> getMerchantId(String name) async {
-    final url = Uri.http(Secrets.kFoodToGoAPILink, '$apiUrl/idbyname/$name');
+    final url = Uri.http(Secrets.kFoodToGoAPILink, '$_apiUrl/idbyname/$name');
     final jwtToken = UserServices.jwtToken;
 
     final responseJson = await http.get(

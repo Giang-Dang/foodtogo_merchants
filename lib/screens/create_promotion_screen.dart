@@ -103,7 +103,7 @@ class _CreatePromotionScreenState extends ConsumerState<CreatePromotionScreen> {
 
       _showAlertDialog(
         'Success',
-        'We have successfully created your dish.',
+        'We have successfully created your promotion.',
         () {
           Navigator.pop(context);
           Navigator.pop(context);
