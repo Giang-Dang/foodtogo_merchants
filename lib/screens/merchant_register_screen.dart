@@ -22,7 +22,7 @@ class MerchantRegisterScreen extends ConsumerStatefulWidget {
 
 class _MerchantRegisterScreenState
     extends ConsumerState<MerchantRegisterScreen> {
-  final _formKey = GlobalKey<FormState>();
+  final _formMerchantRegisterKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   File? _selectedImage;
@@ -58,7 +58,7 @@ class _MerchantRegisterScreenState
   }
 
   _onCreatePressed() async {
-    if (_formKey.currentState!.validate()) {
+    if (_formMerchantRegisterKey.currentState!.validate()) {
       if (_selectedImage == null || _selectedLocation == null) {
         _showAlertDialog(
           'Alert',
@@ -145,7 +145,7 @@ class _MerchantRegisterScreenState
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(35, 15, 40, 30),
         child: Form(
-          key: _formKey,
+          key: _formMerchantRegisterKey,
           child: Column(
             children: [
               Text(

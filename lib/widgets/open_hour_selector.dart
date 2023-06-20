@@ -96,7 +96,7 @@ class _OpenHourSelectorState extends State<OpenHourSelector> {
                     }
 
                     widget.getOpenHoursData(
-                      isOpen: true,
+                      isOpen: _switchValue,
                       dayOfWeek: dayOfWeek,
                       openingTime: openingTime,
                       closingTime: closingTime,

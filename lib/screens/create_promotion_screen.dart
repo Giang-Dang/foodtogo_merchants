@@ -337,7 +337,7 @@ class _CreatePromotionScreenState extends ConsumerState<CreatePromotionScreen> {
                     child: TextFormField(
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
-                        label: Text('Enter your discount amount'),
+                        label: Text('Enter your maximum discount amount'),
                       ),
                       controller: _discountAmountController,
                       validator: (value) {

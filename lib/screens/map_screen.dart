@@ -32,6 +32,28 @@ class _MapScreenState extends State<MapScreen> {
   GoogleMapController? mapController;
   late bool _isSearching;
 
+  final String _mapStyle = '''
+  [
+    {
+      "featureType": "poi",
+      "elementType": "labels",
+      "stylers": [
+        {
+          "visibility": "off"
+        }
+      ]
+    },
+    {
+      "featureType": "transit.station.bus",
+      "stylers": [
+        {
+          "visibility": "off"
+        }
+      ]
+    }
+  ]
+  ''';
+
   _showAlertDialog(String title, String message) {
     showDialog(
       context: context,
@@ -72,7 +94,7 @@ class _MapScreenState extends State<MapScreen> {
       return;
     } else {
       mapController?.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: result, zoom: 17)));
+          CameraPosition(target: result, zoom: 19)));
 
       if (mounted) {
         setState(() {
@@ -102,7 +124,9 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pop(_pickedLocation);
+          if (context.mounted && _pickedLocation != null) {
+            Navigator.of(context).pop(_pickedLocation);
+          }
         },
         child: const Icon(Icons.save),
       ),
@@ -142,6 +166,7 @@ class _MapScreenState extends State<MapScreen> {
               onMapCreated: (controller) {
                 if (mounted) {
                   setState(() {
+                    controller.setMapStyle(_mapStyle);
                     mapController = controller;
                   });
                 }
@@ -160,7 +185,7 @@ class _MapScreenState extends State<MapScreen> {
                   widget.location.latitude,
                   widget.location.longitude,
                 ),
-                zoom: 17,
+                zoom: 19,
               ),
               markers: (_pickedLocation == null && widget.isSelecting)
                   ? {}
@@ -174,6 +199,7 @@ class _MapScreenState extends State<MapScreen> {
                             ),
                       ),
                     },
+              buildingsEnabled: false,
             ),
           ),
         ],

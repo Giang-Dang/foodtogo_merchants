@@ -115,16 +115,7 @@ class PromotionServices {
     final jwtToken = UserServices.jwtToken;
     final url = Uri.http(Secrets.kFoodToGoAPILink, _apiUrl);
 
-    final createJson = json.encode({
-      "id": 0,
-      "discountCreatorMerchantId": createDTO.discountCreatorMerchantId,
-      "name": createDTO.name,
-      "description": createDTO.description,
-      "discountPercentage": createDTO.discountPercentage,
-      "discountAmount": createDTO.discountAmount,
-      "startDate": createDTO.startDate.toString(),
-      "endDate": createDTO.endDate.toString(),
-    });
+    final createJson = json.encode(createDTO.toJson());
 
     final responseJson = await http.post(
       url,

@@ -31,7 +31,9 @@ class _PromotionListState extends ConsumerState<PromotionList> {
     final promotionsList =
         await promotionServices.getAll(widget.merchant.merchantId);
     if (mounted) {
-      ref.watch(promotionsListProvider.notifier).update(promotionsList ?? []);
+      setState(() {
+        _promotionsList = promotionsList ?? [];
+      });
     }
   }
 
@@ -65,10 +67,6 @@ class _PromotionListState extends ConsumerState<PromotionList> {
 
   @override
   Widget build(BuildContext context) {
-    if (_promotionsList.length < ref.watch(promotionsListProvider).length) {
-      _promotionsList = ref.watch(promotionsListProvider);
-    }
-
     _promotionsList.sort((a, b) {
       return _getPromotionStatus(a).index - _getPromotionStatus(b).index;
     });

@@ -26,6 +26,11 @@ class _PromotionListItemState extends State<PromotionListItem> {
     if (promotion.startDate.isBefore(now) && promotion.endDate.isAfter(now)) {
       return PromotionStatus.active;
     }
+    if (promotion.endDate.year == now.year &&
+        promotion.endDate.month == now.month &&
+        promotion.endDate.day == now.day) {
+      return PromotionStatus.active;
+    }
     if (promotion.startDate.isAfter(now)) {
       return PromotionStatus.notyet;
     }

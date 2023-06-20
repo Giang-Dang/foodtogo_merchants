@@ -28,7 +28,7 @@ class _MechantWidgetState extends ConsumerState<MerchantsList> {
 
     final merchantList = await merchantServices.getAll(
         searchUserId: int.tryParse(UserServices.strUserId));
-
+    
     if (mounted) {
       setState(() {
         _merchantList = merchantList;
