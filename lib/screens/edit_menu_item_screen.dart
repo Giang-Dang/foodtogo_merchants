@@ -104,6 +104,7 @@ class _CreateMenuItemScreenState extends ConsumerState<EditMenuItemScreen> {
         name: _nameController.text,
         description: _descriptionController.text,
         unitPrice: double.parse(_priceController.text),
+        rating: menuItem.rating,
       );
 
       setState(() {

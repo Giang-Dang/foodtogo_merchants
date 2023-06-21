@@ -68,6 +68,7 @@ class MenuItemServices {
         unitPrice: item['unitPrice'],
         isClosed: item['isClosed'],
         imagePath: menuItemImage.path,
+        rating: item['rating'],
       );
       menuItemList.add(menuItem);
     }
@@ -109,15 +110,15 @@ class MenuItemServices {
       }
 
       final MenuItem menuItem = MenuItem(
-        id: responseData['result']['id'],
-        merchantId: responseData['result']['merchantId'],
-        itemType: menuItemType.name,
-        name: responseData['result']['name'],
-        description: responseData['result']['description'],
-        unitPrice: responseData['result']['unitPrice'],
-        isClosed: responseData['result']['isClosed'],
-        imagePath: menuItemImage.path,
-      );
+          id: responseData['result']['id'],
+          merchantId: responseData['result']['merchantId'],
+          itemType: menuItemType.name,
+          name: responseData['result']['name'],
+          description: responseData['result']['description'],
+          unitPrice: responseData['result']['unitPrice'],
+          isClosed: responseData['result']['isClosed'],
+          imagePath: menuItemImage.path,
+          rating: responseData['result']['rating']);
 
       return menuItem;
     }
@@ -169,15 +170,7 @@ class MenuItemServices {
     final url = Uri.http(Secrets.kFoodToGoAPILink, '$_apiUrl/$id');
     final jwtToken = UserServices.jwtToken;
 
-    final jsonData = json.encode({
-      "id": id,
-      "merchantId": updateDTO.merchantId,
-      "itemTypeId": updateDTO.itemTypeId,
-      "name": updateDTO.name,
-      "description": updateDTO.description,
-      "unitPrice": updateDTO.unitPrice,
-      "isClosed": updateDTO.isClosed,
-    });
+    final jsonData = json.encode(updateDTO.toJson());
 
     final responseJson = await http.put(
       url,
@@ -201,15 +194,7 @@ class MenuItemServices {
     final url = Uri.http(Secrets.kFoodToGoAPILink, '$_apiUrl/$id');
     final jwtToken = UserServices.jwtToken;
 
-    final jsonData = json.encode({
-      "id": id,
-      "merchantId": updateDTO.merchantId,
-      "itemTypeId": updateDTO.itemTypeId,
-      "name": updateDTO.name,
-      "description": updateDTO.description,
-      "unitPrice": updateDTO.unitPrice,
-      "isClosed": updateDTO.isClosed,
-    });
+    final jsonData = json.encode(updateDTO.toJson());
 
     final responseJson = await http.put(
       url,

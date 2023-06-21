@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:foodtogo_merchants/models/dto/create_dto/user_rating_create_dto.dart';
 import 'package:foodtogo_merchants/models/dto/update_dto/user_rating_update_dto.dart';
 import 'package:foodtogo_merchants/models/enum/user_type.dart';
 import 'package:foodtogo_merchants/models/order.dart';
 import 'package:foodtogo_merchants/services/user_rating_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
+import 'package:foodtogo_merchants/widgets/rating_bar.dart';
 
 class RatingUserScreen extends StatefulWidget {
   const RatingUserScreen({

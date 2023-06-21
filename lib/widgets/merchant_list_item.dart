@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
 import 'package:foodtogo_merchants/providers/menu_item_list_provider.dart';
@@ -10,6 +9,7 @@ import 'package:foodtogo_merchants/services/menu_item_services.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 import 'package:foodtogo_merchants/settings/secrets.dart';
+import 'package:foodtogo_merchants/widgets/rating_bar_indicator.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class MerchantListItem extends ConsumerStatefulWidget {

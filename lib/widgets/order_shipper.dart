@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:foodtogo_merchants/models/enum/user_type.dart';
 import 'package:foodtogo_merchants/models/order.dart';
 import 'package:foodtogo_merchants/screens/rating_user_screen.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
+import 'package:foodtogo_merchants/widgets/rating_bar_indicator.dart';
 import 'package:foodtogo_merchants/widgets/rating_button.dart';
 
 class OrderShipper extends StatelessWidget {

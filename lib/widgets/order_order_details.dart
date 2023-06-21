@@ -74,7 +74,7 @@ class _OrderOrderDetailsState extends State<OrderOrderDetails> {
                     borderRadius: BorderRadius.circular(10.0),
                     child: ListTile(
                       title: Text(e.menuItem.name),
-                      subtitle: Text(e.specialInstruction.toString()),
+                      subtitle: Text(e.menuItem.description),
                       trailing: Transform.translate(
                         offset: const Offset(0, 24),
                         child: Text('Quantity: ${e.quantity}',

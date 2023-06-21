@@ -68,6 +68,7 @@ class _MechantListItemState extends ConsumerState<MenuItemWidget> {
       description: menuItem.description,
       unitPrice: menuItem.unitPrice,
       isClosed: !menuItem.isClosed,
+      rating: menuItem.rating,
     );
 
     final isUpdateSuccess =
@@ -83,6 +84,7 @@ class _MechantListItemState extends ConsumerState<MenuItemWidget> {
         unitPrice: menuItem.unitPrice,
         imagePath: menuItem.imagePath,
         isClosed: !menuItem.isClosed,
+        rating: menuItem.rating,
       );
       Future.delayed(const Duration(milliseconds: 500)).then((_) {
         if (mounted) {

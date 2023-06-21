@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/models/dto/update_dto/merchant_update_dto.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
@@ -10,6 +9,7 @@ import 'package:foodtogo_merchants/screens/edit_merchant_screen.dart';
 import 'package:foodtogo_merchants/screens/open_hours_screen.dart';
 import 'package:foodtogo_merchants/services/merchant_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
+import 'package:foodtogo_merchants/widgets/rating_bar_indicator.dart';
 
 class YourMerchantWidget extends ConsumerStatefulWidget {
   const YourMerchantWidget({
