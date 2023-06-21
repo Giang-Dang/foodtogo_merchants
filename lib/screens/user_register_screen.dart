@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:foodtogo_merchants/models/dto/register_request_dto.dart';
 import 'package:foodtogo_merchants/screens/login_screen.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
@@ -331,7 +330,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => LoginScreen(),
+                              builder: (context) => const LoginScreen(),
                             ),
                           );
                         },

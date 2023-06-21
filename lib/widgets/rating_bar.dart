@@ -357,12 +357,12 @@ class _RatingBarState extends State<RatingBar> {
       final box = context.findRenderObject() as RenderBox?;
       if (box == null) return;
 
-      final _pos = box.globalToLocal(dragDetails.globalPosition);
+      final pos = box.globalToLocal(dragDetails.globalPosition);
       double i;
       if (widget.direction == Axis.horizontal) {
-        i = _pos.dx / (widget.itemSize + widget.itemPadding.horizontal);
+        i = pos.dx / (widget.itemSize + widget.itemPadding.horizontal);
       } else {
-        i = _pos.dy / (widget.itemSize + widget.itemPadding.vertical);
+        i = pos.dy / (widget.itemSize + widget.itemPadding.vertical);
       }
       var currentRating = widget.allowHalfRating ? i : i.round().toDouble();
       if (currentRating > widget.itemCount) {

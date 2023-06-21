@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foodtogo_merchants/models/enum/order_status.dart';
 import 'package:foodtogo_merchants/models/order.dart';
-import 'package:foodtogo_merchants/providers/merchants_list_provider.dart';
-import 'package:foodtogo_merchants/providers/orders_list_provider.dart';
 import 'package:foodtogo_merchants/services/merchant_services.dart';
 import 'package:foodtogo_merchants/services/order_services.dart';
 import 'package:foodtogo_merchants/services/user_services.dart';
@@ -103,7 +101,6 @@ class _UserOrdersListWidgetState extends ConsumerState<UserOrdersListWidget> {
         color: KColors.kPrimaryColor,
       ),
     );
-    ;
 
     if (!_isLoading) {
       if (_ordersList.isEmpty) {

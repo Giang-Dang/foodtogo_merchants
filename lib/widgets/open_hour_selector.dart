@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodtogo_merchants/models/enum/days_of_week.dart';
 import 'package:foodtogo_merchants/models/merchant.dart';
-import 'package:foodtogo_merchants/models/normal_open_hours.dart';
 import 'package:foodtogo_merchants/services/normal_open_hours_services.dart';
 import 'package:foodtogo_merchants/settings/kcolors.dart';
 import 'package:foodtogo_merchants/util/material_color_creator.dart';

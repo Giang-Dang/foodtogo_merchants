@@ -43,6 +43,21 @@ class FileServices {
     }
   }
 
+  // Future<bool> delete(String fileName) async {
+  //   final apiUrl = 'api/FileAPI/$fileName';
+  //   final url = Uri.http(Secrets.kFoodToGoAPILink, apiUrl);
+  //   final response = await http.delete(url, headers: {
+  //     'Authorization': 'Bearer ${UserServices.jwtToken}',
+  //   });
+
+  //   if (response.statusCode != HttpStatus.noContent) {
+  //     log('FileServices.delete response.statusCode != HttpStatus.noContent');
+  //     return false;
+  //   }
+
+  //   return true;
+  // }
+
   Future<File> renameFile(File inputFile, String newName) async {
     final newPath = inputFile.parent.path + Platform.pathSeparator + newName;
     return await inputFile.rename(newPath);

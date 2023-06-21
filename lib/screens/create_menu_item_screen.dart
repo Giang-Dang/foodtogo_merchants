@@ -154,7 +154,7 @@ class _CreateMenuItemScreenState extends ConsumerState<CreateMenuItemScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _merchant = widget.merchant;
+    final merchant = widget.merchant;
 
     Widget waitingContent = const Center(
       child: CircularProgressIndicator(),
@@ -162,7 +162,7 @@ class _CreateMenuItemScreenState extends ConsumerState<CreateMenuItemScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_merchant.name),
+        title: Text(merchant.name),
       ),
       body: _typesList == null
           ? waitingContent
@@ -315,7 +315,7 @@ class _CreateMenuItemScreenState extends ConsumerState<CreateMenuItemScreen> {
                     ElevatedButton(
                       onPressed: () {
                         if (_selectedImage != null) {
-                          _onCreatePressed(_merchant, _selectedImage);
+                          _onCreatePressed(merchant, _selectedImage);
                         }
                       },
                       child: _isCreating

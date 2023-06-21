@@ -70,7 +70,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         if (context.mounted) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => TabsScreen(),
+              builder: (context) => const TabsScreen(),
             ),
           );
         }
@@ -211,7 +211,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ..onTap = () {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
-                              builder: (context) => UserRegisterScreen(),
+                              builder: (context) => const UserRegisterScreen(),
                             ),
                           );
                         },

@@ -239,29 +239,30 @@ class _YourMerchantWidgetState extends ConsumerState<YourMerchantWidget> {
                 //   ),
                 // ),
                 const SizedBox(height: 10),
-                const Divider(thickness: 1, color: KColors.kOnBackgroundColor),
-                const SizedBox(height: 10),
-                Material(
-                  elevation: 3,
-                  borderRadius: BorderRadius.circular(10.0),
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.delete,
-                      color: _isDeleted ? Colors.grey : KColors.kPrimaryColor,
-                    ),
-                    title: Text(
-                      'Delete Merchant',
-                      style: TextStyle(
-                          color:
-                              _isDeleted ? Colors.grey : KColors.kPrimaryColor),
-                    ),
-                    onTap: _isDeleted
-                        ? null
-                        : () {
-                            _deleteMerchant(merchant);
-                          },
-                  ),
-                ),
+                // //delete merchant button
+                // const Divider(thickness: 1, color: KColors.kOnBackgroundColor),
+                // const SizedBox(height: 10),
+                // Material(
+                //   elevation: 3,
+                //   borderRadius: BorderRadius.circular(10.0),
+                //   child: ListTile(
+                //     leading: Icon(
+                //       Icons.delete,
+                //       color: _isDeleted ? Colors.grey : KColors.kPrimaryColor,
+                //     ),
+                //     title: Text(
+                //       'Delete Merchant',
+                //       style: TextStyle(
+                //           color:
+                //               _isDeleted ? Colors.grey : KColors.kPrimaryColor),
+                //     ),
+                //     onTap: _isDeleted
+                //         ? null
+                //         : () {
+                //             _deleteMerchant(merchant);
+                //           },
+                //   ),
+                // ),
                 const SizedBox(height: 20)
               ],
             ),

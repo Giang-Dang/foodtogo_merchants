@@ -126,7 +126,16 @@ class _EditMerchantScreenState extends ConsumerState<EditMerchantScreen> {
       if (path.basename(_selectedImage!.path) !=
           path.basename(originalImageDTO!.path)) {
         final fileServices = FileServices();
+
+        //upload new file
         final newFilePath = await fileServices.uploadImage(_selectedImage!);
+
+        // //delete old file
+        // final isDeleteSuccess =
+        //     await fileServices.delete(path.basename(originalImageDTO.path));
+        // if (!isDeleteSuccess) {
+        //   log('_EditMerchantScreenState._onEditPressed() isDeleteSuccess == false');
+        // }
 
         final updateDTO = MerchantProfileImageUpdateDTO(
             id: originalImageDTO.id,
