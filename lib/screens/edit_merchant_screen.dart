@@ -127,8 +127,19 @@ class _EditMerchantScreenState extends ConsumerState<EditMerchantScreen> {
           path.basename(originalImageDTO!.path)) {
         final fileServices = FileServices();
 
+        //rename image to correct format
+        final merchantIdStr = merchant.merchantId.toString().padLeft(7, '0');
+        final datetime = DateTime.now()
+            .toIso8601String()
+            .replaceAll(':', '-')
+            .replaceAll('.', '-');
+        final fileExtention = path.extension(_selectedImage!.path);
+        final newName =
+            'MerchantProfileImage_${merchantIdStr}_$datetime$fileExtention';
+        final renamedImage =
+            await fileServices.renameFile(_selectedImage!, newName);
         //upload new file
-        final newFilePath = await fileServices.uploadImage(_selectedImage!);
+        final newFilePath = await fileServices.uploadImage(renamedImage);
 
         // //delete old file
         // final isDeleteSuccess =
