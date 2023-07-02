@@ -4,7 +4,7 @@ This is a merchant-focused Flutter application.
 This program is a component of the FoodToGo system.
 
 ## Main functions:
-- Login/Logout (automatically login using a JWT token saved from the previous login).
+- Login/Logout (automatically login using a JWT token saved from the previous login if not logged out).
 - Create and edit stalls.
 - Create, edit dishes, and turn off dishes (when out of stock).
 - Create promotional programs (with limited quantity and time range).
