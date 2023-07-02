@@ -2,15 +2,12 @@
 
 A new Flutter project.
 
-## Getting Started
+## System Architecture
 
-This project is a starting point for a Flutter application.
+![architecture](/Screenshots/Architecture_merchant.jpg)
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Screenshots
+![Screenshot_merchant_01.jpg](/Screenshots/Screenshot_merchant_01.jpg)
+![Screenshot_merchant_02.jpg](/Screenshots/Screenshot_merchant_02.jpg)
+![Screenshot_merchant_03.jpg](/Screenshots/Screenshot_merchant_03.jpg)
+![Screenshot_merchant_04.jpg](/Screenshots/Screenshot_merchant_04.jpg)
