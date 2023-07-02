@@ -1,6 +1,14 @@
 # foodtogo_merchants
 
-A new Flutter project.
+This is a merchant-focused Flutter application. 
+This program is a component of the FoodToGo system.
+
+## Main functions:
+- Create and edit stalls.
+- Create, edit dishes, and turn off dishes (when out of stock).
+- Create promotional programs (with limited quantity and time range).
+- View the list of orders for each store or view them all.
+- Rate customers and delivery people (shipper).
 
 ## System Architecture
 
